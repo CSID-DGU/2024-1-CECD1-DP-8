@@ -1,6 +1,7 @@
 import React from 'react';
-import InfluencerNavbar from '../../components/Navbar/InfluencerNavbar';
 import { styled } from 'styled-components';
+import { Link } from 'react-router-dom';
+import InfluencerNavbar from '../../components/Navbar/InfluencerNavbar';
 
 export default function InfluencerMain() {
     return (
@@ -8,7 +9,21 @@ export default function InfluencerMain() {
             <InfluencerNavbar></InfluencerNavbar>
 
             <Wrapper>
-                <div>인플루언서 메인</div>
+                <IntroWrapper>
+                    <a>인플루언서 리포트</a>
+                    <h1>
+                        나의 성장 가능성과 <br />
+                        성과를 한눈에 살펴보세요!
+                    </h1>
+                </IntroWrapper>
+                <StyledLink to="/report">
+                    <SearchButton>인플루언서 리포트 보기</SearchButton>
+                </StyledLink>
+                <HomepageSection>
+                    <h2>인스타그램 계정 분석</h2>
+                    <p>팔로워 추이부터 유효 팔로워 비율, 해시태그 분석, 평균 좋아요, 댓글 수 등의 정보를 제공합니다.</p>
+                    <img src={require('../../assets/influintro.png')} alt="홈페이지 스크린샷" />
+                </HomepageSection>
             </Wrapper>
         </>
     );
@@ -16,6 +31,97 @@ export default function InfluencerMain() {
 
 const Wrapper = styled.div`
     width: 100%;
-    height: 100%;
+    height: auto;
     display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+`;
+
+const IntroWrapper = styled.div`
+    display: flex;
+    margin-top: 5rem;
+    width: 660px;
+    height: 271px;
+    flex-shrink: 0;
+    flex-direction: column;
+    text-align: center;
+    a {
+        color: #780bc2;
+        text-align: center;
+        font-family: Inter;
+        font-size: 25px;
+        font-style: normal;
+        font-weight: 600;
+        line-height: normal;
+        background: linear-gradient(180deg, #780bc2 0%, #39055c 100%);
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+    h1 {
+        background: linear-gradient(180deg, #4017e3 0%, #230d7d 83%);
+        background-clip: text;
+        margin-top: 2rem;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        font-family: Inter;
+        font-size: 48px;
+        font-style: normal;
+        font-weight: 600;
+        line-height: normal;
+    }
+`;
+
+const StyledLink = styled(Link)`
+    text-decoration: none;
+`;
+
+const SearchButton = styled.div`
+    text-decoration: none;
+    display: flex;
+    padding: 18px 24px;
+    justify-content: center;
+    align-items: center;
+    gap: 4px;
+    align-items: center;
+    border-radius: 76px;
+    background: var(--Primary-Color-1, #4a3aff);
+    color: var(--Neutral-100, var(--white-100, #fff));
+    text-align: center;
+    font-family: 'DM Sans';
+    font-size: 1.5rem;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 18px; /* 112.5% */
+`;
+
+const HomepageSection = styled.div`
+    margin-top: 3rem;
+    text-align: left;
+    width: 80%;
+    max-width: 1200px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    h2 {
+        font-family: Inter;
+        font-size: 24px;
+        font-weight: 700;
+        margin-bottom: 1rem;
+    }
+    p {
+        font-family: Inter;
+        font-size: 16px;
+        font-weight: 400;
+        color: #666;
+        margin-bottom: 2rem;
+    }
+    img {
+        width: 65%;
+        height: auto;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
 `;

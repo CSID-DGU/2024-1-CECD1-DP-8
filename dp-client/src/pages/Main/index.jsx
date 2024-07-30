@@ -1,14 +1,24 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { styled } from 'styled-components';
-import { Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import advertiserBackground from '../../assets/advertiser.png';
 import influencerBackground from '../../assets/influencer.png';
 import LogoImg from '../../assets/Collabo.png';
 import adverIcon from '../../assets/adicon.png';
 import instaIcon from '../../assets/instaicon.png';
 import arrow from '../../assets/ArrowRight.svg';
+import LoginModal from '../../components/Login/LoginModal';
 
 export default function Main() {
+    const [showModal, setShowModal] = useState(false);
+
+    const handleOpenModal = () => {
+        setShowModal(true);
+    };
+
+    const handleCloseModal = () => {
+        setShowModal(false);
+    };
     return (
         <Wrapper>
             <Container>
@@ -17,31 +27,42 @@ export default function Main() {
                 </Logo>
                 <LeftSection>
                     <p>사업자이신가요?</p>
-                    <Link to="/advertiser" style={{ textDecoration: 'none' }}>
-                        <button>
-                            <ButtonText>서비스 알아보기</ButtonText>
-                            <ButtonIcon src={adverIcon} alt="광고주아이콘" />
-                            <ColumnLine></ColumnLine>
-                            <Arrow>
-                                <img src={arrow} alt="화살표" />
-                            </Arrow>
-                        </button>
-                    </Link>
+                    <Links>
+                        <Link to="/advertiser" style={{ textDecoration: 'none' }}>
+                            <button>
+                                <ButtonText>서비스 알아보기</ButtonText>
+                                <ButtonIcon src={adverIcon} alt="광고주아이콘" />
+                                <ColumnLine></ColumnLine>
+                                <Arrow>
+                                    <img src={arrow} alt="화살표" />
+                                </Arrow>
+                            </button>
+                        </Link>
+                        <LoginLink onClick={handleOpenModal} style={{ textDecoration: 'none' }}>
+                            로그인/회원가입
+                        </LoginLink>
+                    </Links>
                 </LeftSection>
                 <RightSection>
                     <p>인플루언서이신가요?</p>
-                    <Link to="/influencer" style={{ textDecoration: 'none' }}>
-                        <button>
-                            <ButtonText>서비스 알아보기</ButtonText>
-                            <ButtonIcon src={instaIcon} alt="인스타" />
-                            <ColumnLine></ColumnLine>
-                            <Arrow>
-                                <img src={arrow} alt="화살표" />
-                            </Arrow>
-                        </button>
-                    </Link>
+                    <Links>
+                        <Link to="/influencer" style={{ textDecoration: 'none' }}>
+                            <button>
+                                <ButtonText>서비스 알아보기</ButtonText>
+                                <ButtonIcon src={instaIcon} alt="인스타" />
+                                <ColumnLine></ColumnLine>
+                                <Arrow>
+                                    <img src={arrow} alt="화살표" />
+                                </Arrow>
+                            </button>
+                        </Link>
+                        <LoginLink onClick={handleOpenModal} style={{ textDecoration: 'none' }}>
+                            로그인/회원가입
+                        </LoginLink>
+                    </Links>
                 </RightSection>
             </Container>
+            <LoginModal show={showModal} onClose={handleCloseModal} />
         </Wrapper>
     );
 }
@@ -60,15 +81,34 @@ const Wrapper = styled.div`
     }
 `;
 
+const Links = styled.div`
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    bottom: 7.5rem;
+    /*background: blue;*/
+`
+
 const Logo = styled.div`
     display: flex;
     position: absolute;
     margin: 15px;
 `;
+const LoginLink = styled(Link)`
+    color: var(--white-100, #fff);
+    font-family: Inter;
+    font-size: 23px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    text-decoration: none;
+    display: flex;
+    justify-content: center;
+    padding: 10px;
+`;
 
 const ColumnLine = styled.div`
     display: flex;
-    position: absolute;
     width: 0px;
     right: 90px;
     height: 100%;
@@ -81,8 +121,6 @@ const Container = styled.div`
     button {
         border: none;
         display: flex;
-        position: relative;
-        top: 300px;
         width: 22.25rem;
         height: 6rem;
         justify-content: center;
@@ -155,7 +193,7 @@ const RightSection = styled.div`
     align-items: center;
     justify-content: center;
     border: none;
-
+    filter: contrast(1.1); /* 대비를 높임 */
     p {
         color: var(--white-100, #fff);
         text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);

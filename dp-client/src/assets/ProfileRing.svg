@@ -1,0 +1,10 @@
+<svg width="170" height="179" viewBox="0 0 170 179" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path id="Story ring" d="M168.75 89.5C168.75 138.301 131.194 177.75 85 177.75C38.8061 177.75 1.25 138.301 1.25 89.5C1.25 40.6993 38.8061 1.25 85 1.25C131.194 1.25 168.75 40.6993 168.75 89.5Z" stroke="url(#paint0_linear_229_2085)" stroke-width="2.5"/>
+<defs>
+<linearGradient id="paint0_linear_229_2085" x1="187.895" y1="18.8421" x2="-5.0956" y2="130.123" gradientUnits="userSpaceOnUse">
+<stop stop-color="#C913B9"/>
+<stop offset="0.500947" stop-color="#F9373F"/>
+<stop offset="1" stop-color="#FECD00"/>
+</linearGradient>
+</defs>
+</svg>

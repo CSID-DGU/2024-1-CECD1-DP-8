@@ -1,250 +1,201 @@
-import React, { useState } from 'react';
-import { styled } from 'styled-components';
-
-export default function LoginModal() {
-    const [name, setName] = useState('');
-    const [email, setEmail] = useState('');
-    const [age, setAge] = useState('');
-    const [password, setPassword] = useState('');
-    const [confirmPassword, setConfirmPassword] = useState('');
-    const [nameMessage, setNameMessage] = useState('');
-    const [emailMessage, setEmailMessage] = useState('');
-    const [ageMessage, setAgeMessage] = useState('');
-    const [passwordMessage, setPasswordMessage] = useState('');
-    const [confirmPasswordMessage, setConfirmPasswordMessage] = useState('');
-    const [modalVisible, setModalVisible] = useState(false);
-
-    const validateFields = () => {
-        let isValid = true;
-
-        // 이름 필드 유효성 검사
-        if (name.trim() === '') {
-            setNameMessage({ message: '필수 입력 항목입니다!', success: false });
-            isValid = false;
-        } else {
-            setNameMessage({ message: '멋진 이름이네요!', success: true });
-        }
-
-        // 이메일 필드 유효성 검사
-        if (!email.includes('@')) {
-            setEmailMessage({ message: '올바른 이메일 형식이 아닙니다!', success: false });
-            isValid = false;
-        } else {
-            setEmailMessage({ message: '올바른 이메일 형식입니다!', success: true });
-        }
-
-        // 나이 필드 유효성 검사
-        const ageNumber = parseInt(age);
-        if (isNaN(ageNumber)) {
-            setAgeMessage({ message: '숫자를 입력해주세요!', success: false });
-            isValid = false;
-        } else if (ageNumber !== parseFloat(age)) {
-            setAgeMessage({ message: '나이는 소수가 될 수 없습니다!', success: false });
-            isValid = false;
-        } else if (ageNumber < 0) {
-            setAgeMessage({ message: '나이는 음수가 될 수 없습니다!', success: false });
-            isValid = false;
-        } else if (ageNumber < 19) {
-            setAgeMessage({ message: '미성년자는 가입할 수 없습니다!', success: false });
-            isValid = false;
-        } else {
-            setAgeMessage({ message: '올바른 나이 형식입니다!', success: true });
-        }
-
-        // 비밀번호 필드 유효성 검사
-        if (password.length < 4) {
-            setPasswordMessage({ message: '최소 4자리 이상이어야 합니다.', success: false });
-            isValid = false;
-        } else if (password.length > 12) {
-            setPasswordMessage({ message: '최대 12자리까지 가능합니다.', success: false });
-            isValid = false;
-        } else if (!/[a-zA-Z]/.test(password) || !/\d/.test(password) || !/[^a-zA-Z\d]/.test(password)) {
-            setPasswordMessage({
-                message: '영문, 숫자, 특수문자를 모두 포함해야 합니다.',
-                success: false,
-            });
-            isValid = false;
-        } else {
-            setPasswordMessage({ message: '올바른 비밀번호입니다!', success: true });
-        }
-
-        // 비밀번호 확인 필드 유효성 검사
-        if (confirmPassword !== password) {
-            setConfirmPasswordMessage({ message: '비밀번호가 일치하지 않습니다!', success: false });
-            isValid = false;
-        } else if (confirmPassword === '') {
-            setConfirmPasswordMessage({ message: '비밀번호가 일치하지 않습니다!', success: false });
-            isValid = false;
-        } else {
-            setConfirmPasswordMessage({ message: '비밀번호가 일치합니다!', success: true });
-        }
-
-        return isValid;
-    };
-
-    const handleSignUp = () => {
-        const isValid = validateFields();
-        if (isValid) {
-            // 가입 처리
-            setModalVisible(true); // 모달 띄우기
-        }
-    };
+import React from 'react';
+import styled from 'styled-components';
+import LogoImg from '../../assets/Collabo.png';
+const LoginModal = ({ show, onClose }) => {
+    if (!show) {
+        return null;
+    }
 
     return (
-        <>
-            {/* 모달 컴포넌트 추가 */}
-            {modalVisible && (
-                <Modal>
-                    <h2>가입 성공!</h2>
-                    <br />
-                    <button onClick={() => setModalVisible(false)}>확인</button>
-                </Modal>
-            )}
-            <Container>
-                <SignUpContainer>
-                    <h1>회원가입</h1>
-                    <HeadLine></HeadLine>
-                    <InputForm>
-                        <p>이름</p>
-                        <InputField type="text" placeholder="" value={name} onChange={(e) => setName(e.target.value)} />
-                        <Message success={nameMessage.success}>{nameMessage.message}</Message>
-                        <p>이메일</p>
-                        <InputField
-                            type="text"
-                            placeholder=""
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                        />
-                        <Message success={emailMessage.success}>{emailMessage.message}</Message>
-                        <p>나이</p>
-                        <InputField type="text" placeholder="" value={age} onChange={(e) => setAge(e.target.value)} />
-                        <Message success={ageMessage.success}>{ageMessage.message}</Message>
-                        <p>비밀번호</p>
-                        <InputField
-                            type="password"
-                            placeholder=""
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                        />
-                        <Message success={passwordMessage.success}>{passwordMessage.message}</Message>
-                        <p>비밀번호 확인</p>
-                        <InputField
-                            type="password"
-                            placeholder=""
-                            value={confirmPassword}
-                            onChange={(e) => setConfirmPassword(e.target.value)}
-                        />
-                        <Message success={confirmPasswordMessage.success}>{confirmPasswordMessage.message}</Message>
-                    </InputForm>
-                    <SignupButton onClick={handleSignUp}>
-                        <p>가입하기</p>
-                    </SignupButton>
-                </SignUpContainer>
-            </Container>
-        </>
+        <Overlay>
+            <Modal>
+                <CloseButton onClick={onClose}>&times;</CloseButton>
+                <Wrapper>
+                    <Logo>
+                        <img src={LogoImg} alt="Logo" />
+                    </Logo>
+                    <p>Log in</p>
+                    <p2>계정이 없으신가요? 회원가입하세요.</p2>
+                    <AdSignupButton>사업자 회원가입</AdSignupButton>
+                    <InfluSignupButton>인플루언서 회원가입</InfluSignupButton>
+                    <hr></hr>
+                    <Form>
+                        <Label>Your email</Label>
+                        <Input type="email" placeholder="이메일을 입력해주세요." />
+                        <Label>Your password</Label>
+                        <Input type="password" placeholder="비밀번호를 입력해주세요." />
+                        <ForgotPasswordLink>Forget your password</ForgotPasswordLink>
+                        <LoginButton>Log in</LoginButton>
+                    </Form>
+                </Wrapper>
+            </Modal>
+        </Overlay>
     );
-}
+};
 
-const Container = styled.div`
+const Overlay = styled.div`
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7);
     display: flex;
-    flex-direction: column;
     align-items: center;
-    width: 100vw;
-    position: relative;
-    height: 100vw;
-    display: flex;
-    background-color: #bde7fa;
-    margin: 0 auto;
-`;
-
-const SignUpContainer = styled.div`
-    display: flex;
-    flex-direction: column;
-    width: 900px;
-    height: 1000px;
-    background-color: #d7effa;
-    border-radius: 1rem;
-    margin-top: 5rem;
-    align-items: center;
-    box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.2);
-
-    h1 {
-        text-align: center;
-        margin-top: 60px;
-        font-style: bold;
-    }
-`;
-
-const HeadLine = styled.div`
-    width: 600px;
-    position: relative;
-    height: 2px;
-    display: flex;
-    background-color: white;
-    margin: 0 auto;
-    margin-bottom: -10rem;
-`;
-
-const InputForm = styled.div`
-    display: flex;
-    flex-direction: column;
-    width: 700px;
-    height: auto;
-    margin: auto 0;
-    p {
-        color: black;
-        font-size: 1.2rem;
-        font-weight: 800;
-        line-height: 100%;
-    }
-`;
-
-const InputField = styled.input`
-    width: 99%;
-    height: 3rem;
-    border-radius: 1rem;
-    border: 3px solid white;
-    background-color: #d7effa;
-`;
-
-const Message = styled.div`
-    color: ${({ success }) => (success ? 'green' : 'red')};
-    font-size: 1.2rem;
-    font-weight: 800;
-    line-height: 100%;
-`;
-
-const SignupButton = styled.button`
-    margin-bottom: 2rem;
-    margin-top: -10rem;
-    width: 20rem;
-    height: 4rem;
-    flex-shrink: 0;
-    border-radius: 0.9375rem;
-    background: #959595;
-    border: none;
-    cursor: pointer;
-    p {
-        color: white;
-        text-align: center;
-        font-size: 1.1rem;
-        font-style: bold;
-        font-weight: 800;
-        line-height: 100%;
-    }
+    justify-content: center;
+    z-index: 1000;
 `;
 
 const Modal = styled.div`
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    text-align: center;
-    transform: translate(-50%, -50%);
-    background-color: white;
-    width: 500px;
-    height: 200px;
-    padding: 2rem;
-    border-radius: 1rem;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    z-index: 9999;
+    background: white;
+    padding: 20px;
+    border-radius: 24px;
+    width: 795px;
+    height: 861px;
+    max-width: 90%;
+    position: relative;
 `;
+
+const Logo = styled.div`
+    font-size: 1.5rem;
+    text-decoration: none;
+    margin: 3rem;
+`;
+
+const CloseButton = styled.button`
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+`;
+
+const Wrapper = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
+    p {
+        color: #333;
+        text-align: center;
+        font-family: Poppins;
+        font-size: 32px;
+        font-style: normal;
+        font-weight: 500;
+        line-height: normal;
+        margin-bottom: 1rem;
+    }
+    p2 {
+        display: flex;
+        padding: 2px;
+        align-items: flex-start;
+        gap: 10px;
+        margin-bottom: 0.8rem;
+    }
+    hr {
+        margin-top: 3rem;
+        height: 2px;
+        background: rgba(102, 102, 102, 0.25);
+        width: 528px;
+    }
+`;
+
+const AdSignupButton = styled.div`
+    display: flex;
+    width: 528px;
+    height: 72px;
+    margin-bottom: 20px;
+    justify-content: center;
+    align-items: center;
+    border-radius: 40px;
+    border: 2px solid #333;
+    background: #fff;
+    color: #333;
+    font-family: Inter;
+    font-size: 22px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    cursor: pointer;
+    &:hover {
+        background: #f0f0f0;
+    }
+`;
+
+const InfluSignupButton = styled.div`
+    display: flex;
+    width: 528px;
+    height: 72px;
+    justify-content: center;
+    align-items: center;
+    border-radius: 40px;
+    border: 2px solid #333;
+    background: #fff;
+    color: #333;
+    font-family: Inter;
+    font-size: 22px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    cursor: pointer;
+    &:hover {
+        background: #f0f0f0;
+    }
+`;
+const Form = styled.div`
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 528px;
+    margin-top: 2rem;
+`;
+
+const Label = styled.label`
+    margin-bottom: 0.5rem;
+    color: #333;
+    font-family: Inter;
+    font-size: 16px;
+`;
+
+const Input = styled.input`
+    height: 56px;
+    align-self: stretch;
+    border-radius: var(--12, 12px);
+    border: 1px solid rgba(102, 102, 102, 0.35);
+    width: 100%;
+`;
+
+const ForgotPasswordLink = styled.a`
+    align-self: flex-end;
+    margin-bottom: 1rem;
+    cursor: pointer;
+    color: #333;
+    text-decoration: none;
+    &:hover {
+        text-decoration: underline;
+    }
+`;
+
+const LoginButton = styled.button`
+    display: flex;
+    width: 528px;
+    height: 64px;
+    padding: 15px 0px 16px 0px;
+    justify-content: center;
+    align-items: center;
+    background-color: #ccc;
+    border: none;
+    border-radius: 20px;
+    color: white;
+    font-size: 22px;
+    font-style: normal;
+    font-weight: 500;
+    cursor: pointer;
+    &:hover {
+        background-color: #bbb;
+    }
+`;
+
+export default LoginModal;

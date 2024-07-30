@@ -1,0 +1,52 @@
+{
+    "category": "뷰티",
+    "mediaCnt": 1234,
+    "follwerCnt": 5678,
+    "InfluenceIndex": 1234,
+    "adIndex": 5678,
+    "profile": {
+        "instaName": "instaName",
+        "userName": "김철수",
+        "profileImage": "https://images.pexels.com/photos/1458926/pexels-photo-1458926.jpeg?cs=srgb&dl=pexels-poodles2doodles-1458926.jpg&fm=jpg"
+    },
+    "media": [
+        {
+            "mediaId": 1,
+            "likeCnt": 600,
+            "commentCnt": 300,
+            "imageUrl": "https://images.pexels.com/photos/1458926/pexels-photo-1458926.jpeg?cs=srgb&dl=pexels-poodles2doodles-1458926.jpg&fm=jpg"
+        },
+        {
+            "mediaId": 2,
+            "likeCnt": 600,
+            "commentCnt": 300,
+            "imageUrl": "https://images.pexels.com/photos/1458926/pexels-photo-1458926.jpeg?cs=srgb&dl=pexels-poodles2doodles-1458926.jpg&fm=jpg"
+        },
+        {
+            "mediaId": 3,
+            "likeCnt": 600,
+            "commentCnt": 300,
+            "imageUrl": "https://images.pexels.com/photos/1458926/pexels-photo-1458926.jpeg?cs=srgb&dl=pexels-poodles2doodles-1458926.jpg&fm=jpg"
+        }
+    ],
+    "detail": {
+        "followerTrend": [
+            { "count": 29, "timestamp": "2021-07-15T00:00:00.000" },
+            { "count": 3, "timestamp": "2021-07-16T00:00:00.000" },
+            { "count": 1, "timestamp": "2021-07-17T00:00:00.000" },
+            { "count": 1, "timestamp": "2021-07-18T00:00:00.000" },
+            { "count": 15, "timestamp": "2021-07-19T00:00:00.000" },
+            { "count": 28, "timestamp": "2021-07-20T00:00:00.000" },
+            { "count": 8, "timestamp": "2021-07-21T00:00:00.000" },
+            { "count": 11, "timestamp": "2021-07-22T00:00:00.000" },
+            { "count": 14, "timestamp": "2021-07-23T00:00:00.000" }
+        ],
+        "hashtag": ["fashion", "beauty", "IT"],
+        "popularity_hashtag": "fashion",
+        "reactionCnt": 4,
+        "likeAvg": 158,
+        "commentAvg": 158,
+        "uploadCycle": 2.85,
+        "activitySummary": 6
+    }
+}
