@@ -8,6 +8,7 @@ import InfluencerMypage from './pages/Mypage/InfluencerMypage';
 import Report from './pages/Influencer/Report';
 import AdvertiserMypage from './pages/Mypage/AdvertiserMypage';
 import GlobalStyle from './styles/GlobalStyle';
+import MatchingPage2 from './pages/Advertiser/MatchingPage2';
 
 function App() {
     return (
@@ -21,6 +22,7 @@ function App() {
                 <Route path="/influmypage" element={<InfluencerMypage />} />
                 <Route path="/admypage" element={<AdvertiserMypage />} />
                 <Route path="/matchingPage" element={<MatchingPage />} />
+                <Route path="/matchingPage2" element={<MatchingPage2 />} />
                 <Route
                     path="/*"
                     element={
