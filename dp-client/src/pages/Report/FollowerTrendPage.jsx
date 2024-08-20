@@ -22,16 +22,20 @@ import feedimg from '../../assets/feedimg.png';
 
 ChartJS.register(LineElement, PointElement, LinearScale, Title, Tooltip, Legend, CategoryScale, TimeScale);
 
-export default function Report() {
-    const profileData = data.profile;
-    const detailData = data.detail;
+export default function FollowerTrendPage() {
+    const profileData = data.result.profile;
+    const mediaList = data.result.mediaList.reportMedias;
+    const followerTrend = data.result.followerTrend;
+    const tagList = data.result.tagList.tags;
+    const highResponseTag = data.result.highResponseTag[0];
+    const detailData = data.result;
 
     const followerTrendData = {
-        labels: detailData.followerTrend.map((entry) => entry.timestamp.split('T')[0]),
+        labels: followerTrend.map((entry) => entry.timestamp.split('T')[0]),
         datasets: [
             {
                 label: '팔로워 추이',
-                data: detailData.followerTrend.map((entry) => entry.count),
+                data: followerTrend.map((entry) => entry.count),
                 fill: false,
                 backgroundColor: 'rgba(75,192,192,0.4)',
                 borderColor: 'rgba(75,192,192,1)',
@@ -39,55 +43,52 @@ export default function Report() {
         ],
     };
 
-    const wordCloudData = detailData.hashtag.map((word) => ({ text: word, value: 1000 }));
+    const wordCloudData = tagList.map((word) => ({ text: word.name, value: 1000 }));
 
     return (
         <>
-            <GlobalStyle/>
-            <InfluencerNavbar />
-
             <Wrapper>
-                <LeftSection>
+                {/* <LeftSection>
                     <Intro>
                         <ProfileImage>
-                            <img src={profileData.profileImage} alt="프로필" />
+                            <img src={profileData.imageURL} alt="프로필" />
                         </ProfileImage>
-                        <Username>@{profileData.instaName}</Username>
-                        <Name>{profileData.userName}</Name>
-                        <Category>{data.category}</Category>
+                        <Username>@{profileData.nickname}</Username>
+                        <Name>{profileData.name}</Name>
+                        <Category>{profileData.category}</Category>
                         <ProfileData>
                             <ProfileDataColumn>
                                 <ProfileDataItem>
-                                    <DataValue>{data.mediaCnt.toLocaleString()}</DataValue>
+                                    <DataValue>{profileData.mediaCnt.toLocaleString()}</DataValue>
                                     <DataLabel>게시글</DataLabel>
                                 </ProfileDataItem>
                                 <ProfileDataItem>
-                                    <DataValue>{data.follwerCnt.toLocaleString()}</DataValue>
+                                    <DataValue>{profileData.followerCnt.toLocaleString()}</DataValue>
                                     <DataLabel>팔로워</DataLabel>
                                 </ProfileDataItem>
                             </ProfileDataColumn>
                             <ProfileDataColumn>
                                 <ProfileDataItem>
-                                    <DataValue>{data.InfluenceIndex.toLocaleString()}</DataValue>
+                                    <DataValue>{profileData.InfluenceIndex.toLocaleString()}</DataValue>
                                     <DataLabel>영향력지수</DataLabel>
                                 </ProfileDataItem>
                                 <ProfileDataItem>
-                                    <DataValue>{data.adIndex.toLocaleString()}</DataValue>
+                                    <DataValue>{profileData.adIndex.toLocaleString()}</DataValue>
                                     <DataLabel>광고지수</DataLabel>
                                 </ProfileDataItem>
                             </ProfileDataColumn>
                         </ProfileData>
                     </Intro>
-                </LeftSection>
+                </LeftSection> */}
                 <DataSection>
                     <SectionTitle>인기 포스트</SectionTitle>
                     <PostSection>
-                        {data.media.map((post) => (
+                        {mediaList.map((post) => (
                             <Post key={post.mediaId}>
-                                <PostImage src={post.imageUrl} alt="게시글" />
+                                <PostImage src={post.imageURL} alt="게시글" />
                                 <PostStats>
-                                    <span>❤️ {post.likeCnt}</span>
-                                    <span>💬 {post.commentCnt}</span>
+                                    <span>🤍 {post.likeCnt}</span>
+                                    <span>💬 {post.replyCnt}</span>
                                 </PostStats>
                             </Post>
                         ))}
@@ -95,6 +96,7 @@ export default function Report() {
                     <SectionTitle>상세 분석</SectionTitle>
                     <FollowerSection>
                         <FollowerTrend>
+                            <Label>팔로워 추이</Label>
                             <Line
                                 data={followerTrendData}
                                 options={{
@@ -112,37 +114,51 @@ export default function Report() {
                                 }}
                             />
                         </FollowerTrend>
-                        <ReactionIndex>반응지수 {detailData.reactionCnt}</ReactionIndex>
+                        <ReactionIndex>
+                            {' '}
+                            <Label>반응 지수</Label>
+                            <ReactionData> {detailData.reactionCnt}</ReactionData>
+                            <ReactionDescription>평균보다 높아요!</ReactionDescription>
+                        </ReactionIndex>
                     </FollowerSection>
+
                     <HashtagSection>
                         <PostHashtag>
+                            <Label>게시글 해시태그</Label>
                             <WordCloud
                                 data={wordCloudData}
                                 fontSizeMapper={(word) => Math.log2(word.value) * 5}
                                 rotate={() => 0}
                             />
                         </PostHashtag>
-                        <ResponsiveHashtag>{detailData.popularity_hashtag}</ResponsiveHashtag>
+
+                        <ResponsiveHashtag>
+                            {' '}
+                            <Label>반응 높은 해시태그</Label>
+                            <HashtagData>{highResponseTag}</HashtagData>
+                        </ResponsiveHashtag>
                     </HashtagSection>
                     <AverageSection>
                         <Like>
+                            <Label>평균 좋아요</Label>
                             <img src={likeIcon} alt="좋아요 아이콘" />
                             <DataValue>{detailData.likeAvg}</DataValue>
-                            <DataLabel>평균 좋아요</DataLabel>
                         </Like>
                         <Comment>
+                            <Label>평균 댓글 수</Label>
                             <img src={commentIcon} alt="댓글 아이콘" />
-                            <DataValue>{detailData.commentAvg}</DataValue>
-                            <DataLabel>평균 댓글수</DataLabel>
+                            <DataValue>{detailData.replyAvg}</DataValue>
                         </Comment>
                         <Upload>
-                            <DataValue>{detailData.uploadCycle}</DataValue>
-                            <DataLabel>게시물 업로드 주기</DataLabel>
+                            <Label>게시물 업로드 주기</Label>
+
+                            <DataValue>{detailData.mediaUploadCycle}</DataValue>
                         </Upload>
                     </AverageSection>
                     <SummarySection>
                         <Summary>
-                            {data.category} 게시물을 이번달 {detailData.activitySummary}개 올렸어요!
+                            <Label>활동 요약</Label>
+                            {profileData.category} 게시물을 이번달 {detailData.summary.count}개 올렸어요!
                         </Summary>
                     </SummarySection>
                 </DataSection>
@@ -156,20 +172,24 @@ const GlobalStyle = createGlobalStyle`
   :root {
     --report-left: 25%;
     --report-right: calc(100% - var(--report-left));
+    
   }
 `;
 
 const Wrapper = styled.div`
-    width: 100%;
-    height: auto;
     display: flex;
     flex-direction: row;
+    min-width: 1400px;
+    white-space: nowrap;
+    border-bottom: 0.7px solid #dbe0de;
+    position: relative;
     background-color: var(--background--gray);
 `;
 
 const Intro = styled.div`
-    width: 80%;
+    width: 375px;
     height: 570px;
+    flex-shrink: 0;
     flex-shrink: 0;
     display: flex;
     flex-direction: column;
@@ -260,6 +280,19 @@ const ProfileDataItem = styled.div`
     text-align: center;
     margin-bottom: 10px;
 `;
+const Label = styled.div`
+    color: #000;
+    text-align: center;
+    margin-top: 20px;
+    /* Button/Md */
+    font-family: Inter;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    letter-spacing: -0.5px;
+    text-transform: capitalize;
+`;
 
 const DataValue = styled.p`
     font-family: Inter;
@@ -268,10 +301,14 @@ const DataValue = styled.p`
 `;
 
 const DataLabel = styled.p`
-    font-family: Inter;
+    color: #000;
+    text-align: center;
+    font-feature-settings: 'liga' off, 'clig' off;
+    font-family: Abel;
     font-size: 14px;
+    font-style: normal;
     font-weight: 400;
-    color: #666;
+    line-height: normal;
 `;
 
 const Logo = styled.div`
@@ -283,10 +320,11 @@ const Logo = styled.div`
 
 const LeftSection = styled.div`
     width: var(--report-left);
-`
+`;
 
 const DataSection = styled.div`
     /*width: 1500px;*/
+
     width: var(--report-right);
     display: flex;
     flex-direction: column;
@@ -320,13 +358,14 @@ const Post = styled.div`
     margin-top: 10px;
     margin-right: 30px;
     display: inline-flex;
-    padding: 20px 20px 11px 20px;
+
+    padding: 20px 20px 20px 20px;
     flex-direction: column;
     align-items: center;
     gap: 14px;
-    border-radius: 20px;
-    background: #fff;
-    box-shadow: 0px 3px 100px 0px rgba(0, 0, 0, 0.1);
+    border-radius: var(--20, 20px);
+    background: var(--white-100, #fff);
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
 `;
 
 const PostImage = styled.img`
@@ -345,17 +384,20 @@ const PostStats = styled.div`
 `;
 
 const FollowerSection = styled.div`
-    width: 100%;
-    height: 570px;
+    width: 1280px;
+    height: 500px;
     flex-shrink: 0;
     display: flex;
     flex-direction: row;
+    margin-bottom: 30px;
 `;
 
 const FollowerTrend = styled.div`
     display: flex;
-    width: 70%;
-    height: 500px;
+    padding: 10px;
+    flex-direction: column;
+    width: 750px;
+    height: 450px;
     flex-shrink: 0;
     border-radius: 20px;
     background: #fff;
@@ -374,19 +416,46 @@ const FollowerTrend = styled.div`
 
 const ReactionIndex = styled.div`
     display: flex;
-    width: 20%;
-    height: 500px;
+    flex-direction: column;
+    padding: 10px;
+    width: 306px;
+    height: 450px;
     flex-shrink: 0;
     border-radius: 20px;
-    margin-left: 30px;
+    margin-left: 70px;
     background: #fff;
     box-shadow: 0px 3px 100px 0px rgba(0, 0, 0, 0.1);
     color: #000;
-    text-align: center;
-    justify-content: center;
     align-items: center;
     font-family: Inter;
     font-size: 25px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    letter-spacing: -0.5px;
+    text-transform: capitalize;
+`;
+
+const ReactionData = styled.div`
+    display: flex;
+    margin-top: 130px;
+    color: #a338f6;
+    text-align: center;
+    font-family: Inter;
+    font-size: 48px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    letter-spacing: -0.5px;
+    text-transform: capitalize;
+`;
+
+const ReactionDescription = styled.div`
+    margin-top: 100px;
+    color: #a0a0a0;
+    text-align: center;
+    font-family: Inter;
+    font-size: 20px;
     font-style: normal;
     font-weight: 600;
     line-height: normal;
@@ -399,13 +468,14 @@ const HashtagSection = styled.div`
     height: 550px;
     flex-shrink: 0;
     display: flex;
-    flex-direction: row;
 `;
 
 const PostHashtag = styled.div`
     display: flex;
-    width: 60%;
-    height: 500px;
+    width: 760px;
+    height: 400px;
+    padding: 10px;
+
     flex-shrink: 0;
     border-radius: 20px;
     background: #fff;
@@ -413,7 +483,6 @@ const PostHashtag = styled.div`
     color: #000;
     text-align: center;
     justify-content: center;
-    align-items: center;
     font-family: Inter;
     font-size: 25px;
     font-style: normal;
@@ -421,22 +490,21 @@ const PostHashtag = styled.div`
     line-height: normal;
     letter-spacing: -0.5px;
     text-transform: capitalize;
-    padding: 5px;
 `;
 
 const ResponsiveHashtag = styled.div`
     display: flex;
-    width: 20%;
-    height: 500px;
+    padding: 10px;
+    flex-direction: column;
+    width: 300px;
+    height: 400px;
     flex-shrink: 0;
     border-radius: 20px;
-    margin-left: 95px;
+    margin-left: 85px;
     background: #fff;
     box-shadow: 0px 3px 100px 0px rgba(0, 0, 0, 0.1);
     color: #000;
     text-align: center;
-    justify-content: center;
-    align-items: center;
     font-family: Inter;
     font-size: 25px;
     font-style: normal;
@@ -444,7 +512,18 @@ const ResponsiveHashtag = styled.div`
     line-height: normal;
     letter-spacing: -0.5px;
     text-transform: capitalize;
-    padding: 5px;
+`;
+const HashtagData = styled.div`
+    color: #a338f6;
+    text-align: center;
+    font-family: Inter;
+    font-size: 32px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    letter-spacing: -0.5px;
+    text-transform: capitalize;
+    margin-top: 100px;
 `;
 
 const AverageSection = styled.div`
@@ -456,7 +535,7 @@ const AverageSection = styled.div`
 `;
 
 const Like = styled.div`
-    width: calc(var(--report-right) / 3);
+    width: 300px;
     height: 300px;
     flex-shrink: 0;
     margin-top: 10px;
@@ -478,7 +557,7 @@ const Like = styled.div`
 `;
 
 const Comment = styled.div`
-    width: calc(var(--report-right) / 3);
+    width: 300px;
     height: 300px;
     flex-shrink: 0;
     margin-top: 10px;
@@ -500,7 +579,7 @@ const Comment = styled.div`
 `;
 
 const Upload = styled.div`
-    width: calc(var(--report-right) / 3);
+    width: 300px;
     height: 300px;
     flex-shrink: 0;
     margin-top: 10px;
@@ -516,15 +595,17 @@ const Upload = styled.div`
 `;
 
 const SummarySection = styled.div`
-    width: 100%;
-    height: 550px;
+    width: 1000px;
+    height: 500px;
     flex-shrink: 0;
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
+    border: 1px solid black;
 `;
 
 const Summary = styled.div`
     display: flex;
+    flex-direction: column;
     width: 850px;
     height: 400px;
     flex-shrink: 0;
@@ -533,8 +614,6 @@ const Summary = styled.div`
     box-shadow: 0px 3px 100px 0px rgba(0, 0, 0, 0.1);
     color: #000;
     text-align: center;
-    justify-content: center;
-    align-items: center;
     font-family: Inter;
     font-size: 25px;
     font-style: normal;

@@ -5,7 +5,7 @@ import Advertiser from './pages/Advertiser';
 import Influencer from './pages/Influencer';
 import MatchingPage from './pages/Advertiser/MatchingPage';
 import InfluencerMypage from './pages/Mypage/InfluencerMypage';
-import Report from './pages/Influencer/Report';
+import Report from './pages/Report/Report';
 import AdvertiserMypage from './pages/Mypage/AdvertiserMypage';
 import GlobalStyle from './styles/GlobalStyle';
 import MatchingPage2 from './pages/Advertiser/MatchingPage2';
