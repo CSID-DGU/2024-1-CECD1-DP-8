@@ -17,56 +17,79 @@ const InfluencerNavbar = () => {
     };
 
     return (
-        <Nav>
-            <Logo to="/influencer">
-                <img src={LogoImg} alt="Logo" />
-            </Logo>
-            <Links>
-                <NavLink to="/report">내 리포트</NavLink>
-                <NavLink to="/influmypage">마이페이지</NavLink>
-                {isLoggedIn ? (
-                    <LoginButton onClick={handleLogout}>로그아웃</LoginButton>
-                ) : (
-                    <LoginButton onClick={handleLogin}>로그인</LoginButton>
-                )}
-                <GetStartButton>Get Started</GetStartButton>
-            </Links>
-        </Nav>
+        <Wrapper>
+            <Nav>
+                <Logo to="/influencer">
+                    <img src={LogoImg} alt="Logo" />
+                </Logo>
+                <Links>
+                    <NavLink to="/report">내 리포트</NavLink>
+                    <NavLink to="">인플루언서 찾기</NavLink>
+                    <NavLink to="">캠페인 등록</NavLink>
+                    <NavLink to="/influmypage">마이페이지</NavLink>
+                </Links>
+                <RightMenu>
+                    {isLoggedIn ? (
+                        <LoginButton onClick={handleLogout}>Login</LoginButton>
+                    ) : (
+                        <LoginButton onClick={handleLogin}>Logout</LoginButton>
+                    )}
+                    <GetStartButton>Get Started</GetStartButton>
+                </RightMenu>
+            </Nav>
+        </Wrapper>
     );
 };
 
-const Nav = styled.nav`
-    background-color: #ffffff;
+const Wrapper = styled.nav`
     display: flex;
-    width: 100%;
-    height: 120px;
+    flex-direction: column;
     align-items: center;
+    width: 100%;
+    min-width: 1500px;
+    white-space: nowrap;
+    border-bottom: 0.7px solid #dbe0de;
+    position: relative;
+    background-color: #ffffff;
+`;
+
+const Nav = styled.nav`
+    width: 100%;
+    padding: 0 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 100px;
+    background-color: #fff;
+    overflow: hidden;
 `;
 
 const Logo = styled(Link)`
-    font-size: 1.5rem;
     text-decoration: none;
-    margin-left: 4rem;
+    margin-left: 200px;
 `;
 
 const Links = styled.div`
     display: flex;
-    gap: 4rem;
-    margin-left: 600px;
+    list-style: none;
+    gap: 40px;
+    cursor: pointer;
 `;
-
+const RightMenu = styled.div`
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-right: 200px;
+`;
 const NavLink = styled(Link)`
-    color: #170f49;
-    text-decoration: none;
     color: var(--Neutral-800, #170f49);
     text-align: center;
-    font-family: 'DM Sans';
-    font-size: 30px;
+    font-size: 18px;
     font-style: normal;
     font-weight: 400;
     line-height: 20px; /* 111.111% */
     transition: transform 0.2s ease-in-out;
-    margin-top: 30px;
+    margin-top: 10px;
 
     &:hover {
         color: #a338f6;
@@ -75,39 +98,35 @@ const NavLink = styled(Link)`
     }
 `;
 const LoginButton = styled(Link)`
-    font-family: 'DM Sans';
-    font-size: 1.5rem;
-    font-style: normal;
-    font-weight: 700;
-    line-height: 18px;
-    text-decoration: none;
-    margin-left: 6rem;
-    display: flex;
-    padding: 18px 24px;
-    width: 100px;
-    justify-content: center;
-    align-items: center;
-    margin-top: 0.5rem;
-    border-radius: 76px;
-    border: 1px solid var(--Neutral-400, #d9dbe9);
-    background: var(--Neutral-100, #fff);
-`;
-
-const GetStartButton = styled(Link)`
-    text-decoration: none;
     display: flex;
     padding: 18px 24px;
     justify-content: center;
     align-items: center;
     gap: 4px;
+    border-radius: 75.999px;
+    border: 1px solid var(--Neutral-400, #d9dbe9);
+    background: var(--white-100, #fff);
+    color: var(--Neutral-800, #170f49);
+    text-align: center;
+    font-feature-settings: 'liga' off, 'clig' off;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 18px; /* 112.5% */
+`;
+
+const GetStartButton = styled(Link)`
+    display: flex;
+    padding: 18px 24px;
+    justify-content: center;
     align-items: center;
-    border-radius: 76px;
+    gap: 4px;
+    border-radius: 75.999px;
     background: var(--Primary-Color-1, #4a3aff);
     color: var(--Neutral-100, var(--white-100, #fff));
     text-align: center;
-    margin-top: 0.5rem;
-    font-family: 'DM Sans';
-    font-size: 1.5rem;
+    font-feature-settings: 'liga' off, 'clig' off;
+    font-size: 16px;
     font-style: normal;
     font-weight: 700;
     line-height: 18px; /* 112.5% */
