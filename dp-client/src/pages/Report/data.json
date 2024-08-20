@@ -1,0 +1,65 @@
+{
+    "isSuccess": true,
+    "code": "string",
+    "message": "string",
+    "result": {
+        "profile": {
+            "imageURL": "https://images.pexels.com/photos/1458926/pexels-photo-1458926.jpeg?cs=srgb&dl=pexels-poodles2doodles-1458926.jpg&fm=jpg",
+            "nickname": "newjeans_official",
+            "name": "NewJeans",
+            "category": "뷰티",
+            "mediaCnt": 1234,
+            "followerCnt": 5678,
+            "InfluenceIndex": 1234,
+            "adIndex": 5678
+        },
+        "mediaList": {
+            "reportMedias": [
+                {
+                    "mediaId": 1,
+                    "imageURL": "https://images.pexels.com/photos/1458926/pexels-photo-1458926.jpeg?cs=srgb&dl=pexels-poodles2doodles-1458926.jpg&fm=jpg",
+                    "likeCnt": 600,
+                    "replyCnt": 300
+                },
+                {
+                    "mediaId": 2,
+                    "imageURL": "https://images.pexels.com/photos/1458926/pexels-photo-1458926.jpeg?cs=srgb&dl=pexels-poodles2doodles-1458926.jpg&fm=jpg",
+                    "likeCnt": 600,
+                    "replyCnt": 300
+                },
+                {
+                    "mediaId": 3,
+                    "imageURL": "https://images.pexels.com/photos/1458926/pexels-photo-1458926.jpeg?cs=srgb&dl=pexels-poodles2doodles-1458926.jpg&fm=jpg",
+                    "likeCnt": 600,
+                    "replyCnt": 300
+                }
+            ]
+        },
+        "followerTrend": [
+            { "count": 29, "timestamp": "2021-07-15T00:00:00.000" },
+            { "count": 3, "timestamp": "2021-07-16T00:00:00.000" },
+            { "count": 1, "timestamp": "2021-07-17T00:00:00.000" },
+            { "count": 1, "timestamp": "2021-07-18T00:00:00.000" },
+            { "count": 15, "timestamp": "2021-07-19T00:00:00.000" },
+            { "count": 28, "timestamp": "2021-07-20T00:00:00.000" },
+            { "count": 8, "timestamp": "2021-07-21T00:00:00.000" },
+            { "count": 11, "timestamp": "2021-07-22T00:00:00.000" },
+            { "count": 14, "timestamp": "2021-07-23T00:00:00.000" }
+        ],
+        "tagList": {
+            "tags": [{ "name": "fashion" }, { "name": "beauty" }, { "name": "IT" }]
+        },
+        "highResponseTag": ["fashion"],
+        "reactionCnt": 5,
+        "likeAvg": 158,
+        "replyAvg": 158,
+        "recentLikeAvg": 100,
+        "recentReplyAvg": 10,
+        "mediaUploadCycle": 2.85,
+        "adPostRatio": 40,
+        "summary": {
+            "type": "뷰티",
+            "count": 6
+        }
+    }
+}
