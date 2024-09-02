@@ -6,8 +6,6 @@ import { Link } from 'react-router-dom';
 export default function AdvertiserMain() {
     return (
         <>
-            <AdvertiserNavbar></AdvertiserNavbar>
-
             <Wrapper>
                 <IntroWrapper>
                     <a>인플루언서 추천</a>
