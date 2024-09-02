@@ -5,7 +5,6 @@ import { styled } from 'styled-components';
 export default function AdvertiserMypage() {
     return (
         <>
-            <AdvertiserNavbar></AdvertiserNavbar>
             <Wrapper>
                 <div>사업자 마이페이지입니다.</div>
             </Wrapper>

@@ -76,7 +76,6 @@ export default function InfluencerMain() {
 
     return (
         <>
-            <AdvertiserNavbar></AdvertiserNavbar>
             <Space />
             <Wrapper>
                 <SearchAndFilter>
