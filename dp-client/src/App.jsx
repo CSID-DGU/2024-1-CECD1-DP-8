@@ -9,31 +9,51 @@ import Report from './pages/Report/Report';
 import AdvertiserMypage from './pages/Mypage/AdvertiserMypage';
 import GlobalStyle from './styles/GlobalStyle';
 import MatchingPage2 from './pages/Advertiser/MatchingPage2';
+import SignUp from './pages/Signup/Signup';
+import { NavbarProvider, useNavbar } from './store/NavbarContext';
+import AdvertiserNavbar from './components/Navbar/AdvertiserNavbar';
+import InfluencerNavbar from './components/Navbar/InfluencerNavbar';
 
 function App() {
     return (
-        <Router>
-            <GlobalStyle />
-            <Routes>
-                <Route path="/" element={<Main />} />
-                <Route path="/advertiser" element={<Advertiser />} />
-                <Route path="/influencer" element={<Influencer />} />
-                <Route path="/report" element={<Report />} />
-                <Route path="/influmypage" element={<InfluencerMypage />} />
-                <Route path="/admypage" element={<AdvertiserMypage />} />
-                <Route path="/matchingPage" element={<MatchingPage />} />
-                <Route path="/matchingPage2" element={<MatchingPage2 />} />
-                <Route
-                    path="/*"
-                    element={
-                        <div>
-                            <h2>이 페이지는 존재하지 않습니다</h2>
-                        </div>
-                    }
-                />
-            </Routes>
-        </Router>
+        <NavbarProvider>
+            <Router>
+                <NavbarRenderer /> {/* Navbar 렌더링 */}
+                <Routes>
+                    <Route path="/" element={<Main />} />
+                    <Route path="/advertiser" element={<Advertiser />} />
+                    <Route path="/influencer" element={<Influencer />} />
+                    <Route path="/report" element={<Report />} />
+                    <Route path="/influmypage" element={<InfluencerMypage />} />
+                    <Route path="/admypage" element={<AdvertiserMypage />} />
+                    <Route path="/matchingPage" element={<MatchingPage />} />
+                    <Route path="/matchingPage2" element={<MatchingPage2 />} />
+                    <Route path="/signup" element={<SignUp />} />
+                    <Route
+                        path="/*"
+                        element={
+                            <div>
+                                <h2>이 페이지는 존재하지 않습니다</h2>
+                            </div>
+                        }
+                    />
+                </Routes>
+            </Router>
+        </NavbarProvider>
     );
 }
 
 export default App;
+
+// Navbar를 렌더링하는 컴포넌트
+function NavbarRenderer() {
+    const { navbar } = useNavbar();
+
+    if (navbar === 'advertiser') {
+        return <AdvertiserNavbar />;
+    } else if (navbar === 'influencer') {
+        return <InfluencerNavbar />;
+    } else {
+        return null;
+    }
+}

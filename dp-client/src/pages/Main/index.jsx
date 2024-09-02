@@ -8,9 +8,11 @@ import adverIcon from '../../assets/adicon.png';
 import instaIcon from '../../assets/instaicon.png';
 import arrow from '../../assets/ArrowRight.svg';
 import LoginModal from '../../components/Login/LoginModal';
+import { useNavbar } from '../../store/NavbarContext'; // Context 사용
 
 export default function Main() {
     const [showModal, setShowModal] = useState(false);
+    const { setNavbar } = useNavbar(); // Navbar 상태 변경 함수 가져오기
 
     const handleOpenModal = () => {
         setShowModal(true);
@@ -19,6 +21,15 @@ export default function Main() {
     const handleCloseModal = () => {
         setShowModal(false);
     };
+
+    const handleAdvertiserClick = () => {
+        setNavbar('advertiser');
+    };
+
+    const handleInfluencerClick = () => {
+        setNavbar('influencer');
+    };
+
     return (
         <Wrapper>
             <Container>
@@ -28,7 +39,7 @@ export default function Main() {
                 <LeftSection>
                     <p>사업자이신가요?</p>
                     <Links>
-                        <Link to="/advertiser" style={{ textDecoration: 'none' }}>
+                        <Link to="/advertiser" style={{ textDecoration: 'none' }} onClick={handleAdvertiserClick}>
                             <button>
                                 <ButtonText>서비스 알아보기</ButtonText>
                                 <ButtonIcon src={adverIcon} alt="광고주아이콘" />
@@ -46,7 +57,7 @@ export default function Main() {
                 <RightSection>
                     <p>인플루언서이신가요?</p>
                     <Links>
-                        <Link to="/influencer" style={{ textDecoration: 'none' }}>
+                        <Link to="/influencer" style={{ textDecoration: 'none' }} onClick={handleInfluencerClick}>
                             <button>
                                 <ButtonText>서비스 알아보기</ButtonText>
                                 <ButtonIcon src={instaIcon} alt="인스타" />
@@ -87,7 +98,7 @@ const Links = styled.div`
     position: absolute;
     bottom: 7.5rem;
     /*background: blue;*/
-`
+`;
 
 const Logo = styled.div`
     display: flex;

@@ -6,7 +6,7 @@ const InfluMatch = (data) => {
         <CardContainer>
             <MatchText>match {user.matchPercent}%</MatchText>
             <Contents>
-                <UserImage src={user.img} alt="프로필 사진"/>
+                <UserImage src={user.img} alt="프로필 사진" />
                 <UserInfo>
                     <UserInfoText bold="yes">User</UserInfoText>
                     <UserInfoText>{user.username}</UserInfoText>
@@ -16,15 +16,15 @@ const InfluMatch = (data) => {
                     <UserInfoText>{user.follower}</UserInfoText>
                 </UserInfo>
                 <ContentButton background="var(--coral-50)">
-                <ButtonText>{user.category}</ButtonText>
+                    <ButtonText>{user.category}</ButtonText>
                 </ContentButton>
                 <ContentButton background="var(--violet-50)">
                     <ButtonText>{user.match}</ButtonText>
                 </ContentButton>
             </Contents>
         </CardContainer>
-    )
-}
+    );
+};
 
 export default InfluMatch;
 
@@ -35,7 +35,7 @@ const CardContainer = styled.div`
     flex-direction: column;
     align-items: flex-start;
     border-radius: var(--20, 20px);
-    background: var(--white-100, #FFF);
+    background: var(--white-100, #fff);
     box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
 `;
 
@@ -46,7 +46,7 @@ const MatchText = styled.text`
     color: #000;
     text-align: center;
     font-feature-settings: 'clig' off, 'liga' off;
-    font-family: "DM Sans";
+    font-family: 'DM Sans';
     font-size: 18px;
     font-style: normal;
     font-weight: 700;
@@ -61,7 +61,7 @@ const Contents = styled.div`
     gap: 70px;
     flex: 1 0 0;
     border-radius: var(--20, 20px);
-    background: var(--white-100, #FFF);
+    background: var(--white-100, #fff);
 `;
 
 const UserImage = styled.img`
@@ -73,7 +73,7 @@ const UserImage = styled.img`
     align-items: center;
     flex-shrink: 0;
     border-radius: 100px;
-    border: 0.5px solid #DDD;
+    border: 0.5px solid #ddd;
     background: transparent;
 `;
 
@@ -89,7 +89,7 @@ const UserInfoText = styled.text`
     color: #000;
     text-align: center;
     font-feature-settings: 'clig' off, 'liga' off;
-    font-family: "DM Sans";
+    font-family: 'DM Sans';
     font-size: ${(props) => (props.bold === 'yes' ? '19px' : '18px')};
     font-style: normal;
     font-weight: ${(props) => (props.bold === 'yes' ? 'bold' : '400')};
@@ -106,7 +106,7 @@ const ContentButton = styled.button`
     flex: 1 0 0;
     border: transparent;
     border-radius: var(--20, 20px);
-    background: ${(props) => props.background || "white"};
+    background: ${(props) => props.background || 'white'};
 `;
 
 const ButtonText = styled.div`
