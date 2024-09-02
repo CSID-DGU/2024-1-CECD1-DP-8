@@ -24,8 +24,8 @@ const InfluencerNavbar = () => {
                 </Logo>
                 <Links>
                     <NavLink to="/matchingPage">인플루언서 추천</NavLink>
-                    <NavLink to="">인플루언서 찾기</NavLink>
-                    <NavLink to="">캠페인 등록</NavLink>
+                    <NavLink to="/*">인플루언서 찾기</NavLink>
+                    <NavLink to="/*">캠페인 등록</NavLink>
                     <NavLink to="/admypage">마이페이지</NavLink>
                 </Links>
                 <RightMenu>
@@ -84,7 +84,6 @@ const RightMenu = styled.div`
 const NavLink = styled(Link)`
     color: var(--Neutral-800, #170f49);
     text-align: center;
-    font-family: 'DM Sans';
     font-size: 18px;
     font-style: normal;
     font-weight: 400;
@@ -110,7 +109,6 @@ const LoginButton = styled(Link)`
     color: var(--Neutral-800, #170f49);
     text-align: center;
     font-feature-settings: 'liga' off, 'clig' off;
-    font-family: 'DM Sans';
     font-size: 16px;
     font-style: normal;
     font-weight: 400;

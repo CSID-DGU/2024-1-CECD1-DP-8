@@ -48,7 +48,7 @@ export default function MatchingPage2() {
             wantedFollower: 80, //팔로워수 조건
             engagement: 50, //팔로워 참여도
             advertisement: 70, //예상 광고 효과
-            postKeyWord: 30//게시글 키워드'
+            postKeyWord: 30, //게시글 키워드'
         },
         {
             matchPercent: 80,
@@ -62,7 +62,7 @@ export default function MatchingPage2() {
             wantedFollower: 80, //팔로워수 조건
             engagement: 50, //팔로워 참여도
             advertisement: 70, //예상 광고 효과
-            postKeyWord: 30//게시글 키워드'
+            postKeyWord: 30, //게시글 키워드'
         },
         {
             matchPercent: 80,
@@ -76,7 +76,7 @@ export default function MatchingPage2() {
             wantedFollower: 80, //팔로워수 조건
             engagement: 50, //팔로워 참여도
             advertisement: 70, //예상 광고 효과
-            postKeyWord: 30//게시글 키워드'
+            postKeyWord: 30, //게시글 키워드'
         },
         {
             matchPercent: 80,
@@ -90,14 +90,12 @@ export default function MatchingPage2() {
             wantedFollower: 80, //팔로워수 조건
             engagement: 50, //팔로워 참여도
             advertisement: 70, //예상 광고 효과
-            postKeyWord: 30//게시글 키워드'
+            postKeyWord: 30, //게시글 키워드'
         },
-
     ];
 
     return (
         <>
-            <AdvertiserNavbar></AdvertiserNavbar>
             <Space />
             <Wrapper>
                 <SearchAndFilter>

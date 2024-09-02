@@ -25,8 +25,6 @@ export default function Report() {
 
     return (
         <div>
-            <InfluencerNavbar />
-
             <Wrapper>
                 <SideBar profile={data.result.profile} onSelect={setSelectedPage} />
                 {renderPage()}

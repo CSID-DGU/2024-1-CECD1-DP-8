@@ -6,8 +6,6 @@ import InfluencerNavbar from '../../components/Navbar/InfluencerNavbar';
 export default function InfluencerMain() {
     return (
         <>
-            <InfluencerNavbar></InfluencerNavbar>
-
             <Wrapper>
                 <IntroWrapper>
                     <a>인플루언서 리포트</a>

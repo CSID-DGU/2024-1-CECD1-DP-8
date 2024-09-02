@@ -1,10 +1,18 @@
 import React from 'react';
 import styled from 'styled-components';
+import { useNavigate } from 'react-router-dom'; // useNavigate를 import
 import LogoImg from '../../assets/Collabo.png';
+
 const LoginModal = ({ show, onClose }) => {
+    const navigate = useNavigate(); // useNavigate 훅 사용
+
     if (!show) {
         return null;
     }
+
+    const handleSignup = () => {
+        navigate('/signup'); // 회원가입 버튼 클릭 시 /signup 경로로 이동
+    };
 
     return (
         <Overlay>
@@ -16,15 +24,15 @@ const LoginModal = ({ show, onClose }) => {
                     </Logo>
                     <p>Log in</p>
                     <p2>계정이 없으신가요? 회원가입하세요.</p2>
-                    <AdSignupButton>사업자 회원가입</AdSignupButton>
-                    <InfluSignupButton>인플루언서 회원가입</InfluSignupButton>
+                    <AdSignupButton onClick={handleSignup}>사업자 회원가입</AdSignupButton>
+                    <InfluSignupButton onClick={handleSignup}>인플루언서 회원가입</InfluSignupButton>
                     <hr></hr>
                     <Form>
                         <Label>Your email</Label>
                         <Input type="email" placeholder="이메일을 입력해주세요." />
                         <Label>Your password</Label>
                         <Input type="password" placeholder="비밀번호를 입력해주세요." />
-                        <ForgotPasswordLink>Forget your password</ForgotPasswordLink>
+                        <ForgotPasswordLink>비밀번호 찾기</ForgotPasswordLink>
                         <LoginButton>Log in</LoginButton>
                     </Form>
                 </Wrapper>
