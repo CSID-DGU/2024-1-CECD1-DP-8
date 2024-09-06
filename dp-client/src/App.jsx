@@ -1,5 +1,5 @@
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { BrowserRouter as Router, Routes, Route, useLocation, useNavigate } from 'react-router-dom';
 import Main from './pages/Main/index';
 import Advertiser from './pages/Advertiser';
 import Influencer from './pages/Influencer';
@@ -7,7 +7,6 @@ import MatchingPage from './pages/Advertiser/MatchingPage';
 import InfluencerMypage from './pages/Mypage/InfluencerMypage';
 import Report from './pages/Report/Report';
 import AdvertiserMypage from './pages/Mypage/AdvertiserMypage';
-import GlobalStyle from './styles/GlobalStyle';
 import MatchingPage2 from './pages/Advertiser/MatchingPage2';
 import SignUp from './pages/Signup/Signup';
 import { NavbarProvider, useNavbar } from './store/NavbarContext';
@@ -19,6 +18,7 @@ function App() {
         <NavbarProvider>
             <Router>
                 <NavbarRenderer /> {/* Navbar 렌더링 */}
+                <ResetNavbarOnMain />
                 <Routes>
                     <Route path="/" element={<Main />} />
                     <Route path="/advertiser" element={<Advertiser />} />
@@ -56,4 +56,20 @@ function NavbarRenderer() {
     } else {
         return null;
     }
+}
+
+// 메인 페이지로 돌아갈 때 Navbar를 초기화하는 컴포넌트
+function ResetNavbarOnMain() {
+    const { setNavbar } = useNavbar();
+    const location = useLocation();
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        // 메인 페이지('/')로 돌아갈 때 Navbar 상태 초기화
+        if (location.pathname === '/') {
+            setNavbar(null);
+        }
+    }, [location, setNavbar]);
+
+    return null;
 }

@@ -87,7 +87,7 @@ export const Button = styled.button`
     gap: 10px;
     align-self: stretch;
     border-radius: 3px;
-    background: var(--Color-Main-primary, #65bd83);
+    background: var(--Primary-Color-1, #4a3aff);
 `;
 
 export const SignupText = styled.div`
@@ -222,7 +222,7 @@ export const UserType = styled.div`
     padding: var(--Spacing-2, 6px);
     align-items: center;
     border-radius: 100px;
-    background: var(--Color-Gray-gray-200, #eee);
+    background: var(--Primary-Color-1, #4a3aff);
 `;
 
 export const UserTypeButton = styled.button`
@@ -251,7 +251,7 @@ export const OkButton = styled.button`
     align-items: flex-start;
     gap: var(--Spacing-2, 6px);
     border-radius: 3px;
-    background: var(--Color-Main-primary, #65bd83);
+    background: var(--Primary-Color-1, #4a3aff);
 `;
 
 export const OkbuttonLayer = styled.div`
