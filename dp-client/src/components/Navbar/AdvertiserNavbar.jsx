@@ -23,8 +23,7 @@ const InfluencerNavbar = () => {
                     <img src={LogoImg} alt="Logo" />
                 </Logo>
                 <Links>
-                    <NavLink to="/matchingPage">인플루언서 추천</NavLink>
-                    <NavLink to="/*">인플루언서 찾기</NavLink>
+                    <NavLink to="/matchingPage2">인플루언서 추천</NavLink>
                     <NavLink to="/*">캠페인 등록</NavLink>
                     <NavLink to="/admypage">마이페이지</NavLink>
                 </Links>

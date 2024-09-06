@@ -12,7 +12,7 @@ import SignUp from './pages/Signup/Signup';
 import { NavbarProvider, useNavbar } from './store/NavbarContext';
 import AdvertiserNavbar from './components/Navbar/AdvertiserNavbar';
 import InfluencerNavbar from './components/Navbar/InfluencerNavbar';
-
+import Footer from './components/Footer/Footer';
 function App() {
     return (
         <NavbarProvider>
@@ -38,6 +38,7 @@ function App() {
                         }
                     />
                 </Routes>
+                <Footer />
             </Router>
         </NavbarProvider>
     );
