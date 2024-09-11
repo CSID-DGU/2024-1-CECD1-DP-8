@@ -4,6 +4,5 @@ import com.cecd.dp.domain.api.report.dto.response.ReportMediaResponseDto;
 
 public interface ReportRepositoryCustom {
 
-    ReportMediaResponseDto getReportMedias(Long influencerId);
-
+  ReportMediaResponseDto getReportMedias(Long influencerId);
 }

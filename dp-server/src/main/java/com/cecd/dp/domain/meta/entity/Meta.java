@@ -15,19 +15,20 @@ import lombok.NoArgsConstructor;
 @Getter
 public class Meta extends BaseEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "meta_id")
-    private Long id;
-    private Integer likeAvg;
-    private Integer replyAvg;
-    private Integer followerCnt;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(name = "meta_id")
+  private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "influencer_id")
-    private Influencer influencer;
+  private Integer likeAvg;
+  private Integer replyAvg;
+  private Integer followerCnt;
 
-    public void setInfluencer( Influencer influencer) {
-        this.influencer = influencer;
-    }
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "influencer_id")
+  private Influencer influencer;
+
+  public void setInfluencer(Influencer influencer) {
+    this.influencer = influencer;
+  }
 }

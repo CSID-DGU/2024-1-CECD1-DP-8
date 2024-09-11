@@ -1,0 +1,24 @@
+#!/bin/bash
+
+# 테스트 실행
+./gradlew test
+
+# 테스트가 실패하면 커밋을 중지
+# shellcheck disable=SC2181
+if [ $? -ne 0 ]; then
+  echo "테스트 실패. 커밋이 중지됩니다."
+  exit 1
+fi
+
+# 포맷팅 및 다른 체크 실행
+./gradlew check
+
+# 체크가 실패하면 커밋을 중지
+# shellcheck disable=SC2181
+if [ $? -ne 0 ]; then
+  echo "체크 실패. 커밋이 중지됩니다."
+  exit 1
+fi
+
+# 모든 것이 성공하면 커밋을 진행
+exit 0

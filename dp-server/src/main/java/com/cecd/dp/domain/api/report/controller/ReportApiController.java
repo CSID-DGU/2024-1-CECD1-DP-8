@@ -15,13 +15,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class ReportApiController {
 
-    private final ReportService reportService;
+  private final ReportService reportService;
 
-    @Operation(summary = "인플루언서 리포트 API", description = "인플루언서 리포팅 페이지에 보여줄 모든 데이터")
-    @GetMapping("/{influencerId}")
-    public ApiResponse<ReportResponseDto> getReport(
-            @PathVariable(name = "influencerId") Long influencerId
-    ) {
-        return ApiResponse.onSuccess(reportService.getReport(influencerId));
-    }
+  @Operation(summary = "인플루언서 리포트 API", description = "인플루언서 리포팅 페이지에 보여줄 모든 데이터")
+  @GetMapping("/{influencerId}")
+  public ApiResponse<ReportResponseDto> getReport(
+      @PathVariable(name = "influencerId") Long influencerId) {
+    return ApiResponse.onSuccess(reportService.getReport(influencerId));
+  }
 }
