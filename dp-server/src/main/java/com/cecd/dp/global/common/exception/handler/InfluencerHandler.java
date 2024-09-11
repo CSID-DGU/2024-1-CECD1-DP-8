@@ -5,7 +5,7 @@ import com.cecd.dp.global.common.exception.GeneralException;
 
 public class InfluencerHandler extends GeneralException {
 
-  public InfluencerHandler(BaseErrorCode code) {
-    super(code);
-  }
+    public InfluencerHandler(BaseErrorCode code) {
+        super(code);
+    }
 }
