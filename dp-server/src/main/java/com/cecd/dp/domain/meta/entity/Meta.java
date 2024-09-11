@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-public class Meta {
+public class Meta extends BaseEntity {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,9 +33,6 @@ public class Meta {
 
   // 팔로잉 수
   private Integer followsCnt;
-
-  // 수집 날짜
-  private LocalDateTime postedAt;
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "influencer_id")
