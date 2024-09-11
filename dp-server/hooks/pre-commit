@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# dp-server 프로젝트 최상위 디렉토리로 이동합니다.
+cd "$(git rev-parse --show-toplevel)/dp-server"
+
 # 테스트 실행
 ./gradlew test
 
