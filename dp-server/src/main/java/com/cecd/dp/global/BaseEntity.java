@@ -13,7 +13,9 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @Getter
 public abstract class BaseEntity {
 
+  //row 생성시간
   @CreatedDate private LocalDateTime createdAt;
 
+  //row 업데이트 시간
   @LastModifiedDate private LocalDateTime updatedAt;
 }

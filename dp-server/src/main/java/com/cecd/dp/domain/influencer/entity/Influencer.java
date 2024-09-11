@@ -2,16 +2,18 @@ package com.cecd.dp.domain.influencer.entity;
 
 import com.cecd.dp.domain.media.entity.Media;
 import com.cecd.dp.domain.meta.entity.Meta;
-import com.cecd.dp.type.AccountType;
 import jakarta.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
-import lombok.Builder;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 @Getter
 public class Influencer {
 
@@ -20,36 +22,26 @@ public class Influencer {
   @Column(name = "influencer_id")
   private Long id;
 
-  private String nickname; // 인스타 별명
-  private String name; // 인스타 이름
-  private String category; //  카테고리 종류가 다양해  Non-Enumerated
-  private String graphId; // Insta GRAPH API 조회 ID
-  private String email;
+  // GRAPH 조회 owner ID
+  private String graphId;
 
-  @Enumerated(EnumType.STRING)
-  private AccountType accountType;
+  // 인스타 별명
+  private String nickname;
 
-  private String password;
+  // 인스타 이름
+  private String name;
 
-  @Builder
-  public Influencer(
-      Long id,
-      String nickname,
-      String name,
-      String category,
-      String graphId,
-      String email,
-      AccountType accountType,
-      String password) {
-    this.id = id;
-    this.nickname = nickname;
-    this.name = name;
-    this.category = category;
-    this.graphId = graphId;
-    this.email = email;
-    this.accountType = accountType;
-    this.password = password;
-  }
+  // 카테고리(ex. 사진가... etc)
+  private String category;
+
+  // 소개
+  private String biography;
+
+  // 프로필 사진
+  private String profilePictureUrl;
+
+  // 웹사이트 링크
+  private String website;
 
   @OneToMany(mappedBy = "influencer", cascade = CascadeType.ALL)
   List<Media> mediaList = new ArrayList<>();

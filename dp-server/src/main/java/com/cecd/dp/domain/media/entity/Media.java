@@ -8,31 +8,52 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+
+import lombok.*;
 
 @Entity
 @Getter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
+@Builder
 public class Media extends BaseEntity {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "media_id")
+  //게시글 아이디
   private Long id;
+
+  // Graph조회_미디어_아이디
+  private String graphMediaId;
+
+  // 댓글 수
+  private Integer replyCnt;
+
+  // 좋아요 수
+  private Integer likeCnt;
+
+  // 게시글 생성 유형(FEED||REELS)
+  private String generatedType;
+
+  // 게시글 유형(VIDEO|||CAROUSEL_ALBUM)
+  private String postType;
+
+  // 게시글 링크
+  private String link;
+
+  // 광고 글 여부
+  private Boolean isAd;
 
   @Lob
   @Column(columnDefinition = "text")
+  // 본문
   private String caption;
 
-  private Integer likeCnt;
+  // 썸네일 이미지(REELS일 경우에만 존재)
+  private String thumbnailUrl;
 
-  private Integer replyCnt;
-
-  private String type; // 게시글 유형
-
-  private String graphMediaId; // Graph API 조회 미디어 아이디
+  // media 작성 시간
   private LocalDateTime postedAt;
 
   @ManyToOne(fetch = FetchType.LAZY)
@@ -44,27 +65,6 @@ public class Media extends BaseEntity {
 
   @OneToMany(mappedBy = "media", cascade = CascadeType.ALL)
   private List<Image> imageList = new ArrayList<>();
-
-  // ===생성자===//
-  @Builder
-  public Media(
-      Long id,
-      String caption,
-      Integer likeCnt,
-      Integer replyCnt,
-      String type,
-      String graphMediaId,
-      LocalDateTime postedAt,
-      Influencer influencer) {
-    this.id = id;
-    this.caption = caption;
-    this.likeCnt = likeCnt;
-    this.replyCnt = replyCnt;
-    this.type = type;
-    this.graphMediaId = graphMediaId;
-    this.postedAt = postedAt;
-    this.influencer = influencer;
-  }
 
   // ===연관 관계 보조 메서드===//
   public void setInfluencer(Influencer influencer) {
