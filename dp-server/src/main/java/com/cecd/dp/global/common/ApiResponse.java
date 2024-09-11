@@ -28,7 +28,10 @@ public class ApiResponse<T> {
 
   public static <T> ApiResponse<T> of(BaseCode code, T result) {
     return new ApiResponse<>(
-        true, code.getReasonHttpStatus().code(), code.getReasonHttpStatus().message(), result);
+        true,
+        code.getReasonHttpStatus().getCode(),
+        code.getReasonHttpStatus().getMessage(),
+        result);
   }
 
   // 실패한 경우 응답 생성

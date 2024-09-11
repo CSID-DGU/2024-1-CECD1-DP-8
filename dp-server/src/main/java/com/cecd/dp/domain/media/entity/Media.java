@@ -8,7 +8,6 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-
 import lombok.*;
 
 @Entity
@@ -21,7 +20,7 @@ public class Media extends BaseEntity {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "media_id")
-  //게시글 아이디
+  // 게시글 아이디
   private Long id;
 
   // Graph조회_미디어_아이디
@@ -53,6 +52,9 @@ public class Media extends BaseEntity {
   // 썸네일 이미지(REELS일 경우에만 존재)
   private String thumbnailUrl;
 
+  // 릴스 비디오 Url
+  private String vedioUrl;
+
   // media 작성 시간
   private LocalDateTime postedAt;
 
@@ -60,10 +62,14 @@ public class Media extends BaseEntity {
   @JoinColumn(name = "influencer_id")
   private Influencer influencer;
 
+  @Getter
   @OneToMany(mappedBy = "media", cascade = CascadeType.ALL)
+  @Builder.Default
   private List<MediaHashTag> mediaHashTagList = new ArrayList<>();
 
+  @Getter
   @OneToMany(mappedBy = "media", cascade = CascadeType.ALL)
+  @Builder.Default
   private List<Image> imageList = new ArrayList<>();
 
   // ===연관 관계 보조 메서드===//
