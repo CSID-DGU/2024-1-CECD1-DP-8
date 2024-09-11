@@ -3,13 +3,12 @@ package com.cecd.dp.domain.influencer.entity;
 import com.cecd.dp.domain.media.entity.Media;
 import com.cecd.dp.domain.meta.entity.Meta;
 import jakarta.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
