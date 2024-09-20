@@ -18,7 +18,14 @@ function App() {
         <NavbarProvider>
             <Router>
                 <NavbarRenderer /> {/* Navbar 렌더링 */}
+<<<<<<< HEAD
+<<<<<<< HEAD
                 <ResetNavbarOnMain />
+=======
+>>>>>>> b1f3234aaae7ddd92815398128520eb9238875f3
+=======
+                <ResetNavbarOnMain />
+>>>>>>> 39112d3797042010e933a3d2190bfba3b05f9678
                 <Routes>
                     <Route path="/" element={<Main />} />
                     <Route path="/advertiser" element={<Advertiser />} />
@@ -58,6 +65,10 @@ function NavbarRenderer() {
         return null;
     }
 }
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 39112d3797042010e933a3d2190bfba3b05f9678
 
 // 메인 페이지로 돌아갈 때 Navbar를 초기화하는 컴포넌트
 function ResetNavbarOnMain() {
@@ -74,3 +85,8 @@ function ResetNavbarOnMain() {
 
     return null;
 }
+<<<<<<< HEAD
+=======
+>>>>>>> b1f3234aaae7ddd92815398128520eb9238875f3
+=======
+>>>>>>> 39112d3797042010e933a3d2190bfba3b05f9678
