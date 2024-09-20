@@ -21,7 +21,7 @@ public class Image {
 
   private String imageURL;
 
-  private String mediaType;
+  private String objectType;
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "media_id")

@@ -10,8 +10,6 @@ import java.util.ArrayList;
 import java.util.List;
 import lombok.*;
 
-import lombok.*;
-
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -25,7 +23,7 @@ public class Media extends BaseEntity {
   // 게시글 아이디
   private Long id;
 
-  // Graph조회_미디어_아이디
+  // Grfaph조회_미디어_아이디
   private String graphMediaId;
 
   // 댓글 수
@@ -72,7 +70,6 @@ public class Media extends BaseEntity {
   @Getter
   @OneToMany(mappedBy = "media", cascade = CascadeType.ALL)
   @Builder.Default
-
   private List<Image> imageList = new ArrayList<>();
 
   // ===연관 관계 보조 메서드===//
