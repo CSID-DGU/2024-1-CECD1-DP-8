@@ -251,6 +251,7 @@ export const OkButton = styled.button`
     align-items: flex-start;
     gap: var(--Spacing-2, 6px);
     border-radius: 3px;
+
     background: var(--Primary-Color-1, #4a3aff);
 `;
 
