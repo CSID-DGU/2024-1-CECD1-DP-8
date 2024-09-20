@@ -15,10 +15,13 @@ export default function Report() {
             case 'postAnalysis':
                 return <PostAnalysisPage />;
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
             case 'reelsAnalysis':
                 return <ReelsAnalysisPage />;
 >>>>>>> b1f3234aaae7ddd92815398128520eb9238875f3
+=======
+>>>>>>> 39112d3797042010e933a3d2190bfba3b05f9678
             case 'followerTrend':
                 return <FollowerTrendPage />;
             default:

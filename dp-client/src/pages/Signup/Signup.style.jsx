@@ -87,7 +87,7 @@ export const Button = styled.button`
     gap: 10px;
     align-self: stretch;
     border-radius: 3px;
-    background: var(--Color-Main-primary, #65bd83);
+    background: var(--Primary-Color-1, #4a3aff);
 `;
 
 export const SignupText = styled.div`

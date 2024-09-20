@@ -47,6 +47,7 @@ export default function SideBar({ profile, onSelect }) {
                     포스트 분석
                 </SidebarButton>
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 =======
                 <SidebarButton
@@ -56,6 +57,9 @@ export default function SideBar({ profile, onSelect }) {
                     릴스 분석
                 </SidebarButton>
 >>>>>>> b1f3234aaae7ddd92815398128520eb9238875f3
+=======
+
+>>>>>>> 39112d3797042010e933a3d2190bfba3b05f9678
                 <SidebarButton
                     isActive={activeButton === 'followerTrend'}
                     onClick={() => handleButtonClick('followerTrend')}
