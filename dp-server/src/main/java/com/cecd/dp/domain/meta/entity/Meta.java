@@ -21,10 +21,10 @@ public class Meta extends BaseEntity {
   private Long id;
 
   // 평균 좋아요 수
-  private Integer likeAvg;
+  private Float likeAvg;
 
   // 평균 댓글 수
-  private Integer commentsAvg;
+  private Float commentsAvg;
 
   // 팔로워 수
   private Integer followerCnt;

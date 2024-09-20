@@ -24,6 +24,7 @@ public class Media extends BaseEntity {
   private Long id;
 
   // Grfaph조회_미디어_아이디
+  @Column(unique = true)
   private String graphMediaId;
 
   // 댓글 수
@@ -50,6 +51,7 @@ public class Media extends BaseEntity {
   private String caption;
 
   // 썸네일 이미지(REELS일 경우에만 존재)
+  @Column(length = 400)
   private String thumbnailUrl;
 
   // 릴스 비디오 Url
