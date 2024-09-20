@@ -222,7 +222,7 @@ export const UserType = styled.div`
     padding: var(--Spacing-2, 6px);
     align-items: center;
     border-radius: 100px;
-    background: var(--Primary-Color-1, #4a3aff);
+    background: var(--Color-Gray-gray-200, #eee);
 `;
 
 export const UserTypeButton = styled.button`
