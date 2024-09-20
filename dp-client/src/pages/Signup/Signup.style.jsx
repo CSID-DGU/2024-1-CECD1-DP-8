@@ -87,7 +87,7 @@ export const Button = styled.button`
     gap: 10px;
     align-self: stretch;
     border-radius: 3px;
-    background: var(--Primary-Color-1, #4a3aff);
+    background: var(--Color-Main-primary, #65bd83);
 `;
 
 export const SignupText = styled.div`
@@ -251,6 +251,7 @@ export const OkButton = styled.button`
     align-items: flex-start;
     gap: var(--Spacing-2, 6px);
     border-radius: 3px;
+
     background: var(--Primary-Color-1, #4a3aff);
 `;
 

@@ -14,6 +14,11 @@ export default function Report() {
         switch (selectedPage) {
             case 'postAnalysis':
                 return <PostAnalysisPage />;
+<<<<<<< HEAD
+=======
+            case 'reelsAnalysis':
+                return <ReelsAnalysisPage />;
+>>>>>>> b1f3234aaae7ddd92815398128520eb9238875f3
             case 'followerTrend':
                 return <FollowerTrendPage />;
             default:
