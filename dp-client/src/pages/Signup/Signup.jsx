@@ -333,7 +333,11 @@ export default function SingUp() {
                                                     <OkButton
                                                         onClick={handleVerify}
                                                         style={{
+<<<<<<< HEAD
                                                             background: click ? '#00000014' : '#4A3AFF',
+=======
+                                                            background: click ? '#00000014' : '#65BD83',
+>>>>>>> b1f3234aaae7ddd92815398128520eb9238875f3
                                                         }}
                                                     >
                                                         <OkbuttonLayer style={{ color: click ? '#9E9E9E' : '#FFFFFF' }}>
