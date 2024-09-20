@@ -334,10 +334,14 @@ export default function SingUp() {
                                                         onClick={handleVerify}
                                                         style={{
 <<<<<<< HEAD
+<<<<<<< HEAD
                                                             background: click ? '#00000014' : '#4A3AFF',
 =======
                                                             background: click ? '#00000014' : '#65BD83',
 >>>>>>> b1f3234aaae7ddd92815398128520eb9238875f3
+=======
+                                                            background: click ? '#00000014' : '#4A3AFF',
+>>>>>>> 39112d3797042010e933a3d2190bfba3b05f9678
                                                         }}
                                                     >
                                                         <OkbuttonLayer style={{ color: click ? '#9E9E9E' : '#FFFFFF' }}>
