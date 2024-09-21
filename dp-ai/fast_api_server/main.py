@@ -405,9 +405,9 @@ def insert_media(cur, media, influencer_id, media_type):
             '''
             {
               "comments_count": 1,
-              "media_url": "https://scontent-ssn1-1.cdninstagram.com/v/t51.2885-15/75403218_183785516091086_6260844318776852103_n.jpg?_nc_cat=107&ccb=1-7&_nc_sid=18de74&_nc_ohc=7nnaEPfq9N4Q7kNvgFEBLy-&_nc_ht=scontent-ssn1-1.cdninstagram.com&edm=AL-3X8kEAAAA&oh=00_AYB8TJp0ImXBovQFaFU7VO7s_0zn09XiWj7PQjIloA8VzQ&oe=66EC7F5B",
+              "media_url": "https://scontent....",
               "timestamp": "2019-12-05T13:05:24+0000",
-              "id": "17850003745731399",
+              "id": "1785000374573....",
               "like_count": 157,
               "media_product_type": "FEED",
               "media_type": "IMAGE"
@@ -507,17 +507,17 @@ def insert_all_user_data(username: str):
                     {
                       "comments_count": 28,
                       "caption": "6월10일 네이버 인플고시 합격했어요🫶🏻 고생하긴 했습니다..😂",
-                      "media_url": "https://scontent-gmp1-1.cdninstagram.com/v/t39.30808-6/448231315_17866353585118980_8258255183277251631_n.jpg?_nc_cat=100&ccb=1-7&_nc_sid=18de74&_nc_ohc=aVGCequdMioQ7kNvgGhJnk1&_nc_ht=scontent-gmp1-1.cdninstagram.com&edm=AL-3X8kEAAAA&_nc_gid=AQZeg5w-Uses4T2vSVmgyMp&oh=00_AYC4EpwcUH-BRsGGsEopSzmklhrOphwn3v3wFiNTbXwSWg&oe=66EB2F70",
+                      "media_url": "https://scontent....",
                       "like_count": 223,
                       "media_product_type": "FEED",
                       "media_type": "IMAGE",
-                      "id": "17927721527864030"
+                      "id": "17927721...."
                     }
                     '''
                     insert_media(cur, media, influencer_pk, media_type)
 
                 else:
-                    # media["media_type"] == "CAROUSEL_ALBUM" >>>>>>>>>>>>>>>>>혹시 다른 media type이 더 있는지 문서에서 확인하기
+                    # media["media_type"] == "CAROUSEL_ALBUM"
                     # 미디어 insert
                     insert_media(cur, media, influencer_pk, media_type)
 
@@ -534,7 +534,7 @@ def insert_all_user_data(username: str):
                                 "data": [
                                   {
                                     "media_type": "VIDEO",
-                                    "id": "18127329778342608"
+                                    "id": "18127329......."
                                   },
                             '''
                             if image.get("media_url") is not None:
@@ -589,3 +589,244 @@ async def update_and_insert_influencers_data():
     else:
         print("data 수집 성공!")
 
+
+# media의 graph_id로 검색해 이미 수집된 미디어인지 확인
+def check_media_pk_from_graph_media_id(cur, graph_media_id):
+    try:
+        query = "SELECT media_id FROM media WHERE graph_media_id = %s"
+        cur.execute(query, (graph_media_id,))
+
+        # 미디어가 존재하는지 확인 (존재하지 않으면 None 반환)
+        media_row = cur.fetchone()
+
+        if media_row:
+            return media_row['media_id']
+        else:
+            return None
+    except Exception as e:
+        print(f"<is_collected_media에서 오류 발생>")
+        raise e
+
+# 미디어 업데이트
+def update_media(cur, media):
+    try:
+        updated_datetime = datetime.today().strftime("%Y-%m-%d %H:%M:%S")
+
+        # VIDEO가 아닌 경우, "thumbnail_url"이 존재하지 않으며 "media_url"이 그 역할을 함
+        # VIDEO인 경우, "media_url"은 동영상 url이며, media json에 존재하지 않을 수도 있음
+        # VIDEO인 경우, "thumbnail_url" 존재. 동영상의 썸네일 사진 링크
+        if media["media_type"] == "VIDEO":  # REELS, 일부 옛날 게시글의 경우 FEED도 있음
+            thumbnail_url = media.get("thumbnail_url", "")
+            video_url = media.get("media_url", "")
+
+        else:  # IMAGE, CAROUSEL_ALBUM
+            # IMAGE 사진 id를 알 수 없으므로 thumbnail_url에만 사진 링크를 저장하고 image에는 저장하지 않음
+            thumbnail_url = media["media_url"]
+            video_url = ""
+            '''
+            {
+              "comments_count": 1,
+              "media_url": "https://scontent...",
+              "timestamp": "2019-12-05T13:05:24+0000",
+              "id": "178500037....",
+              "like_count": 157,
+              "media_product_type": "FEED",
+              "media_type": "IMAGE"
+            }
+            '''
+
+        # 좋아요 숨기기 할 경우
+        like_cnt = media.get("like_count", -1)
+
+        query = '''
+                    update media set
+                    comments_cnt=%s, like_cnt=%s, updated_at=%s, thumbnail_url=%s, video_url=%s
+                    where graph_media_id=%s
+
+                '''
+
+        cur.execute(query, (
+            media["comments_count"],
+            like_cnt,
+            updated_datetime,
+            thumbnail_url,
+            video_url,
+            media["id"]
+        ))
+    except Exception as e:
+        print(f"<update_media에서 오류 발생>")
+        print(f"media: {media}")
+        raise e
+
+# 미디어, 이미지, 해시태그 insert
+def insert_media_image_hashtag(cur, media, influencer_pk):
+    try:
+        # 미디어가 여러개 - media_type: "CAROUSEL_ALBUM", children 존재함
+        # 미디어가 하나의 사진 - media_type: "IMAGE", children 존재하지 않음
+        # 미디어가 하나의 비디오 - media_type: "VIDEO", children 존재하지 않음
+        # media_product_type으로 구분하지 않는 이유: 하나의 동영상일 경우에는 FEED가 아니라 REELS로 올라가지만
+        #                                        일부 옛날 게시글은 동영상 하나도 FEED일 수 있음.
+        media_type = media["media_type"]
+
+        if media_type == "VIDEO":
+            # 미디어 insert
+            insert_media(cur, media, influencer_pk, media_type)
+
+        elif media_type == "IMAGE":
+            # IMAGE 사진 id를 알 수 없으므로 thumbnail_url에만 사진 링크를 저장하고 image에는 저장하지 않음
+            ''' 
+            {
+              "comments_count": 28,
+              "caption": "6월10일 네이버 합격했어요😂",
+              "media_url": "https://scontent....",
+              "like_count": 223,
+              "media_product_type": "FEED",
+              "media_type": "IMAGE",
+              "id": "179277215......."
+            }
+            '''
+            insert_media(cur, media, influencer_pk, media_type)
+
+        else:
+            # media["media_type"] == "CAROUSEL_ALBUM"
+            # 미디어 insert
+            insert_media(cur, media, influencer_pk, media_type)
+
+            # 이미지 insert
+            media_id = get_db_media_id_from_graph_media_id(media["id"], cur)
+            # print(f"media table의 pk: {media_id}")
+
+            if media_type == "CAROUSEL_ALBUM":
+                image_list = media["children"]["data"]
+                for image in image_list:
+                    # 아래와 같이 오류로 인해 media_url이 없는 경우는 insert에서 제외
+                    '''
+                    "children": {
+                        "data": [
+                          {
+                            "media_type": "VIDEO",
+                            "id": "1812732..........."
+                          },
+                    '''
+                    if image.get("media_url") is not None:
+                        insert_image(cur, media_id, image["media_url"], image["media_type"], image["id"])
+
+        media_id = get_db_media_id_from_graph_media_id(media["id"], cur)
+        # hashtag, media_hashtag insert
+        # caption이 존재하지 않는 경우에는 실행X
+        if "caption" in media:
+            insert_media_hashtags(cur, media_id, media["caption"])
+    except Exception as e:
+        print(f"<insert_media_image_hashtag에서 오류 발생>")
+        raise e
+
+
+def update_user(username):
+    conn, cur = get_db_connection()
+    if not conn or not cur:
+        raise HTTPException(status_code=500, detail="Database connection failed")
+
+    try:
+        # === influencer table 업데이트 ===
+        # influencer의 계정 데이터 가져오기
+        account_data = get_account_data(username)
+
+        # influencer pk 얻기
+        influencer_pk = get_influencer_pk_from_username(cur, username)
+
+        # influencer 계정 데이터 update
+        update_influencer_account(cur, account_data, influencer_pk)
+
+        # === 최근 30개의 미디어에 대해, 새로운 미디어는 insert하고 기존 미디어는 update ===
+        media_num = 30
+        media_list = get_recent_media(username, media_num, "")
+        '''
+        {
+            "data": [media list...],
+            "paging": {
+                "cursors": {
+                  "after": "kyM..."
+                }
+            }
+        }
+        '''
+        media_list = media_list["data"]
+
+        for media in media_list:
+            media_graph_id = media["id"]
+            # graph_id로 검색해 이미 수집된 미디어인지 확인
+            # 이미 수집된 미디어의 경우 update 수행
+            media_pk = check_media_pk_from_graph_media_id(cur, media_graph_id)
+            if media_pk:
+                update_media(cur, media)
+
+            else:
+                # media insert
+                insert_media_image_hashtag(cur, media, influencer_pk)
+
+        # === meta 테이블에 insert ===
+        insert_meta(cur, influencer_pk, account_data)
+
+        # 모든 작업이 성공적으로 완료되면 커밋
+        conn.commit()
+        return {"status": "success"}
+    except Exception as e:
+        conn.rollback()
+        print(f"E: {e}")
+        print("<update_user>에서 오류 발생")
+        raise e
+        #return {"status": "failed", "reason": str(e)}
+    finally:
+        cur.close()
+        conn.close()
+
+# 인플루언서 정보 업데이트
+# influncer 업데이트, 최신 30개 미디어에 대해 media 업데이트(일단 이미지 제외..) 혹은 insert, meta insert
+@app.put("/influencers/data")
+async def update():
+    try:
+        # 모든 인플루언서 nickname 가져오기
+        user_list = get_user_list_old()
+
+        #user_list = [
+        #
+        #]
+
+        completed_user_list = []
+        print(f"user_list: {user_list}")
+        for username in user_list:
+            print(f"{username}의 정보 업데이트 시작......")
+            update_user(username)
+            print(f"{username} 정보 업데이트 완료!")
+            print("===============================================")
+            completed_user_list.append(username)
+
+    except Exception as e:
+        print(f"Error : {e}")
+        return {"status": "failed", "reason": str(e)}
+    else:
+        print("data 업데이트 성공!")
+        return {"status": "success"}
+    finally:
+        print(f"정보 수집 완료 유저: {completed_user_list}")
+        uncompleted_users = list(set(user_list) - set(completed_user_list))
+        print(f"정보 수집 해야하는 유저: {uncompleted_users}")
+
+
+@app.get("/")
+async def root():
+    conn, cur = get_db_connection()
+    if not conn or not cur:
+        raise HTTPException(status_code=500, detail="Database connection failed")
+    user_list = get_user_list(cur)
+    return {"users": user_list}
+
+
+# @app.get("/")
+# async def root():
+#     return {"message": "Hello World"}
+#
+#
+# @app.get("/hello/{name}")
+# async def say_hello(name: str):
+#     return {"message": f"Hello {name}"}
