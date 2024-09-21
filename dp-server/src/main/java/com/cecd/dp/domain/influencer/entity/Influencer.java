@@ -25,6 +25,7 @@ public class Influencer {
   private String graphId;
 
   // 인스타 별명
+  @Column(unique = true)
   private String nickname;
 
   // 인스타 이름
@@ -37,6 +38,7 @@ public class Influencer {
   private String biography;
 
   // 프로필 사진
+  @Column(length = 300)
   private String profilePictureUrl;
 
   // 웹사이트 링크
