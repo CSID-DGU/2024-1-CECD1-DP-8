@@ -107,8 +107,8 @@ def insertMediaInfo(mediaList, ig_id):
 
 '''
 def callInstagramAPI(username):
-    accessToken = ""
-    userID = ""
+    accessToken = "EAAi2vEn6HSUBO5TR7bT2laE5CnKafEAXOrcefMTJsyXWfmauZBGy4nrucpReQUmS2fzDLDfR8DmTC8UJ8QcGiiIHXdx46RhtjjBMTFsUC48AYC15vZBSmTZAhdZA1ipSZBT5nSCX0KACNsuTC6AjBmhk4sZAZAWaQgHZApyJpXhagBRHmwgZCAlBTCtczTDbsmwZCBsxZBFq0s9liJsBZAjZAGYwtAw9ZCM0kZD"
+    userID = "17841465983727242"
     afterCursor = ""
     call_count = 0
     media_count = 0
@@ -209,6 +209,6 @@ def callInstagramAPI(username):
     print(username, ' 실행 종료')
 
 
-username = ["bop.pt", "for_everyoung10"]
+username = ["j_hcki_"]
 for name in username:
     userdata = callInstagramAPI(name)
