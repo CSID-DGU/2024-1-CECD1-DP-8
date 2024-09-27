@@ -28,13 +28,13 @@ public class Media extends BaseEntity {
   private String graphMediaId;
 
   // 댓글 수
-  private Integer replyCnt;
+  private Integer commentsCnt;
 
   // 좋아요 수
   private Integer likeCnt;
 
   // 게시글 생성 유형(FEED||REELS)
-  private String generatedType;
+  private String mediaProductType;
 
   // 게시글 유형(VIDEO|||CAROUSEL_ALBUM)
   private String postType;
