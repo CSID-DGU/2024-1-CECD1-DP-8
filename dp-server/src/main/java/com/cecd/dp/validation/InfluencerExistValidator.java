@@ -6,29 +6,28 @@ import jakarta.validation.ConstraintValidatorContext;
 
 public class InfluencerExistValidator implements ConstraintValidator<IsExistInfluencer, Long> {
 
-    private InfluencerRepository influencerRepository;
+  private InfluencerRepository influencerRepository;
 
-    public InfluencerExistValidator(InfluencerRepository influencerRepository) {
-        this.influencerRepository = influencerRepository;
+  public InfluencerExistValidator(InfluencerRepository influencerRepository) {
+    this.influencerRepository = influencerRepository;
+  }
+
+  @Override
+  public void initialize(IsExistInfluencer constraintAnnotation) {}
+
+  @Override
+  public boolean isValid(Long influencerId, ConstraintValidatorContext context) {
+    if (influencerId == null) {
+      return true;
     }
 
-    @Override
-    public void initialize(IsExistInfluencer constraintAnnotation) {}
-
-    @Override
-    public boolean isValid(Long influencerId, ConstraintValidatorContext context) {
-        if (influencerId == null) {
-            return true;
-        }
-
-        boolean isValid = influencerRepository.findById(influencerId).isPresent();
-        if (!isValid) {
-            context.disableDefaultConstraintViolation();
-            context
-                    .buildConstraintViolationWithTemplate("There is no exist influencerId : " + influencerId)
-                    .addConstraintViolation();
-
-        }
-        return isValid;
+    boolean isValid = influencerRepository.findById(influencerId).isPresent();
+    if (!isValid) {
+      context.disableDefaultConstraintViolation();
+      context
+          .buildConstraintViolationWithTemplate("There is no exist influencerId : " + influencerId)
+          .addConstraintViolation();
     }
+    return isValid;
+  }
 }

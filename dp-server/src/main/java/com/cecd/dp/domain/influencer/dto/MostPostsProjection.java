@@ -7,13 +7,13 @@ import lombok.Setter;
 @Setter
 public class MostPostsProjection {
 
-    private String thumbnailUrl;
-    private Integer likeCnt;
-    private Integer commentsCnt;
+  private String thumbnailUrl;
+  private Integer likeCnt;
+  private Integer commentsCnt;
 
-    public MostPostsProjection(String thumbnailUrl, Integer likeCnt, Integer commentsCnt) {
-        this.thumbnailUrl = thumbnailUrl;
-        this.likeCnt = likeCnt;
-        this.commentsCnt = commentsCnt;
-    }
+  public MostPostsProjection(String thumbnailUrl, Integer likeCnt, Integer commentsCnt) {
+    this.thumbnailUrl = thumbnailUrl;
+    this.likeCnt = likeCnt;
+    this.commentsCnt = commentsCnt;
+  }
 }
