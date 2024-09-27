@@ -4,7 +4,6 @@ import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.info.License;
-import io.swagger.v3.oas.models.servers.Server;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -14,14 +13,10 @@ public class SwaggerConfig {
   // url : http://localhost:8080/swagger-ui/index.html
   @Bean
   public OpenAPI getOpenApi() {
-    Server server = new Server().url("/");
 
-    return new OpenAPI()
-        .info(getSwaggerInfo())
-        .components(getComponents())
-        // 보안 인증 추가 시 사용
-        // .components(authSetting())
-        .addServersItem(server);
+    return new OpenAPI().info(getSwaggerInfo()).components(getComponents());
+    // 보안 인증 추가 시 사용
+    // .components(authSetting())
     // .addSecurityItem(new SecurityRequirement().addList("access-token"));
   }
 
