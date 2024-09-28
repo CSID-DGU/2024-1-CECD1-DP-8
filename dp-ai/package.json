@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "graphviz": "^0.0.9"
+  }
+}
