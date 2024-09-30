@@ -1,9 +1,6 @@
 HELP.md
 .gradle
-<<<<<<< HEAD
-=======
 .gradle/
->>>>>>> d8c5ab6e5ad6990ef214a6566644f26e7ff75441
 build/
 !gradle/wrapper/gradle-wrapper.jar
 !/src/main//build/
@@ -26,7 +23,7 @@ bin/
 
 ### IntelliJ IDEA ###
 .idea
-5ab6e5ad6990ef214a6566644f26e7ff75441
+.idea/
 *.iws
 *.iml
 *.ipr
