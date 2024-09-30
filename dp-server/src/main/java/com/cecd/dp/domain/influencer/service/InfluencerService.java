@@ -5,6 +5,7 @@ import com.cecd.dp.domain.influencer.dto.MostPostsProjection;
 import com.cecd.dp.domain.influencer.dto.ProfileProjection;
 import com.cecd.dp.domain.influencer.entity.Influencer;
 import com.cecd.dp.domain.influencer.repository.InfluencerRepository;
+import com.cecd.dp.domain.media.dto.MediaChartProjection;
 import com.cecd.dp.domain.media.repository.MediaRepository;
 import com.cecd.dp.domain.meta.entity.Meta;
 import com.cecd.dp.domain.meta.repository.MetaRepository;
@@ -31,7 +32,7 @@ public class InfluencerService {
     this.mediaRepository = mediaRepository;
   }
 
-  public GetInfluencerReportDTO getReport(Long influencerId) {
+  public GetInfluencerReportDTO getReport(Long influencerId, String period) {
 
     Influencer influencer =
         influencerRepository
@@ -68,6 +69,20 @@ public class InfluencerService {
     Float adMediaRatio = mediaRepository.calculateAdMediaPercentageByInfluencerId(influencerId);
     Float reelsRatio = mediaRepository.calculateReelsMediaPercentageByInfluencerId(influencerId);
 
+    // Chart 관련
+
+    List<MediaChartProjection> reelsChartComments = null;
+    List<MediaChartProjection> reelsChartLikes = null;
+
+    if (period.equals("W")) {
+      reelsChartComments = mediaRepository.getReelsChartCommentsByWeek(influencerId);
+      reelsChartLikes = mediaRepository.getReelsChartLikesByWeek(influencerId);
+    } else if (period.equals("D")) {
+      reelsChartComments = mediaRepository.getReelsChartCommentsByDay(influencerId);
+      reelsChartLikes = mediaRepository.getReelsChartLikesByDay(influencerId);
+    }
+
+
     return GetInfluencerReportDTO.builder()
         .profile(profile)
         .mostThreePosts(mostPosts)
@@ -79,6 +94,8 @@ public class InfluencerService {
         .commentsAvg(commentsAvg)
         .adMediaRatio(adMediaRatio)
         .reelsRatio(reelsRatio)
+        .reelsChartComments(reelsChartComments)
+        .reelsChartLikes(reelsChartLikes)
         .build();
   }
 }

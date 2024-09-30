@@ -1,6 +1,8 @@
 package com.cecd.dp.domain.influencer.dto;
 
 import java.util.List;
+
+import com.cecd.dp.domain.media.dto.MediaChartProjection;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -20,4 +22,6 @@ public class GetInfluencerReportDTO {
   private Float commentsAvg;
   private Float adMediaRatio;
   private Float reelsRatio;
+  private List<MediaChartProjection> reelsChartComments;
+  private List<MediaChartProjection> reelsChartLikes;
 }

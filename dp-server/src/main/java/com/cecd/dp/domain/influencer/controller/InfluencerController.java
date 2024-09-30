@@ -4,10 +4,7 @@ import com.cecd.dp.domain.influencer.service.InfluencerService;
 import com.cecd.dp.global.common.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/influencer")
@@ -22,7 +19,8 @@ public class InfluencerController {
 
   @Operation(summary = "인플루언서 리포트 조회 API", description = "특정 인플루언서의 리포트 내역을 조회합니다.")
   @GetMapping("/report/{id}")
-  public ApiResponse<?> getReport(@PathVariable(name = "id") Long influencerId) {
-    return ApiResponse.onSuccess(influencerService.getReport(influencerId));
+  //TODO: period가 W 와 D 만 받도록 글로벌 예외처리 어노테이션으로 구현
+  public ApiResponse<?> getReport(@PathVariable(name = "id") Long influencerId, @RequestParam("period") String period) {
+    return ApiResponse.onSuccess(influencerService.getReport(influencerId, period));
   }
 }
