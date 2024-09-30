@@ -3,7 +3,6 @@ import psycopg2
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 import os
-import random  # 테스트용으로 가중치 대신 사용
 
 # PostgreSQL 연결 설정 - 환경변수에서 값 가져오기
 DB_HOST = os.getenv("DB_HOST")
@@ -40,27 +39,27 @@ def get_db_connection():
         raise HTTPException(status_code=500, detail="DB 연결 실패")
 
 # 1차 필터링 함수 (연관 해시태그 기반 필터링된 인플루언서)
-def get_influencers_by_hashtags(filters: FilterRequest, conn):
+def get_influencers_by_keywords(filters: FilterRequest, conn):
     cursor = conn.cursor()
 
-    # 필터링된 해시태그를 바탕으로 인플루언서 조회
+    # 해시태그를 사용하여 인플루언서 조회
     query = """
-    SELECT i.name, i.profile_picture_url, i.biography 
+    SELECT DISTINCT i.name, i.profile_picture_url, i.biography, m.follower_cnt
     FROM influencer i
     JOIN meta m ON i.influencer_id = m.influencer_id
     JOIN media me ON me.influencer_id = i.influencer_id
+    JOIN media_hash_tag mht ON mht.media_id = me.media_id
+    JOIN hash_tag ht ON ht.hash_tag_id = mht.hash_tag_id
     WHERE i.category = %s
     AND m.follower_cnt BETWEEN %s AND %s
     AND i.gender = %s
-    AND me.caption LIKE ANY(%s);
+    AND ht.name = ANY(%s);
     """
     
     # '%'를 키워드 앞뒤에 추가하여 부분 일치 검색
-    hashtags_like = [f"%{keyword}%" for keyword in filters.keywords]
-    
-    cursor.execute(query, (filters.category, filters.min_followers, filters.max_followers, filters.gender, hashtags_like))
+    cursor.execute(query, (filters.category, filters.min_followers, filters.max_followers, filters.gender, filters.keywords))
     influencers = cursor.fetchall()
-    
+
     return influencers
 
 # 1차 필터링 (정량적 데이터 + 해시태그 기반)
@@ -70,7 +69,7 @@ async def recommend_influencers(filters: FilterRequest):
         conn = get_db_connection()
 
         # 필터링된 인플루언서 목록을 가져옴
-        influencers = get_influencers_by_hashtags(filters, conn)
+        influencers = get_influencers_by_keywords(filters, conn)
 
         # 필터링된 인플루언서 리스트 반환
         return {"filtered_influencers": influencers}
