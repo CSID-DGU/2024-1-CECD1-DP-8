@@ -1,13 +1,13 @@
-#랭체인을 쓰지 않고 구현한 추천 모델 파일입니다. 아마 해당 파일로 
 import openai
 import psycopg2
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
-import os
+import os  # 환경변수 가져오기 위해 os 모듈 사용
 from dotenv import load_dotenv
 
 # .env 파일 로드
 load_dotenv()
+
 # PostgreSQL 연결 설정 - 환경변수에서 값 가져오기
 DB_HOST = os.getenv("DB_HOST")
 DB_NAME = os.getenv("DB_NAME")
