@@ -40,7 +40,7 @@ public class Media extends BaseEntity {
   private String postType;
 
   // 게시글 링크
-  private String link;
+  private String permaLink;
 
   // 광고 글 여부
   private Boolean isAd;
