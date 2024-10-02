@@ -7,12 +7,12 @@ import lombok.Setter;
 @Setter
 public class MostPostsProjection {
 
-  private String permaLink; //
+  private String thumbnailUrl; //
   private Integer likeCnt;
   private Integer commentsCnt;
 
-  public MostPostsProjection(String permaLink, Integer likeCnt, Integer commentsCnt) {
-    this.permaLink = permaLink + "media?size=l";
+  public MostPostsProjection(String thumbnailUrl, Integer likeCnt, Integer commentsCnt) {
+    this.thumbnailUrl = thumbnailUrl;
     this.likeCnt = likeCnt;
     this.commentsCnt = commentsCnt;
   }
