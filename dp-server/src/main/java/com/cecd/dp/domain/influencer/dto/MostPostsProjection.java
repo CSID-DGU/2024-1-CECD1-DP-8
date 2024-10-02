@@ -12,7 +12,7 @@ public class MostPostsProjection {
   private Integer commentsCnt;
 
   public MostPostsProjection(String permaLink, Integer likeCnt, Integer commentsCnt) {
-    this.permaLink = permaLink + "/media?size=l";
+    this.permaLink = permaLink + "media?size=l";
     this.likeCnt = likeCnt;
     this.commentsCnt = commentsCnt;
   }
