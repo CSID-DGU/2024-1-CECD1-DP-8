@@ -19,8 +19,9 @@ public class InfluencerController {
 
   @Operation(summary = "인플루언서 리포트 조회 API", description = "특정 인플루언서의 리포트 내역을 조회합니다.")
   @GetMapping("/report/{id}")
-  //TODO: period가 W 와 D 만 받도록 글로벌 예외처리 어노테이션으로 구현
-  public ApiResponse<?> getReport(@PathVariable(name = "id") Long influencerId, @RequestParam("period") String period) {
+  // TODO: period가 W 와 D 만 받도록 글로벌 예외처리 어노테이션으로 구현
+  public ApiResponse<?> getReport(
+      @PathVariable(name = "id") Long influencerId, @RequestParam("period") String period) {
     return ApiResponse.onSuccess(influencerService.getReport(influencerId, period));
   }
 }

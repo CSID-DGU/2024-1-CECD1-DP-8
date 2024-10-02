@@ -82,7 +82,6 @@ public class InfluencerService {
       reelsChartLikes = mediaRepository.getReelsChartLikesByDay(influencerId);
     }
 
-
     return GetInfluencerReportDTO.builder()
         .profile(profile)
         .mostThreePosts(mostPosts)

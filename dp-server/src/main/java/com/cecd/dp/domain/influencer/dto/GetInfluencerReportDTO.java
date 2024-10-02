@@ -1,8 +1,7 @@
 package com.cecd.dp.domain.influencer.dto;
 
-import java.util.List;
-
 import com.cecd.dp.domain.media.dto.MediaChartProjection;
+import java.util.List;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
