@@ -41,7 +41,7 @@ public class InfluencerRepositoryTest {
 
     // when
     List<MostPostsProjection> result =
-        influencerRepository.getMostThreePostsById(influencerId, PageRequest.of(0, 3));
+        influencerRepository.getMostThreePostsCodesById(influencerId, PageRequest.of(0, 3));
 
     // then
     assertThat(result.size()).isEqualTo(3);

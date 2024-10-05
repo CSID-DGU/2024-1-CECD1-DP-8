@@ -21,11 +21,11 @@ public interface InfluencerRepository extends JpaRepository<Influencer, Long> {
   List<ProfileProjection> getProfileById(@Param("id") Long influencerId, Pageable pageable);
 
   @Query(
-      "SELECT new com.cecd.dp.domain.influencer.dto.MostPostsProjection(md.thumbnailUrl, md.likeCnt, md.commentsCnt) "
+      "SELECT new com.cecd.dp.domain.influencer.dto.MostPostsProjection(md.uniqueCode) "
           + "FROM Influencer i JOIN i.mediaList md "
           + "WHERE i.id = :id "
           + "ORDER BY (md.likeCnt + md.commentsCnt) DESC")
-  List<MostPostsProjection> getMostThreePostsById(
+  List<MostPostsProjection> getMostThreePostsCodesById(
       @Param("id") Long influencerId, Pageable pageable);
 
   @Query(

@@ -23,6 +23,9 @@ public class Media extends BaseEntity {
   // 게시글 아이디
   private Long id;
 
+  // 게시글 고유 Code
+  private String uniqueCode;
+
   // Grfaph조회_미디어_아이디
   @Column(unique = true)
   private String graphMediaId;

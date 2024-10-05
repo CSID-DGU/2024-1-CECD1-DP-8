@@ -43,9 +43,8 @@ public class InfluencerService {
     ProfileProjection profile =
         influencerRepository.getProfileById(influencerId, PageRequest.of(0, 1)).get(0);
 
-    // 인기 게시물 3개
-    List<MostPostsProjection> mostPosts =
-        influencerRepository.getMostThreePostsById(influencerId, PageRequest.of(0, 3));
+    // 인기 게시물 3개의 고유 코드
+    List<MostPostsProjection> mostCodes = influencerRepository.getMostThreePostsCodesById(influencerId, PageRequest.of(0,3));
 
     // 인플루언서 모든 게시물의 모든 해시태그 이름 (DISTINCT)
     List<String> allTagsOfMedias = influencerRepository.getAllTagNamesById(influencerId);
@@ -84,7 +83,7 @@ public class InfluencerService {
 
     return GetInfluencerReportDTO.builder()
         .profile(profile)
-        .mostThreePosts(mostPosts)
+        .mostThreePostsCodes(mostCodes)
         .allTagsOfMedias(allTagsOfMedias)
         .reactionQuotient(reactionQuotient)
         .currentWeekLikeAvg(currentWeekLikeAvg)

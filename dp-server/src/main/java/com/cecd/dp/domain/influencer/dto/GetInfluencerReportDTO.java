@@ -12,7 +12,7 @@ import lombok.Setter;
 public class GetInfluencerReportDTO {
 
   private ProfileProjection profile;
-  private List<MostPostsProjection> mostThreePosts;
+  private List<MostPostsProjection> mostThreePostsCodes;
   private List<String> allTagsOfMedias;
   private List<Float> reactionQuotient;
   private Float currentWeekLikeAvg;
