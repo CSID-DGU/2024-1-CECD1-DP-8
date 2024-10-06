@@ -31,6 +31,23 @@ export default function PostAnalysisPage({ reportData }) {
         // Fetch updated data if needed
     };
 
+    // Instagram 임베드 함수
+    const renderInstagramEmbed = () => {
+        const postUrl = `https://www.instagram.com/p/DAh-22YTWWf/embed`; // 고유코드 사용
+        return (
+            <iframe
+                src={postUrl}
+                width="400"
+                height="480"
+                frameBorder="0"
+                scrolling="no"
+                allowTransparency="true"
+                allow="encrypted-media"
+                title="Instagram Post"
+            ></iframe>
+        );
+    };
+
     // Handle -1 cases and round values
     const renderValue = (value) => (value === -1 ? '숨김' : Math.round(value));
 
@@ -83,38 +100,15 @@ export default function PostAnalysisPage({ reportData }) {
             <Section>
                 <SectionTitle>인기 포스트</SectionTitle>
                 <PostSection>
-                    {mostThreePosts.map((post, index) => {
-                        console.log(`Post ${index + 1} thumbnail URL:`, post.thumbnailUrl); // 콘솔 출력 추가
-                        return (
-                            <Post key={index}>
-                                <PostImage
-                                    src={post.thumbnailUrl}
-                                    alt="인기 게시글"
-                                    onLoad={(e) => {
-                                        console.log(
-                                            `Image loaded successfully for post ${index + 1}: ${post.thumbnailUrl}`
-                                        );
-                                    }}
-                                    onError={(e) => {
-                                        e.target.src = 'https://via.placeholder.com/150';
-                                        console.log(`Failed to load image for post ${index + 1}: ${post.thumbnailUrl}`);
-                                    }} // 로그 추가 및 Fallback 이미지
-                                />
-                                <PostStats>
-                                    <StatItem>
-                                        <img src={likeIcon} alt="좋아요" />
-                                        <StatText>{renderValue(post.likeCnt)}</StatText>
-                                    </StatItem>
-                                    <StatItem>
-                                        <img src={commentIcon} alt="댓글" />
-                                        <StatText>{renderValue(post.commentsCnt)}</StatText>
-                                    </StatItem>
-                                </PostStats>
-                            </Post>
-                        );
-                    })}
+                    {/* 모든 포스트에 동일한 고유코드 적용 */}
+                    {mostThreePosts.map((_, index) => (
+                        <Post key={index}>
+                            {renderInstagramEmbed()} {/* Instagram 임베드 */}
+                        </Post>
+                    ))}
                 </PostSection>
             </Section>
+
             {/* Analysis Section */}
             <Section>
                 <AnalysisWrapper>

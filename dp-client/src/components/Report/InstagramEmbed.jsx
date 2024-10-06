@@ -1,25 +1,25 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 
-function InstagramEmbed({ postUrl }) {
-    const [embedHtml, setEmbedHtml] = useState(null);
-
+const InstagramEmbed = ({ postUrl }) => {
     useEffect(() => {
-        const fetchEmbedData = async () => {
-            try {
-                const response = await fetch(
-                    `https://graph.facebook.com/v11.0/instagram_oembed?url=${postUrl}&access_token=YOUR_INSTAGRAM_ACCESS_TOKEN`
-                );
-                const data = await response.json();
-                setEmbedHtml(data.html);
-            } catch (error) {
-                console.error('Failed to load Instagram post:', error);
-            }
-        };
-
-        fetchEmbedData();
+        // 인스타그램 임베드 스크립트를 다시 로드 (최신 게시물 표시를 위해)
+        const script = document.createElement('script');
+        script.async = true;
+        script.src = '//www.instagram.com/embed.js';
+        document.body.appendChild(script);
     }, [postUrl]);
 
-    return <div className="instagram-embed" dangerouslySetInnerHTML={{ __html: embedHtml }} />;
-}
+    return (
+        <div
+            dangerouslySetInnerHTML={{
+                __html: `
+                <blockquote class="instagram-media" data-instgrm-permalink="${postUrl}" data-instgrm-version="14" style="max-width:540px; margin:auto;">
+                    <a href="${postUrl}" target="_blank"></a>
+                </blockquote>
+                `,
+            }}
+        />
+    );
+};
 
 export default InstagramEmbed;
