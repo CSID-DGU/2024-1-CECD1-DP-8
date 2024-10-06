@@ -116,8 +116,4 @@ async def final_recommendation(filters: FilterRequest, business_input: str):
 
     finally:
         cursor.close()
-<<<<<<< HEAD
         conn.close()
-=======
-        conn.close()
->>>>>>> d8c5ab6e5ad6990ef214a6566644f26e7ff75441
