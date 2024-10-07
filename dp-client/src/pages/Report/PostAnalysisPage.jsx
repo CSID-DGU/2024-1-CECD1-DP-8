@@ -29,7 +29,6 @@ export default function PostAnalysisPage({ reportData }) {
 
     const handlePeriodChange = (newPeriod) => {
         setPeriod(newPeriod); // Update the period
-        // Fetch updated data if needed
     };
 
     const renderInstagramEmbed = (uniqueCode) => {
@@ -205,24 +204,22 @@ const PostAnalysisWrapper = styled.div`
     box-sizing: border-box;
 `;
 
+const PeriodButton = styled.button`
+    background: ${(props) =>
+        props.active ? 'linear-gradient(90deg, rgba(74, 58, 255, 0.80) 0%, rgba(102, 48, 170, 0.80) 100%)' : '#ddd'};
+    color: white;
+    padding: 10px 20px;
+    margin-left: 10px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+`;
+
 const PeriodSelector = styled.div`
     display: flex;
     justify-content: flex-end;
     margin-bottom: 20px;
 `;
-
-const PeriodButton = styled.button`
-    background-color: ${(props) => (props.active ? 'linear-gradient(90deg, rgba(74, 58, 255, 0.80) 0%, rgba(102, 48, 170, 0.80) 100%)
-
-' : '#ddd')};
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    margin-left: 10px;
-    border-radius: 5px;
-    cursor: pointer;
-`;
-
 const Section = styled.div`
     margin-bottom: 30px;
 `;
@@ -282,7 +279,7 @@ const Reaction = styled.div`
     display: flex;
     justify-content: center;
     gap: 50px;
-    margin-top: 160px;
+    margin-top: 180px;
     flex-direction: column;
 `;
 
