@@ -1,9 +1,6 @@
 {
   "dependencies": {
-<<<<<<< HEAD
+    "requests": "^0.3.0",
     "graphviz": "^0.0.9"
-=======
-    "requests": "^0.3.0"
->>>>>>> d8c5ab6e5ad6990ef214a6566644f26e7ff75441
   }
 }
