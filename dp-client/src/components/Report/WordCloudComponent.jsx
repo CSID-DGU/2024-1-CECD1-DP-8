@@ -1,13 +1,24 @@
-// WordCloudComponent.jsx
 import React, { useCallback } from 'react';
 import WordCloud from 'react-d3-cloud';
-import { scaleOrdinal } from 'd3-scale';
-import { schemeCategory10 } from 'd3-scale-chromatic';
+
+// Custom gradient color function
+const gradientColor = (index) => {
+    const gradient = `linear-gradient(90deg, rgba(74, 58, 255, 0.80) 0%, rgba(102, 48, 170, 0.80) 100%)`;
+    const canvas = document.createElement('canvas');
+    const context = canvas.getContext('2d');
+    const gradientFill = context.createLinearGradient(0, 0, 300, 0);
+
+    // Parse colors and add to gradient
+    gradientFill.addColorStop(0, 'rgba(74, 58, 255, 0.80)');
+    gradientFill.addColorStop(1, 'rgba(102, 48, 170, 0.80)');
+
+    return gradientFill;
+};
 
 const WordCloudComponent = ({ wordCloudData }) => {
-    const fontSize = useCallback((word) => Math.log2(word.value) * 5, []);
+    // Reduced font size by ~5px
+    const fontSize = useCallback((word) => Math.log2(word.value) * 3.5, []); // Adjusted multiplier to reduce size
     const rotate = useCallback((word) => word.value % 360, []);
-    const fill = useCallback((d, i) => scaleOrdinal(schemeCategory10)(i), []);
 
     return (
         <WordCloud
@@ -22,10 +33,9 @@ const WordCloudComponent = ({ wordCloudData }) => {
             rotate={rotate}
             padding={5}
             random={Math.random}
-            fill={fill}
+            fill={gradientColor} // Applying gradient color
         />
     );
 };
 
-// Ensure the component is exported as default
 export default React.memo(WordCloudComponent);
