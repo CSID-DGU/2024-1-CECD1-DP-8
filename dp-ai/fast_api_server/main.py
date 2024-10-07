@@ -377,7 +377,7 @@ def insert_meta(cur, influencer_id, account_data):
 
 
 # media insert
-def insert_media(cur, media, influencer_id, media_type):
+def insert_media(cur, media, influencer_id, media_type, username):
     try:
         collected_datetime = datetime.today().strftime("%Y-%m-%d %H:%M:%S")
 
@@ -391,16 +391,23 @@ def insert_media(cur, media, influencer_id, media_type):
         keywords = ["#광고", "#협찬", "#제품제공", "#제품협찬", "#서포터즈", "유료광고", "대가성광고"]
         is_ad = any(keyword in caption for keyword in keywords)
 
+        # thumbnail_url을 특정 형식으로 변경
+        thumbnail_url = media["permalink"]
+        thumbnail_url = thumbnail_url + "media/?size=l"
+        thumbnail_url = thumbnail_url.replace("reel", "p")
+        thumbnail_url = thumbnail_url.replace(f"{username}/", "")
+
+
         # VIDEO가 아닌 경우, "thumbnail_url"이 존재하지 않으며 "media_url"이 그 역할을 함
         # VIDEO인 경우, "media_url"은 동영상 url이며, media json에 존재하지 않을 수도 있음
         # VIDEO인 경우, "thumbnail_url" 존재. 동영상의 썸네일 사진 링크
         if media_type == "VIDEO": # REELS, 일부 옛날 게시글의 경우 FEED도 있음
-            thumbnail_url = media.get("thumbnail_url", "")
+            #thumbnail_url = media.get("thumbnail_url", "")
             video_url = media.get("media_url", "")
 
         else:  # IMAGE, CAROUSEL_ALBUM
             # IMAGE 사진 id를 알 수 없으므로 thumbnail_url에만 사진 링크를 저장하고 image에는 저장하지 않음
-            thumbnail_url = media["media_url"]
+            #thumbnail_url = media["media_url"]
             video_url = ""
             '''
             {
@@ -499,7 +506,7 @@ def insert_all_user_data(username: str):
 
                 if media_type == "VIDEO":
                     # 미디어 insert
-                    insert_media(cur, media, influencer_pk, media_type)
+                    insert_media(cur, media, influencer_pk, media_type, username)
 
                 elif media_type == "IMAGE":
                     # IMAGE 사진 id를 알 수 없으므로 thumbnail_url에만 사진 링크를 저장하고 image에는 저장하지 않음
@@ -514,12 +521,12 @@ def insert_all_user_data(username: str):
                       "id": "17927721...."
                     }
                     '''
-                    insert_media(cur, media, influencer_pk, media_type)
+                    insert_media(cur, media, influencer_pk, media_type, username)
 
                 else:
                     # media["media_type"] == "CAROUSEL_ALBUM"
                     # 미디어 insert
-                    insert_media(cur, media, influencer_pk, media_type)
+                    insert_media(cur, media, influencer_pk, media_type, username)
 
                     # 이미지 insert
                     media_id = get_db_media_id_from_graph_media_id(media["id"], cur)
@@ -616,12 +623,12 @@ def update_media(cur, media):
         # VIDEO인 경우, "media_url"은 동영상 url이며, media json에 존재하지 않을 수도 있음
         # VIDEO인 경우, "thumbnail_url" 존재. 동영상의 썸네일 사진 링크
         if media["media_type"] == "VIDEO":  # REELS, 일부 옛날 게시글의 경우 FEED도 있음
-            thumbnail_url = media.get("thumbnail_url", "")
+            #thumbnail_url = media.get("thumbnail_url", "")
             video_url = media.get("media_url", "")
 
         else:  # IMAGE, CAROUSEL_ALBUM
             # IMAGE 사진 id를 알 수 없으므로 thumbnail_url에만 사진 링크를 저장하고 image에는 저장하지 않음
-            thumbnail_url = media["media_url"]
+            #thumbnail_url = media["media_url"]
             video_url = ""
             '''
             {
@@ -640,7 +647,7 @@ def update_media(cur, media):
 
         query = '''
                     update media set
-                    comments_cnt=%s, like_cnt=%s, updated_at=%s, thumbnail_url=%s, video_url=%s
+                    comments_cnt=%s, like_cnt=%s, updated_at=%s, video_url=%s
                     where graph_media_id=%s
 
                 '''
@@ -649,7 +656,6 @@ def update_media(cur, media):
             media["comments_count"],
             like_cnt,
             updated_datetime,
-            thumbnail_url,
             video_url,
             media["id"]
         ))
@@ -659,7 +665,7 @@ def update_media(cur, media):
         raise e
 
 # 미디어, 이미지, 해시태그 insert
-def insert_media_image_hashtag(cur, media, influencer_pk):
+def insert_media_image_hashtag(cur, media, influencer_pk, username):
     try:
         # 미디어가 여러개 - media_type: "CAROUSEL_ALBUM", children 존재함
         # 미디어가 하나의 사진 - media_type: "IMAGE", children 존재하지 않음
@@ -670,7 +676,7 @@ def insert_media_image_hashtag(cur, media, influencer_pk):
 
         if media_type == "VIDEO":
             # 미디어 insert
-            insert_media(cur, media, influencer_pk, media_type)
+            insert_media(cur, media, influencer_pk, media_type, username)
 
         elif media_type == "IMAGE":
             # IMAGE 사진 id를 알 수 없으므로 thumbnail_url에만 사진 링크를 저장하고 image에는 저장하지 않음
@@ -685,12 +691,12 @@ def insert_media_image_hashtag(cur, media, influencer_pk):
               "id": "179277215......."
             }
             '''
-            insert_media(cur, media, influencer_pk, media_type)
+            insert_media(cur, media, influencer_pk, media_type, username)
 
         else:
             # media["media_type"] == "CAROUSEL_ALBUM"
             # 미디어 insert
-            insert_media(cur, media, influencer_pk, media_type)
+            insert_media(cur, media, influencer_pk, media_type, username)
 
             # 이미지 insert
             media_id = get_db_media_id_from_graph_media_id(media["id"], cur)
@@ -762,7 +768,7 @@ def update_user(username):
 
             else:
                 # media insert
-                insert_media_image_hashtag(cur, media, influencer_pk)
+                insert_media_image_hashtag(cur, media, influencer_pk, username)
 
         # === meta 테이블에 insert ===
         insert_meta(cur, influencer_pk, account_data)

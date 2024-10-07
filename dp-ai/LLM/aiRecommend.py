@@ -1,4 +1,3 @@
-
 import openai
 import psycopg2
 from fastapi import FastAPI, HTTPException
@@ -8,6 +7,7 @@ from dotenv import load_dotenv
 
 # .env 파일 로드
 load_dotenv()
+
 # PostgreSQL 연결 설정 - 환경변수에서 값 가져오기
 DB_HOST = os.getenv("DB_HOST")
 DB_NAME = os.getenv("DB_NAME")
