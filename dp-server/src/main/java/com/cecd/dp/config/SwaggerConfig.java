@@ -13,6 +13,7 @@ public class SwaggerConfig {
   // url : http://localhost:8080/swagger-ui/index.html
   @Bean
   public OpenAPI getOpenApi() {
+    Server server = new Server().url("/");
 
     return new OpenAPI().info(getSwaggerInfo()).components(getComponents());
     // 보안 인증 추가 시 사용
