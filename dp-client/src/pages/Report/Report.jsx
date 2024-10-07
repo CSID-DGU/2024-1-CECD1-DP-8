@@ -56,9 +56,10 @@ export default function Report() {
 
 const Wrapper = styled.div`
     display: flex;
-    max-width: 1400px;
+    max-width: 1800px;
+    width: 100vw;
+    min-width: 1400px;
     margin: 0 auto;
-    background: #f5f5f5;
 `;
 
 const ContentWrapper = styled.div`

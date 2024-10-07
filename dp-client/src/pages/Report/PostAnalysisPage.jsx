@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Line } from 'react-chartjs-2';
 import { Chart as ChartJS, LineElement, CategoryScale, LinearScale, PointElement } from 'chart.js';
 import styled from 'styled-components';
@@ -11,9 +11,10 @@ ChartJS.register(LineElement, CategoryScale, LinearScale, PointElement);
 
 export default function PostAnalysisPage({ reportData }) {
     const [period, setPeriod] = useState('W'); // Default period is 'Weekly'
+    const [isLoadingWordCloud, setIsLoadingWordCloud] = useState(true); // WordCloudComponent 로딩 상태
 
     const {
-        mostThreePosts = [],
+        mostThreePostsCodes = [],
         allTagsOfMedias = [],
         reactionQuotient = [0],
         currentWeekLikeAvg = 0,
@@ -31,22 +32,34 @@ export default function PostAnalysisPage({ reportData }) {
         // Fetch updated data if needed
     };
 
-    // Instagram 임베드 함수
-    const renderInstagramEmbed = () => {
-        const postUrl = `https://www.instagram.com/p/DAh-22YTWWf/embed`; // 고유코드 사용
-        return (
-            <iframe
-                src={postUrl}
-                width="400"
-                height="480"
-                frameBorder="0"
-                scrolling="no"
-                allowTransparency="true"
-                allow="encrypted-media"
-                title="Instagram Post"
-            ></iframe>
-        );
+    const renderInstagramEmbed = (uniqueCode) => {
+        try {
+            const postUrl = `https://www.instagram.com/p/${uniqueCode}/embed`; // 고유코드 사용
+            console.log('Embedding Instagram post:', postUrl); // 고유코드 확인용 콘솔 로그
+            return (
+                <iframe
+                    src={postUrl}
+                    width="400"
+                    height="700"
+                    frameBorder="0"
+                    scrolling="no"
+                    allowTransparency="true"
+                    allow="encrypted-media"
+                    title="Instagram Post"
+                ></iframe>
+            );
+        } catch (error) {
+            console.error('Error embedding Instagram post:', error);
+            return <div>Instagram 포스트를 로드하는 데 실패했습니다.</div>;
+        }
     };
+
+    // WordCloud 로딩 완료 후 호출
+    useEffect(() => {
+        setTimeout(() => {
+            setIsLoadingWordCloud(false); // 일정 시간 후에 로딩 상태를 false로 변경
+        }, 2000); // 2초 후 로딩 완료 시뮬레이션
+    }, []);
 
     // Handle -1 cases and round values
     const renderValue = (value) => (value === -1 ? '숨김' : Math.round(value));
@@ -100,12 +113,14 @@ export default function PostAnalysisPage({ reportData }) {
             <Section>
                 <SectionTitle>인기 포스트</SectionTitle>
                 <PostSection>
-                    {/* 모든 포스트에 동일한 고유코드 적용 */}
-                    {mostThreePosts.map((_, index) => (
-                        <Post key={index}>
-                            {renderInstagramEmbed()} {/* Instagram 임베드 */}
-                        </Post>
-                    ))}
+                    {mostThreePostsCodes.length === 0 && <p>인기 포스트가 없습니다.</p>}
+                    {mostThreePostsCodes.map((post, index) => {
+                        return (
+                            <Post key={index}>
+                                {renderInstagramEmbed(post.uniqueCode)} {/* Instagram 임베드 */}
+                            </Post>
+                        );
+                    })}
                 </PostSection>
             </Section>
 
@@ -114,13 +129,19 @@ export default function PostAnalysisPage({ reportData }) {
                 <AnalysisWrapper>
                     <WordCloudSection>
                         <Label>게시글 해시태그</Label>
-                        <WordCloudComponent wordCloudData={wordCloudData} />
+                        {isLoadingWordCloud ? (
+                            <SpinnerWrapper>
+                                <Spinner /> {/* 로딩 중일 때 스피너 */}
+                            </SpinnerWrapper>
+                        ) : (
+                            <WordCloudComponent wordCloudData={wordCloudData} /> // WordCloud 렌더링
+                        )}
                     </WordCloudSection>
                     <ReactionIndexSection>
                         <Label>반응지수</Label>
                         <Reaction>
                             <ReactionData>{renderValue(reactionQuotient[0])}% EGR</ReactionData>
-                            <Description>동일 팔로워군 비교 그래프</Description>
+                            <Description>동일 팔로워군과 비교한 수치에요.</Description>
                         </Reaction>
                     </ReactionIndexSection>
                 </AnalysisWrapper>
@@ -191,7 +212,9 @@ const PeriodSelector = styled.div`
 `;
 
 const PeriodButton = styled.button`
-    background-color: ${(props) => (props.active ? '#4A3AFF' : '#ddd')};
+    background-color: ${(props) => (props.active ? 'linear-gradient(90deg, rgba(74, 58, 255, 0.80) 0%, rgba(102, 48, 170, 0.80) 100%)
+
+' : '#ddd')};
     color: white;
     border: none;
     padding: 10px 20px;
@@ -199,6 +222,7 @@ const PeriodButton = styled.button`
     border-radius: 5px;
     cursor: pointer;
 `;
+
 const Section = styled.div`
     margin-bottom: 30px;
 `;
@@ -223,48 +247,12 @@ const Post = styled.div`
     min-height: 200px;
 `;
 
-const PostImage = styled.img`
-    width: 100%;
-    height: auto;
-    border-radius: 15px;
-`;
-
-const PostStats = styled.div`
-    display: flex;
-    justify-content: space-between;
-    margin-top: 10px;
-`;
-
-const StatItem = styled.div`
-    display: flex;
-    align-items: center;
-
-    img {
-        width: 20px;
-        height: 20px;
-        margin-right: 5px;
-    }
-`;
-
-const StatText = styled.span`
-    font-size: 16px;
-`;
-
-const Description = styled.p`
-    color: #000;
-    text-align: center;
-    font-size: 19px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: normal;
-    letter-spacing: -0.5px;
-    text-transform: capitalize;
-`;
 const AnalysisWrapper = styled.div`
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 20px;
     margin-top: 20px;
+    min-height: 500px;
 `;
 
 const WordCloudSection = styled.div`
@@ -295,10 +283,11 @@ const Reaction = styled.div`
     justify-content: center;
     gap: 50px;
     margin-top: 160px;
+    flex-direction: column;
 `;
 
 const ReactionData = styled.p`
-    font-size: 24px;
+    font-size: 50px;
     font-weight: 600;
     color: #7f00ff;
 `;
@@ -351,19 +340,38 @@ const GraphBox = styled.div`
     text-align: center;
     align-items: center;
 `;
-
-const Circle = styled.div`
-    width: 120px;
-    height: 120px;
-    border-radius: 50%;
-    background: linear-gradient(90deg, rgba(74, 58, 255, 0.8) 0%, rgba(102, 48, 170, 0.8) 100%);
+const Description = styled.p`
+    color: #000;
+    text-align: center;
+    font-size: 22px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    letter-spacing: -0.5px;
+    text-transform: capitalize;
+    margin-top: 20px;
+`;
+const SpinnerWrapper = styled.div`
     display: flex;
-    align-items: center;
     justify-content: center;
+    align-items: center;
+    height: 300px; /* 스피너가 중앙에 위치하도록 하기 위한 높이 설정 */
 `;
 
-const CircleText = styled.p`
-    font-size: 24px;
-    font-weight: 500;
-    color: #fff;
+const Spinner = styled.div`
+    border: 6px solid #f3f3f3;
+    border-top: 6px solid #7f00ff;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    animation: spin 1s linear infinite;
+
+    @keyframes spin {
+        0% {
+            transform: rotate(0deg);
+        }
+        100% {
+            transform: rotate(360deg);
+        }
+    }
 `;
