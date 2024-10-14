@@ -20,7 +20,8 @@
         "redux": "^5.0.1",
         "styled-components": "^6.1.8",
         "styled-reset": "^4.5.2",
-        "web-vitals": "^2.1.4"
+        "web-vitals": "^2.1.4",
+        "yarn": "^1.22.22"
     },
     "scripts": {
         "start": "react-scripts start",
