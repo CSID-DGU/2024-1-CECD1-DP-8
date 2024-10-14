@@ -11,7 +11,6 @@ import {
     CategoryScale,
     TimeScale,
 } from 'chart.js';
-import 'chartjs-adapter-date-fns';
 import WordCloud from 'react-d3-cloud';
 import InfluencerNavbar from '../../components/Navbar/InfluencerNavbar';
 import styled, { createGlobalStyle } from 'styled-components';
