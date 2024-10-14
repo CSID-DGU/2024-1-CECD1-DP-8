@@ -9,15 +9,13 @@ import {
     Tooltip,
     Legend,
     CategoryScale,
-    TimeScale,
+    TimeScale, // 시간 축 등록은 그대로 유지
 } from 'chart.js';
 import WordCloud from 'react-d3-cloud';
-import InfluencerNavbar from '../../components/Navbar/InfluencerNavbar';
 import styled, { createGlobalStyle } from 'styled-components';
 import data from './data.json';
 import likeIcon from '../../assets/like-icon.png';
 import commentIcon from '../../assets/comment-icon.png';
-import feedimg from '../../assets/feedimg.png';
 
 ChartJS.register(LineElement, PointElement, LinearScale, Title, Tooltip, Legend, CategoryScale, TimeScale);
 
@@ -30,7 +28,7 @@ export default function FollowerTrendPage() {
     const detailData = data.result;
 
     const followerTrendData = {
-        labels: followerTrend.map((entry) => entry.timestamp.split('T')[0]),
+        labels: followerTrend.map((entry) => entry.timestamp.split('T')[0]), // 날짜 문자열 처리
         datasets: [
             {
                 label: '팔로워 추이',
@@ -47,38 +45,6 @@ export default function FollowerTrendPage() {
     return (
         <>
             <Wrapper>
-                {/* <LeftSection>
-                    <Intro>
-                        <ProfileImage>
-                            <img src={profileData.imageURL} alt="프로필" />
-                        </ProfileImage>
-                        <Username>@{profileData.nickname}</Username>
-                        <Name>{profileData.name}</Name>
-                        <Category>{profileData.category}</Category>
-                        <ProfileData>
-                            <ProfileDataColumn>
-                                <ProfileDataItem>
-                                    <DataValue>{profileData.mediaCnt.toLocaleString()}</DataValue>
-                                    <DataLabel>게시글</DataLabel>
-                                </ProfileDataItem>
-                                <ProfileDataItem>
-                                    <DataValue>{profileData.followerCnt.toLocaleString()}</DataValue>
-                                    <DataLabel>팔로워</DataLabel>
-                                </ProfileDataItem>
-                            </ProfileDataColumn>
-                            <ProfileDataColumn>
-                                <ProfileDataItem>
-                                    <DataValue>{profileData.InfluenceIndex.toLocaleString()}</DataValue>
-                                    <DataLabel>영향력지수</DataLabel>
-                                </ProfileDataItem>
-                                <ProfileDataItem>
-                                    <DataValue>{profileData.adIndex.toLocaleString()}</DataValue>
-                                    <DataLabel>광고지수</DataLabel>
-                                </ProfileDataItem>
-                            </ProfileDataColumn>
-                        </ProfileData>
-                    </Intro>
-                </LeftSection> */}
                 <DataSection>
                     <SectionTitle>인기 포스트</SectionTitle>
                     <PostSection>
@@ -101,10 +67,7 @@ export default function FollowerTrendPage() {
                                 options={{
                                     scales: {
                                         x: {
-                                            type: 'time',
-                                            time: {
-                                                unit: 'day',
-                                            },
+                                            type: 'category', // 시간 축 대신 카테고리 축 사용
                                         },
                                         y: {
                                             beginAtZero: true,
@@ -114,9 +77,8 @@ export default function FollowerTrendPage() {
                             />
                         </FollowerTrend>
                         <ReactionIndex>
-                            {' '}
                             <Label>반응 지수</Label>
-                            <ReactionData> {detailData.reactionCnt}</ReactionData>
+                            <ReactionData>{detailData.reactionCnt}</ReactionData>
                             <ReactionDescription>평균보다 높아요!</ReactionDescription>
                         </ReactionIndex>
                     </FollowerSection>
@@ -132,11 +94,11 @@ export default function FollowerTrendPage() {
                         </PostHashtag>
 
                         <ResponsiveHashtag>
-                            {' '}
                             <Label>반응 높은 해시태그</Label>
                             <HashtagData>{highResponseTag}</HashtagData>
                         </ResponsiveHashtag>
                     </HashtagSection>
+
                     <AverageSection>
                         <Like>
                             <Label>평균 좋아요</Label>
@@ -150,10 +112,10 @@ export default function FollowerTrendPage() {
                         </Comment>
                         <Upload>
                             <Label>게시물 업로드 주기</Label>
-
                             <DataValue>{detailData.mediaUploadCycle}</DataValue>
                         </Upload>
                     </AverageSection>
+
                     <SummarySection>
                         <Summary>
                             <Label>활동 요약</Label>
