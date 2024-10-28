@@ -10,6 +10,7 @@
         "axios": "^1.7.7",
         "chart.js": "^4.4.4",
         "chartjs-adapter-date-fns": "^3.0.0",
+        "date-fns": "^4.1.0",
         "react": "^18.2.0",
         "react-chartjs-2": "^5.2.0",
         "react-d3-cloud": "^1.0.6",
@@ -46,5 +47,8 @@
             "last 1 firefox version",
             "last 1 safari version"
         ]
+    },
+    "devDependencies": {
+        "@babel/plugin-proposal-private-property-in-object": "^7.21.11"
     }
 }
