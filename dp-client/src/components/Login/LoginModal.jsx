@@ -37,7 +37,7 @@ const LoginModal = ({ show, onClose }) => {
                     const accessToken = response.authResponse.accessToken;
                     console.log('페이스북 로그인 성공!', accessToken);
                     // 서버에 accessToken 전달 후 로그인 처리
-                    navigate('/dashboard'); // 예시: 로그인 후 리디렉션
+                    navigate('/'); // 예시: 로그인 후 리디렉션
                 } else {
                     console.log('페이스북 로그인 실패');
                 }
