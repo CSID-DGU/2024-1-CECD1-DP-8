@@ -6,38 +6,26 @@ export default function SideBar({ profile, onSelect }) {
 
     const handleButtonClick = (button) => {
         setActiveButton(button);
-        onSelect(button); // Notify parent component about the selected button
+        onSelect(button);
     };
 
     return (
         <SidebarWrapper>
             <ProfileImage>
-                <img src={profile.imageURL} alt="프로필" />
+                <img src={profile.profilePictureUrl} alt="프로필" />
             </ProfileImage>
             <Username>@{profile.nickname}</Username>
             <Name>{profile.name}</Name>
             <Category>{profile.category}</Category>
             <ProfileData>
-                <ProfileDataColumn>
-                    <ProfileDataItem>
-                        <DataValue>{profile.mediaCnt.toLocaleString()}</DataValue>
-                        <DataLabel>게시글</DataLabel>
-                    </ProfileDataItem>
-                    <ProfileDataItem>
-                        <DataValue>{profile.followerCnt.toLocaleString()}</DataValue>
-                        <DataLabel>팔로워</DataLabel>
-                    </ProfileDataItem>
-                </ProfileDataColumn>
-                <ProfileDataColumn>
-                    <ProfileDataItem>
-                        <DataValue>{profile.InfluenceIndex.toLocaleString()}</DataValue>
-                        <DataLabel>영향력지수</DataLabel>
-                    </ProfileDataItem>
-                    <ProfileDataItem>
-                        <DataValue>{profile.adIndex.toLocaleString()}</DataValue>
-                        <DataLabel>광고지수</DataLabel>
-                    </ProfileDataItem>
-                </ProfileDataColumn>
+                <ProfileDataItem>
+                    <DataValue>{profile.mediaCnt.toLocaleString()}</DataValue>
+                    <DataLabel>게시글</DataLabel>
+                </ProfileDataItem>
+                <ProfileDataItem>
+                    <DataValue>{profile.followerCnt.toLocaleString()}</DataValue>
+                    <DataLabel>팔로워</DataLabel>
+                </ProfileDataItem>
             </ProfileData>
             <ButtonGroup>
                 <SidebarButton
@@ -46,7 +34,6 @@ export default function SideBar({ profile, onSelect }) {
                 >
                     포스트 분석
                 </SidebarButton>
-
                 <SidebarButton
                     isActive={activeButton === 'followerTrend'}
                     onClick={() => handleButtonClick('followerTrend')}
@@ -117,16 +104,10 @@ const Category = styled.p`
 
 const ProfileData = styled.div`
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around;
     width: 100%;
     margin: 20px 0;
     padding: 20px;
-`;
-
-const ProfileDataColumn = styled.div`
-    display: flex;
-    flex-direction: column;
-    align-items: center;
 `;
 
 const ProfileDataItem = styled.div`

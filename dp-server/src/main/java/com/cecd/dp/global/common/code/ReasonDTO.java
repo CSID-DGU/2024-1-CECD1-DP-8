@@ -1,13 +1,14 @@
 package com.cecd.dp.global.common.code;
 
 import lombok.Builder;
+import lombok.Getter;
 import org.springframework.http.HttpStatus;
 
 @Builder
-public record ReasonDTO(
-        HttpStatus httpStatus,
-        boolean isSuccess,
-        String code,
-        String message
-) {
+@Getter
+public class ReasonDTO {
+  private HttpStatus httpStatus;
+  private boolean isSuccess;
+  private String code;
+  private String message;
 }

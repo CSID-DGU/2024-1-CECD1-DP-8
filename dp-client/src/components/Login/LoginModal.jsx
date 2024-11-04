@@ -1,10 +1,50 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
-import { useNavigate } from 'react-router-dom'; // useNavigate를 import
+import { useNavigate } from 'react-router-dom';
 import LogoImg from '../../assets/Collabo.png';
 
 const LoginModal = ({ show, onClose }) => {
-    const navigate = useNavigate(); // useNavigate 훅 사용
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        // 페이스북 SDK 초기화
+        window.fbAsyncInit = function () {
+            window.FB.init({
+                appId: '541978015128322', // 제공한 페이스북 앱 ID 사용
+                autoLogAppEvents: true,
+                xfbml: true,
+                version: 'v12.0',
+            });
+        };
+
+        // 페이스북 SDK 로드
+        (function (d, s, id) {
+            var js,
+                fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) return;
+            js = d.createElement(s);
+            js.id = id;
+            js.src = 'https://connect.facebook.net/en_US/sdk.js';
+            fjs.parentNode.insertBefore(js, fjs);
+        })(document, 'script', 'facebook-jssdk');
+    }, []);
+
+    // 페이스북 로그인 핸들러
+    const handleFacebookLogin = () => {
+        window.FB.login(
+            function (response) {
+                if (response.authResponse) {
+                    const accessToken = response.authResponse.accessToken;
+                    console.log('페이스북 로그인 성공!', accessToken);
+                    // 서버에 accessToken 전달 후 로그인 처리
+                    navigate('/'); // 예시: 로그인 후 리디렉션
+                } else {
+                    console.log('페이스북 로그인 실패');
+                }
+            },
+            { scope: 'public_profile,email' }
+        );
+    };
 
     if (!show) {
         return null;
@@ -23,16 +63,18 @@ const LoginModal = ({ show, onClose }) => {
                         <img src={LogoImg} alt="Logo" />
                     </Logo>
                     <p>Log in</p>
-                    <p2>계정이 없으신가요? 회원가입하세요.</p2>
-                    <AdSignupButton onClick={handleSignup}>사업자 회원가입</AdSignupButton>
-                    <InfluSignupButton onClick={handleSignup}>인플루언서 회원가입</InfluSignupButton>
+                    <p2>소셜 로그인으로 간단하게 로그인 하세요.</p2>
+                    <SocialLoginButton onClick={handleFacebookLogin}>페이스북 로그인</SocialLoginButton>
                     <hr></hr>
                     <Form>
                         <Label>Your email</Label>
                         <Input type="email" placeholder="이메일을 입력해주세요." />
                         <Label>Your password</Label>
                         <Input type="password" placeholder="비밀번호를 입력해주세요." />
-                        <ForgotPasswordLink>비밀번호 찾기</ForgotPasswordLink>
+                        <SubContainer>
+                            <ForgotPasswordLink onClick={handleSignup}>회원가입</ForgotPasswordLink>
+                            <ForgotPasswordLink>비밀번호 찾기</ForgotPasswordLink>
+                        </SubContainer>
                         <LoginButton>Log in</LoginButton>
                     </Form>
                 </Wrapper>
@@ -110,7 +152,7 @@ const Wrapper = styled.div`
     }
 `;
 
-const AdSignupButton = styled.div`
+const SocialLoginButton = styled.div`
     display: flex;
     width: 528px;
     height: 72px;
@@ -184,6 +226,13 @@ const ForgotPasswordLink = styled.a`
     &:hover {
         text-decoration: underline;
     }
+`;
+
+const SubContainer = styled.div`
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    justify-content: flex-end;
 `;
 
 const LoginButton = styled.button`

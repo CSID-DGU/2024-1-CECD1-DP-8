@@ -2,6 +2,7 @@ plugins {
 	id 'java'
 	id 'org.springframework.boot' version '3.3.2'
 	id 'io.spring.dependency-management' version '1.1.6'
+	id 'com.github.sherter.google-java-format' version '0.9'
 }
 
 group = 'com.cecd'
@@ -11,6 +12,11 @@ java {
 	toolchain {
 		languageVersion = JavaLanguageVersion.of(17)
 	}
+}
+
+repositories {
+	mavenCentral()
+	maven { url 'https://jitpack.io' }
 }
 
 configurations {
@@ -41,8 +47,21 @@ dependencies {
 	annotationProcessor "com.querydsl:querydsl-apt:${dependencyManagement.importedProperties['querydsl.version']}:jakarta"
 	annotationProcessor "jakarta.annotation:jakarta.annotation-api"
 	annotationProcessor "jakarta.persistence:jakarta.persistence-api"
+
+	// https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-thymeleaf
+	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-thymeleaf', version: '3.3.4'
+
 }
 
 tasks.named('test') {
 	useJUnitPlatform()
+}
+
+googleJavaFormat {
+	toolVersion = "1.7"
+	exclude '**/generated/**'
+}
+
+tasks.named("check"){
+	dependsOn "googleJavaFormat"
 }

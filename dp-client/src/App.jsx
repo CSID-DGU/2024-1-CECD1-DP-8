@@ -23,7 +23,7 @@ function App() {
                     <Route path="/" element={<Main />} />
                     <Route path="/advertiser" element={<Advertiser />} />
                     <Route path="/influencer" element={<Influencer />} />
-                    <Route path="/report" element={<Report />} />
+                    <Route path="/report/:id" element={<Report />} />
                     <Route path="/influmypage" element={<InfluencerMypage />} />
                     <Route path="/admypage" element={<AdvertiserMypage />} />
                     <Route path="/matchingPage" element={<MatchingPage />} />
