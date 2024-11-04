@@ -11,11 +11,10 @@ const LoginModal = ({ show, onClose }) => {
     // 환경 변수에서 APP ID를 불러옵니다.
     const facebookAppId = process.env.REACT_APP_FACEBOOK_APP_ID;
     const kakaoRestApiKey = process.env.REACT_APP_KAKAO_REST_API_KEY;
-    const kakaoRedirectUri = process.env.REACT_APP_KAKAO_REDIRECT_URI;
-    console.log('Facebook App ID:', facebookAppId);
-    console.log('Kakao REST API Key:', kakaoRestApiKey);
-    console.log('Kakao Redirect URI:', kakaoRedirectUri);
 
+    // NODE_ENV로 환경에 따른 Redirect URI 설정
+    const kakaoRedirectUri =
+        process.env.NODE_ENV === 'production' ? 'https://cecd-dp.netlify.app/oauth' : 'http://localhost:3000/oauth';
     useEffect(() => {
         // 페이스북 SDK 초기화
         window.fbAsyncInit = function () {
