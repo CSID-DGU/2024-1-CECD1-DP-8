@@ -2,15 +2,25 @@ import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import LogoImg from '../../assets/Collabo.png';
+import FacebookLogo from '../../assets/facebook-logo.png'; // 페이스북 로고 추가
+import KakaoLogo from '../../assets/kakao-logo.png'; // 카카오 로고 추가
 
 const LoginModal = ({ show, onClose }) => {
     const navigate = useNavigate();
+
+    // 환경 변수에서 APP ID를 불러옵니다.
+    const facebookAppId = process.env.REACT_APP_FACEBOOK_APP_ID;
+    const kakaoRestApiKey = process.env.REACT_APP_KAKAO_REST_API_KEY;
+    const kakaoRedirectUri = process.env.REACT_APP_KAKAO_REDIRECT_URI;
+    console.log('Facebook App ID:', facebookAppId);
+    console.log('Kakao REST API Key:', kakaoRestApiKey);
+    console.log('Kakao Redirect URI:', kakaoRedirectUri);
 
     useEffect(() => {
         // 페이스북 SDK 초기화
         window.fbAsyncInit = function () {
             window.FB.init({
-                appId: '541978015128322', // 제공한 페이스북 앱 ID 사용
+                appId: facebookAppId,
                 autoLogAppEvents: true,
                 xfbml: true,
                 version: 'v12.0',
@@ -27,7 +37,7 @@ const LoginModal = ({ show, onClose }) => {
             js.src = 'https://connect.facebook.net/en_US/sdk.js';
             fjs.parentNode.insertBefore(js, fjs);
         })(document, 'script', 'facebook-jssdk');
-    }, []);
+    }, [facebookAppId]);
 
     // 페이스북 로그인 핸들러
     const handleFacebookLogin = () => {
@@ -46,6 +56,12 @@ const LoginModal = ({ show, onClose }) => {
         );
     };
 
+    // 카카오 로그인 핸들러
+    const handleKakaoLogin = () => {
+        const kakaoURL = `https://kauth.kakao.com/oauth/authorize?client_id=${kakaoRestApiKey}&redirect_uri=${kakaoRedirectUri}&response_type=code`;
+        window.location.href = kakaoURL;
+    };
+
     if (!show) {
         return null;
     }
@@ -62,10 +78,16 @@ const LoginModal = ({ show, onClose }) => {
                     <Logo>
                         <img src={LogoImg} alt="Logo" />
                     </Logo>
-                    <p>Log in</p>
-                    <p2>소셜 로그인으로 간단하게 로그인 하세요.</p2>
-                    <SocialLoginButton onClick={handleFacebookLogin}>페이스북 로그인</SocialLoginButton>
-                    <hr></hr>
+                    <SubText>로그인</SubText>
+                    <FacebookButton onClick={handleFacebookLogin}>
+                        <LogoIcon src={FacebookLogo} alt="Facebook logo" />
+                        페이스북으로 로그인
+                    </FacebookButton>
+                    <KakaoButton onClick={handleKakaoLogin}>
+                        <LogoIcon src={KakaoLogo} alt="Kakao logo" />
+                        카카오로 로그인
+                    </KakaoButton>
+                    <Separator />
                     <Form>
                         <Label>Your email</Label>
                         <Input type="email" placeholder="이메일을 입력해주세요." />
@@ -137,69 +159,74 @@ const Wrapper = styled.div`
         line-height: normal;
         margin-bottom: 1rem;
     }
-    p2 {
-        display: flex;
-        padding: 2px;
-        align-items: flex-start;
-        gap: 10px;
-        margin-bottom: 0.8rem;
-    }
-    hr {
-        margin-top: 3rem;
-        height: 2px;
-        background: rgba(102, 102, 102, 0.25);
-        width: 528px;
+`;
+
+const SubText = styled.p`
+    font-family: Poppins, sans-serif;
+    font-size: 18px;
+    color: #666;
+    margin-bottom: 1.5rem;
+`;
+
+const FacebookButton = styled.div`
+    display: flex;
+    width: 528px;
+    height: 60px;
+    justify-content: center;
+    align-items: center;
+    border-radius: 5px;
+    background: #3b5998;
+    color: #fff;
+    font-family: Arial, sans-serif;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-bottom: 1rem;
+    &:hover {
+        background: #2d4373;
     }
 `;
 
-const SocialLoginButton = styled.div`
+const KakaoButton = styled.div`
     display: flex;
     width: 528px;
-    height: 72px;
-    margin-bottom: 20px;
+    height: 60px;
     justify-content: center;
     align-items: center;
-    border-radius: 40px;
-    border: 2px solid #333;
-    background: #fff;
-    color: #333;
-    font-family: Inter;
-    font-size: 22px;
-    font-style: normal;
-    font-weight: 700;
-    line-height: normal;
+    border-radius: 5px;
+    background: #fee500;
+    color: #3c1e1e;
+    font-family: Arial, sans-serif;
+    font-size: 18px;
+    font-weight: bold;
     cursor: pointer;
+    margin-bottom: 2rem;
     &:hover {
-        background: #f0f0f0;
+        background: #f2d700;
     }
 `;
 
-const InfluSignupButton = styled.div`
-    display: flex;
-    width: 528px;
-    height: 72px;
-    justify-content: center;
-    align-items: center;
-    border-radius: 40px;
-    border: 2px solid #333;
-    background: #fff;
-    color: #333;
-    font-family: Inter;
-    font-size: 22px;
-    font-style: normal;
-    font-weight: 700;
-    line-height: normal;
-    cursor: pointer;
-    &:hover {
-        background: #f0f0f0;
-    }
+const LogoIcon = styled.img`
+    width: 24px;
+    height: 24px;
+    margin-right: 12px;
 `;
+
+const Separator = styled.hr`
+    width: 528px;
+    border: none;
+    height: 2px;
+    background-color: rgba(102, 102, 102, 0.25);
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+`;
+
 const Form = styled.div`
     display: flex;
     flex-direction: column;
     width: 100%;
     max-width: 528px;
-    margin-top: 2rem;
+    margin-top: 1rem;
 `;
 
 const Label = styled.label`
@@ -212,9 +239,11 @@ const Label = styled.label`
 const Input = styled.input`
     height: 56px;
     align-self: stretch;
-    border-radius: var(--12, 12px);
+    border-radius: 8px;
     border: 1px solid rgba(102, 102, 102, 0.35);
     width: 100%;
+    padding: 0.5rem;
+    margin-bottom: 1rem;
 `;
 
 const ForgotPasswordLink = styled.a`
