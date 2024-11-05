@@ -14,6 +14,7 @@ import AdvertiserNavbar from './components/Navbar/AdvertiserNavbar';
 import InfluencerNavbar from './components/Navbar/InfluencerNavbar';
 import Footer from './components/Footer/Footer';
 import KakaoRedirect from './pages/Login/Redirect';
+
 function App() {
     return (
         <NavbarProvider>
@@ -65,10 +66,9 @@ function NavbarRenderer() {
 function ResetNavbarOnMain() {
     const { setNavbar } = useNavbar();
     const location = useLocation();
-    const navigate = useNavigate();
 
     useEffect(() => {
-        // 메인 페이지('/')로 돌아갈 때 Navbar 상태 초기화
+        // 메인 페이지('/')로 돌아갈 때만 Navbar 상태 초기화
         if (location.pathname === '/') {
             setNavbar(null);
         }
