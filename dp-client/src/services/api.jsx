@@ -2,7 +2,7 @@ import axios from 'axios';
 
 // 베이스 URL 수정
 const api = axios.create({
-    baseURL: 'http://3.35.184.116', // API의 베이스 URL
+    baseURL: 'https://influencerdp.shop', // API의 베이스 URL
     headers: {
         'Content-Type': 'application/json',
     },
