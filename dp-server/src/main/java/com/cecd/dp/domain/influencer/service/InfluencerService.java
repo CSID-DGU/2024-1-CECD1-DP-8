@@ -1,5 +1,6 @@
 package com.cecd.dp.domain.influencer.service;
 
+import com.cecd.dp.domain.influencer.dto.FollowerChartProjection;
 import com.cecd.dp.domain.influencer.dto.GetInfluencerReportDTO;
 import com.cecd.dp.domain.influencer.dto.MostPostsProjection;
 import com.cecd.dp.domain.influencer.dto.ProfileProjection;
@@ -14,8 +15,10 @@ import com.cecd.dp.global.common.exception.handler.InfluencerHandler;
 import java.util.List;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Transactional(readOnly = true)
 public class InfluencerService {
 
   private final InfluencerRepository influencerRepository;
@@ -73,14 +76,19 @@ public class InfluencerService {
 
     List<MediaChartProjection> reelsChartComments = null;
     List<MediaChartProjection> reelsChartLikes = null;
+    List<FollowerChartProjection> followerChart = null;
 
     if (period.equals("W")) {
       reelsChartComments = mediaRepository.getReelsChartCommentsByWeek(influencerId);
       reelsChartLikes = mediaRepository.getReelsChartLikesByWeek(influencerId);
+      metaRepository.findFollowerChart(influencerId);
     } else if (period.equals("D")) {
+
       reelsChartComments = mediaRepository.getReelsChartCommentsByDay(influencerId);
       reelsChartLikes = mediaRepository.getReelsChartLikesByDay(influencerId);
+      metaRepository.findFollowerChart(influencerId);
     }
+
 
     return GetInfluencerReportDTO.builder()
         .profile(profile)

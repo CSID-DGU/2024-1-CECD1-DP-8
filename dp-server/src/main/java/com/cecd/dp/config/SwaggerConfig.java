@@ -4,6 +4,7 @@ import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.info.License;
+import io.swagger.v3.oas.models.servers.Server;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -14,7 +15,9 @@ public class SwaggerConfig {
   @Bean
   public OpenAPI getOpenApi() {
 
-    return new OpenAPI().info(getSwaggerInfo()).components(getComponents());
+    return new OpenAPI().info(getSwaggerInfo()).components(getComponents())
+            .addServersItem(new Server().url("https://influencerdp.shop"))
+            .addServersItem(new Server().url("http://localhost:8080"));
     // 보안 인증 추가 시 사용
     // .components(authSetting())
     // .addSecurityItem(new SecurityRequirement().addList("access-token"));

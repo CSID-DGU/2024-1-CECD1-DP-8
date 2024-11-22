@@ -23,4 +23,6 @@ public class GetInfluencerReportDTO {
   private Float reelsRatio;
   private List<MediaChartProjection> reelsChartComments;
   private List<MediaChartProjection> reelsChartLikes;
+
+  private List<FollowerChartProjection> followerCharts;
 }

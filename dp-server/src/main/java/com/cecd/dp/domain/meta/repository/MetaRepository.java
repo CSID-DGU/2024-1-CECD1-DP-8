@@ -1,5 +1,6 @@
 package com.cecd.dp.domain.meta.repository;
 
+import com.cecd.dp.domain.influencer.dto.FollowerChartProjection;
 import com.cecd.dp.domain.meta.entity.Meta;
 import java.util.List;
 import org.springframework.data.domain.Pageable;
@@ -11,4 +12,12 @@ public interface MetaRepository extends JpaRepository<Meta, Long> {
 
   @Query("SELECT m " + "FROM Meta m " + "WHERE m.influencer.id = :id")
   List<Meta> findMetaByInfluencerId(@Param("id") Long influencerId, Pageable pageable);
+
+  @Query(
+          "SELECT m.followerCnt, m.createdAt "+
+          "FROM Meta as m "+
+          "WHERE m.influencer.id = :influencerId "+
+          "ORDER BY m.createdAt ASC"
+  )
+  List<FollowerChartProjection> findFollowerChart(Long influencerId);
 }
