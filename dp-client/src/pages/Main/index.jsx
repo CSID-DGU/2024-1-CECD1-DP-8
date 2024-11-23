@@ -77,18 +77,95 @@ export default function Main() {
         </Wrapper>
     );
 }
-
 const Wrapper = styled.div`
     position: relative;
-    overflow: hidden;
-    width: 100%;
-    height: 100%;
-    min-width: 1800px;
+    overflow-x: hidden; /* 수평 스크롤 방지 */
+    overflow-y: auto; /* 세로 스크롤만 허용 */
+    width: 100vw; /* Viewport width */
+    height: 100vh; /* Viewport height */
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box; /* 여백 계산 포함 */
+`;
 
-    margin: 0 auto;
-    hr {
-        height: 2px;
-        background-color: gray;
+const Container = styled.div`
+    display: flex;
+    flex-grow: 1;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    button {
+        border: none;
+        display: flex;
+        width: 22.25rem;
+        height: 6rem;
+        justify-content: center;
+        align-items: center;
+        border-radius: 1rem;
+        background: var(--Primary-Light, #f7f9fb);
+        cursor: pointer;
+        color: var(--black-100, #1c1c1c);
+        font-family: Inter;
+        font-size: 1.5rem;
+        font-style: normal;
+        font-weight: 600;
+        line-height: 2.25rem;
+        box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.2);
+        &:hover {
+            background: #ededed;
+        }
+    }
+`;
+
+const LeftSection = styled.div`
+    box-sizing: border-box;
+    background-image: url(${advertiserBackground});
+    background-size: cover;
+    background-position: center; /* Center the image */
+    flex: 1;
+    height: 100%;
+    margin-right: -5px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 0 2%; /* 좌우 여백 */
+    p {
+        color: var(--white-100, #fff);
+        text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+        -webkit-text-stroke-width: 1;
+        -webkit-text-stroke-color: var(--white-100, #fff);
+        font-family: Inter;
+        font-size: 64px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: 36px; /* 56.25% */
+        text-align: center;
+    }
+`;
+
+const RightSection = styled.div`
+    background-image: url(${influencerBackground});
+    background-size: cover;
+    background-position: center; /* Center the image */
+    flex: 1;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 0 2%; /* 좌우 여백 */
+    filter: contrast(1.1); /* 높인 대비 */
+    p {
+        color: var(--white-100, #fff);
+        text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+        -webkit-text-stroke-width: 1;
+        -webkit-text-stroke-color: var(--white-100, #fff);
+        font-family: Inter;
+        font-size: 64px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: 36px;
+        text-align: center;
     }
 `;
 
@@ -97,7 +174,7 @@ const Links = styled.div`
     flex-direction: column;
     position: absolute;
     bottom: 7.5rem;
-    /*background: blue;*/
+    width: auto; /* 부모 컨테이너에 맞게 크기 조정 */
 `;
 
 const Logo = styled.div`
@@ -105,6 +182,7 @@ const Logo = styled.div`
     position: absolute;
     margin: 15px;
 `;
+
 const LoginLink = styled(Link)`
     color: var(--white-100, #fff);
     font-family: Inter;
@@ -125,32 +203,32 @@ const ColumnLine = styled.div`
     height: 100%;
     border: 1px solid var(--black-10, rgba(28, 28, 28, 0.1));
 `;
-const Container = styled.div`
-    display: flex;
-    width: auto;
-    height: auto;
-    button {
-        border: none;
-        display: flex;
-        width: 22.25rem;
-        height: 6rem;
-        justify-content: center;
-        align-items: center;
-        border-radius: var(--16, 1rem);
-        background: var(--Primary-Light, #f7f9fb);
-        cursor: pointer;
-        color: var(--black-100, #1c1c1c);
-        font-family: Inter;
-        font-size: 1.5rem;
-        font-style: normal;
-        font-weight: 600;
-        line-height: 2.25rem;
-        box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.2);
-        &:hover {
-            background: #ededed;
-        }
-    }
-`;
+// const Container = styled.div`
+//     display: flex;
+//     width: auto;
+//     height: auto;
+//     button {
+//         border: none;
+//         display: flex;
+//         width: 22.25rem;
+//         height: 6rem;
+//         justify-content: center;
+//         align-items: center;
+//         border-radius: var(--16, 1rem);
+//         background: var(--Primary-Light, #f7f9fb);
+//         cursor: pointer;
+//         color: var(--black-100, #1c1c1c);
+//         font-family: Inter;
+//         font-size: 1.5rem;
+//         font-style: normal;
+//         font-weight: 600;
+//         line-height: 2.25rem;
+//         box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.2);
+//         &:hover {
+//             background: #ededed;
+//         }
+//     }
+// `;
 
 const ButtonText = styled.span`
     position: relative;
@@ -167,53 +245,53 @@ const Arrow = styled.div`
     position: relative;
     left: 20px;
 `;
-const LeftSection = styled.div`
-    box-sizing: border-box;
-    background-image: url(${advertiserBackground});
-    background-size: cover;
-    flex: 1;
-    width: 1250px;
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    margin-right: -0.6rem;
-    p {
-        color: var(--white-100, #fff);
-        text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-        -webkit-text-stroke-width: 1;
-        -webkit-text-stroke-color: var(--white-100, #fff);
-        font-family: Inter;
-        font-size: 64px;
-        font-style: normal;
-        font-weight: 700;
-        line-height: 36px; /* 56.25% */
-    }
-`;
+// const LeftSection = styled.div`
+//     box-sizing: border-box;
+//     background-image: url(${advertiserBackground});
+//     background-size: cover;
+//     flex: 1;
+//     width: 1250px;
+//     height: 100vh;
+//     display: flex;
+//     flex-direction: column;
+//     align-items: center;
+//     justify-content: center;
+//     margin-right: -0.6rem;
+//     p {
+//         color: var(--white-100, #fff);
+//         text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+//         -webkit-text-stroke-width: 1;
+//         -webkit-text-stroke-color: var(--white-100, #fff);
+//         font-family: Inter;
+//         font-size: 64px;
+//         font-style: normal;
+//         font-weight: 700;
+//         line-height: 36px; /* 56.25% */
+//     }
+// `;
 
-const RightSection = styled.div`
-    background-image: url(${influencerBackground});
-    background-size: cover;
-    background-repeat: no-repeat;
-    flex: 1;
-    width: 1250px;
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    border: none;
-    filter: contrast(1.1); /* 대비를 높임 */
-    p {
-        color: var(--white-100, #fff);
-        text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-        -webkit-text-stroke-width: 1;
-        -webkit-text-stroke-color: var(--white-100, #fff);
-        font-family: Inter;
-        font-size: 64px;
-        font-style: normal;
-        font-weight: 700;
-        line-height: 36px;
-    }
-`;
+// const RightSection = styled.div`
+//     background-image: url(${influencerBackground});
+//     background-size: cover;
+//     background-repeat: no-repeat;
+//     flex: 1;
+//     width: 1250px;
+//     height: 100vh;
+//     display: flex;
+//     flex-direction: column;
+//     align-items: center;
+//     justify-content: center;
+//     border: none;
+//     filter: contrast(1.1); /* 대비를 높임 */
+//     p {
+//         color: var(--white-100, #fff);
+//         text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+//         -webkit-text-stroke-width: 1;
+//         -webkit-text-stroke-color: var(--white-100, #fff);
+//         font-family: Inter;
+//         font-size: 64px;
+//         font-style: normal;
+//         font-weight: 700;
+//         line-height: 36px;
+//     }
+// `;
