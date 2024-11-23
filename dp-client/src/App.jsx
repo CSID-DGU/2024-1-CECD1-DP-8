@@ -13,6 +13,8 @@ import { NavbarProvider, useNavbar } from './store/NavbarContext';
 import AdvertiserNavbar from './components/Navbar/AdvertiserNavbar';
 import InfluencerNavbar from './components/Navbar/InfluencerNavbar';
 import Footer from './components/Footer/Footer';
+import RecommendPage from './pages/Recommend/RecommendPage';
+import Chat from './pages/Recommend/Chat';
 import KakaoRedirect from './pages/Login/Redirect';
 
 function App() {
@@ -31,6 +33,8 @@ function App() {
                     <Route path="/matchingPage" element={<MatchingPage />} />
                     <Route path="/matchingPage2" element={<MatchingPage2 />} />
                     <Route path="/signup" element={<SignUp />} />
+                    <Route path="/recommend" element={<RecommendPage />} />
+                    <Route path="/chat" element={<Chat />} />
                     <Route path="/oauth" element={<KakaoRedirect />} />
                     <Route
                         path="/*"
