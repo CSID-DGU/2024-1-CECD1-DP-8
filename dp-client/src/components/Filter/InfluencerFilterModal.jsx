@@ -1,308 +1,289 @@
-import React, { useState, useEffect }  from 'react';
-import { styled } from 'styled-components';
+import React, { useState, useEffect } from 'react';
+import styled from 'styled-components';
 
 export default function InfluencerFilterModal({ setModalOpen, filters, setFilters }) {
-    const [beauty, setBeauty] = useState(false);
-    const [fashion, setFashion] = useState(false);
-    const [sports, setSports] = useState(false);
-    const [minFollower, setMinFollower] = useState(0);
-    const [maxFollower, setMaxFollower] = useState(0);
-    const [maxImpactScore, setMaxImpactScore] = useState(0);
-    const [minImpactScore, setMinImpactScore] = useState(0);
+    const [selectedCategory, setSelectedCategory] = useState(null);
+    const [minFollower, setMinFollower] = useState('');
+    const [maxFollower, setMaxFollower] = useState('');
     const [gender, setGender] = useState('unset');
-    const [hashtagInput, sethashTagInput] = useState('');
+    const [hashtagInput, setHashtagInput] = useState('');
+    const [errorMessage, setErrorMessage] = useState('');
 
-    // 모달이 열릴 때 전달받은 필터 값으로 초기화
+    const categories = [
+        { id: 'beauty', label: '뷰티', color: '#FCA5A5' },
+        { id: 'fashion', label: '패션', color: '#FDE68A' },
+        { id: 'sports', label: '스포츠', color: '#86EFAC' },
+        { id: 'homeLiving', label: '홈 / 리빙', color: '#E9D5FF' },
+        { id: 'music', label: '음악', color: '#BAE6FD' },
+    ];
+
     useEffect(() => {
-        setBeauty(filters.beauty);
-        setFashion(filters.fashion);
-        setSports(filters.sports);
-        setMinFollower(filters.minFollower);
-        setMaxFollower(filters.maxFollower);
-        setMinImpactScore(filters.minImpactScore);
-        setMaxImpactScore(filters.maxImpactScore);
-        setGender(filters.gender);
-        sethashTagInput(filters.hashtagInput);
+        if (filters) {
+            setSelectedCategory(filters.selectedCategory || null);
+            setMinFollower(filters.minFollower || '');
+            setMaxFollower(filters.maxFollower || '');
+            setGender(filters.gender || 'unset');
+            setHashtagInput(filters.hashtagInput || '');
+        }
     }, [filters]);
 
-    const closeModal = () => {
-        setModalOpen(false);
+    const closeModal = () => setModalOpen(false);
+
+    const handleCategoryClick = (categoryId) => {
+        // 선택된 카테고리를 다시 누르면 취소
+        if (selectedCategory === categoryId) {
+            setSelectedCategory(null);
+        } else {
+            setSelectedCategory(categoryId);
+        }
     };
 
-    const handleBeautyClick = () => {
-        setBeauty(!beauty);
-    }
-    const handleFashionClick = () => {
-        setFashion(!fashion);
-    }
-    const handleSportsClick = () => {
-        setSports(!sports);
-    }
+    const validateInputs = () => {
+        // 최소/최대 팔로워 값이 숫자인지 확인
+        if (minFollower && isNaN(minFollower)) {
+            setErrorMessage('최소 팔로워 수는 숫자여야 합니다.');
+            return false;
+        }
+        if (maxFollower && isNaN(maxFollower)) {
+            setErrorMessage('최대 팔로워 수는 숫자여야 합니다.');
+            return false;
+        }
+        // 최소값이 최대값보다 크지 않은지 확인
+        if (minFollower && maxFollower && Number(minFollower) > Number(maxFollower)) {
+            setErrorMessage('최소 팔로워 수는 최대 팔로워 수보다 작아야 합니다.');
+            return false;
+        }
+        // 카테고리가 선택되지 않았을 경우
+        if (!selectedCategory) {
+            setErrorMessage('카테고리를 하나 이상 선택해주세요.');
+            return false;
+        }
+        setErrorMessage(''); // 모든 유효성 검사가 통과되면 에러 메시지 초기화
+        return true;
+    };
 
-    // 확인 버튼을 눌렀을 때 부모 컴포넌트에 필터 상태 전달
     const handleConfirm = () => {
-        setFilters({
-            beauty,
-            fashion,
-            sports,
-            minFollower,
-            maxFollower,
-            minImpactScore,
-            maxImpactScore,
-            gender,
-            hashtagInput
-        });
-        closeModal();   // 모달 닫기
+        if (validateInputs()) {
+            setFilters({
+                selectedCategory,
+                minFollower,
+                maxFollower,
+                gender,
+                hashtagInput,
+            });
+            closeModal();
+        }
     };
 
     return (
-        <Container>
-            <Title>
-                <TitleText>필터 & 키워드 추가</TitleText>
-            </Title>
-            <Form>
-                <FormGroup>
-                    <Label>카테고리</Label>
-                    <ButtonGroup>
-                        <CategoryButton selected={beauty} onClick={handleBeautyClick}>
-                            <CategoryButtonText selected={beauty}>뷰티</CategoryButtonText>
-                        </CategoryButton>
-                        <CategoryButton selected={fashion} onClick={handleFashionClick}>
-                            <CategoryButtonText selected={fashion}>패션</CategoryButtonText>
-                        </CategoryButton>
-                        <CategoryButton selected={sports} onClick={handleSportsClick}>
-                            <CategoryButtonText selected={sports}>스포츠</CategoryButtonText>
-                        </CategoryButton>
-                    </ButtonGroup>
-                </FormGroup>
-                <FormGroup>
-                    <Label>팔로워 수</Label>
-                    <InputGroup>
-                        <InputField type="text" placeholder="최소 팔로워" value={minFollower} onChange={(e) => setMinFollower(e.target.value)}/>
-                        ~
-                        <InputField type="text" placeholder="최대 팔로워" value={maxFollower} onChange={(e) => setMaxFollower(e.target.value)}/>
-                    </InputGroup>
-                </FormGroup>
-                <FormGroup>
-                    <Label>영향력 지수</Label>
-                    <InputGroup>
-                        <InputField type="text" placeholder="0" value={minImpactScore} onChange={(e) => setMinImpactScore(e.target.value)}/>
-                        ~
-                        <InputField type="text" placeholder="100" value={maxImpactScore} onChange={(e) => setMaxImpactScore(e.target.value)}/>
-                    </InputGroup>
-                </FormGroup>
-                <FormGroup>
-                    <Label>인플루언서 성별</Label>
+        <ModalOverlay>
+            <ModalContainer>
+                <ModalHeader>
+                    <HeaderTitle>필터 & 키워드 추가</HeaderTitle>
+                    <CloseButton onClick={closeModal}>✕</CloseButton>
+                </ModalHeader>
+                <ModalContent>
+                    <FormGroup>
+                        <Label>카테고리</Label>
+                        <CategoryContainer>
+                            {categories.map((category) => (
+                                <CategoryButton
+                                    key={category.id}
+                                    selected={selectedCategory === category.id}
+                                    color={category.color}
+                                    onClick={() => handleCategoryClick(category.id)}
+                                >
+                                    {category.label}
+                                </CategoryButton>
+                            ))}
+                        </CategoryContainer>
+                    </FormGroup>
+                    <FormGroup>
+                        <Label>팔로워 수</Label>
+                        <FollowerInputContainer>
+                            <InputField
+                                placeholder="최소 팔로워"
+                                value={minFollower}
+                                onChange={(e) => setMinFollower(e.target.value)}
+                            />
+                            <span>~</span>
+                            <InputField
+                                placeholder="최대 팔로워"
+                                value={maxFollower}
+                                onChange={(e) => setMaxFollower(e.target.value)}
+                            />
+                        </FollowerInputContainer>
+                    </FormGroup>
+                    <FormGroup>
+                        <Label>인플루언서 성별</Label>
                         <SelectField value={gender} onChange={(e) => setGender(e.target.value)}>
-                            <option value="unset">설정 안함</option>
+                            <option value="unset">선택 안함</option>
                             <option value="female">여자</option>
                             <option value="male">남자</option>
                         </SelectField>
-                </FormGroup>
-                <FormGroup>
-                    <Label>키워드 #해시태그 로 추가</Label>
-                    <HashTagInputField
-                        type="text"
-                        value={hashtagInput}
-                        onChange={(e) => sethashTagInput(e.target.value)}
-                        placeholder="해시태그 형식으로 입력하세요! 예: #세럼 #물광"
-                    />
-                    <p>동작확인용(지울예정): {hashtagInput}</p>
-                </FormGroup>
-            </Form>
-            <Action>
-                    <ActionButton onClick={closeModal}><ActionButtonText>취소</ActionButtonText></ActionButton>
-                    <ActionButton background="var(--primary-blue)" onClick={handleConfirm}><ActionButtonText color="white">확인</ActionButtonText></ActionButton>
-            </Action>
-        </Container>
+                    </FormGroup>
+                    <FormGroup>
+                        <Label>키워드 #해시태그 로 추가</Label>
+                        <TextArea
+                            placeholder="해시태그 형식으로 입력하세요! 예: #뷰티 #패션"
+                            value={hashtagInput}
+                            onChange={(e) => setHashtagInput(e.target.value)}
+                        />
+                    </FormGroup>
+                    {errorMessage && <ErrorText>{errorMessage}</ErrorText>}
+                </ModalContent>
+                <ModalFooter>
+                    <FooterButton onClick={closeModal}>취소</FooterButton>
+                    <FooterButton primary onClick={handleConfirm}>
+                        적용
+                    </FooterButton>
+                </ModalFooter>
+            </ModalContainer>
+        </ModalOverlay>
     );
 }
 
-const Container = styled.div`
-    display: flex;
-    width: 620px;
-    height: 823px;
-    flex-direction: column;
-    align-items: flex-start;
-    border-radius: 12px;
-    background: var(--white-100, #FFF);
-
+const ModalOverlay = styled.div`
     position: fixed;
-    top: 50%;
-    left: 50%;
-
-    transform: translate(-50%, -50%);
-    z-index: 9999;
-
-    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
-`;
-
-const Title = styled.div`
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.5);
     display: flex;
-    padding: 14px 14px 14px 32px;
+    justify-content: center;
     align-items: center;
-    gap: 14px;
-    align-self: stretch;
-    border-bottom: 1px solid var(--background-3, #D0D0D0);
+    z-index: 9999;
 `;
 
-const TitleText = styled.text`
-    flex: 1 0 0;
-    color: var(--Primary-Navy, #092C4C);
-    font-family: Inter;
-    font-size: 24px;
-    font-style: normal;
-    font-weight: 700;
-    line-height: 30px; /* 125% */
+const ModalContainer = styled.div`
+    width: 600px;
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 `;
 
-const Form = styled.div`
+const ModalHeader = styled.div`
     display: flex;
-    padding: var(--28, 28px) 32px var(--24, 24px) 32px;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 20px;
-    align-self: stretch;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    background: #f5f5f5;
+    border-bottom: 1px solid #ddd;
+`;
 
-    //스크롤
-    overflow-y: scroll;
-    //스크롤 투명
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-    ::-webkit-scrollbar {
-        display: none;
-    }
+const HeaderTitle = styled.h2`
+    font-size: 20px;
+    margin: 0;
+`;
+
+const CloseButton = styled.button`
+    background: none;
+    border: none;
+    font-size: 18px;
+    cursor: pointer;
+`;
+
+const ModalContent = styled.div`
+    padding: 20px;
 `;
 
 const FormGroup = styled.div`
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 12px;
-    align-self: stretch;
+    margin-bottom: 20px;
 `;
 
-const Label = styled.text`
-    align-self: stretch;
-    color: var(--Primary-Navy, #092C4C);
-    /* Body/Bold */
-    font-family: Inter;
-    font-size: 16px;
-    font-style: normal;
-    font-weight: 700;
-    line-height: 30px; /* 187.5% */
+const Label = styled.label`
+    display: block;
+    font-size: 14px;
+    margin-bottom: 8px;
+    font-weight: bold;
 `;
 
-const ButtonGroup = styled.div`
+const CategoryContainer = styled.div`
     display: flex;
-    align-items: flex-start;
-    gap: 12px;
+    gap: 10px;
+    flex-wrap: wrap;
 `;
 
 const CategoryButton = styled.button`
     display: flex;
-    height: 50px;
-    padding: 10px 24px;
     justify-content: center;
     align-items: center;
-    gap: 16px;
-    border-radius: 70px;
-    background: var(--Primary-Blue, #514EF3);
-    background: ${(props) => (props.selected ? '#FCA5A5' : 'var(--Primary-Blue, #514EF3)')};
-    border: transparent;
-    box-shadow: ${(props) => (props.selected ? '0px 4px 4px 0px rgba(0, 0, 0, 0.5) inset' : '0px 4px 4px 0px rgba(0, 0, 0, 0.25)')};
-
-    // 버튼이 눌렸을 때의 스타일
+    font-size: 15px;
+    width: 91.478px;
+    height: 35px;
+    padding: 10px;
+    gap: 10px;
+    border-radius: 20px;
+    border: none;
+    background: ${(props) => (props.selected ? props.color : '#f1f1f1')};
+    color: ${(props) => (props.selected ? 'white' : 'black')};
     cursor: pointer;
+    box-shadow: ${(props) => (props.selected ? '0px 4px 8px rgba(0, 0, 0, 0.15)' : '0px 2px 4px rgba(0, 0, 0, 0.1)')};
     transition: all 0.3s ease;
-    &:active {
-        background-color: #2980b9; // 버튼이 눌렸을 때 배경색 변경
-        transform: translateY(2px); // 버튼이 눌렀을 때 아래로 이동
-        box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.5) inset;
+
+    &:hover {
+        background: ${(props) => props.color};
+        color: white;
     }
 `;
 
-const CategoryButtonText = styled.text`
-    color: ${(props) => (props.selected ? '#000000' : '#FFFFFF')};
-    /* Small/Medium */
-    font-family: Inter;
-    font-size: 14px;
-    font-style: normal;
-    font-weight: 500;
-    line-height: 30px; /* 214.286% */
-`;
-
-const InputGroup = styled.div`
+const FollowerInputContainer = styled.div`
     display: flex;
-    align-items: flex-start;
-    gap: 20px;
-    align-self: stretch;
+    width: 100px;
+    gap: 12px;
 `;
 
 const InputField = styled.input`
-    width: 122px;
-    height: 50px;
-    padding: 0 20px;
-    border-radius: 8px;
-    border: 1px solid var(--Grey-Grey-30, #EAEEF4);
-    background: var(--Grey-Grey-10, #F6FAFD);
+    width: 120px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 20px;
 `;
 
 const SelectField = styled.select`
-    width: 150px;
-    padding: 10px 20px;
-    border-radius: 8px;
-    border: 1px solid var(--Grey-Grey-30, #EAEEF4);
-    background: var(--Grey-Grey-10, #F6FAFD);
+    width: 100%;
+    padding: 8px 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
 `;
 
-const HashTagInputField = styled.textarea`
-    width: 500px;
-    height: 150px;
-    padding: 10px 20px;
-    border-radius: var(--8, 8px);
-    border: 1px solid var(--Grey-Grey-30, #EAEEF4);
-    background: var(--Grey-Grey-10, #F6FAFD);
+const TextArea = styled.textarea`
+    width: 100%;
+    height: 80px;
+    padding: 8px 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
 `;
 
-const Action = styled.div`
+const ErrorText = styled.p`
+    color: red;
+    font-size: 14px;
+    margin-top: -10px;
+    margin-bottom: 20px;
+`;
+
+const ModalFooter = styled.div`
     display: flex;
     justify-content: flex-end;
-    padding: var(--16, 16px) 32px var(--28, 28px) 32px;
-    align-items: center;
     gap: 10px;
-    align-self: stretch;
-    border-top: 1px solid #DDD;
+    padding: 20px;
+    background: #f5f5f5;
+    border-top: 1px solid #ddd;
 `;
 
-const ActionButton = styled.button`
+const FooterButton = styled.button`
     display: flex;
-    width: 120px;
-    padding: 10px 24px;
+    width: 60px;
+    height: 35px;
     justify-content: center;
     align-items: center;
     gap: 16px;
+    font-size: 10px;
+    background: ${(props) => (props.primary ? '#8a54ff' : '#f1f1f1')};
+    color: ${(props) => (props.primary ? 'white' : 'black')};
+    border: none;
     border-radius: 70px;
-    border: transparent;
-    background: ${(props) => props.background || "white"};
-    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
-
     cursor: pointer;
-    transition: all 0.3s ease;
-
-    // 버튼이 눌렸을 때의 스타일
-    &:active {
-        background-color: #2980b9; // 버튼이 눌렸을 때 배경색 변경
-        transform: translateY(2px); // 버튼을 눌렀을 때 아래로 이동
-        box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.5);
-    }
-`;
-
-const ActionButtonText = styled.text`
-    color: ${(props) => (props.color === 'white' ? 'white' : 'black')};
-    font-family: Inter;
-    font-size: 16px;
-    font-style: normal;
-    font-weight: 700;
-    line-height: 30px; /* 187.5% */
 `;

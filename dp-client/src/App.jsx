@@ -1,5 +1,7 @@
 import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation, useNavigate } from 'react-router-dom';
+import { Provider } from 'react-redux';
+import { store } from './store/store'; // Redux Store 가져오기
 import Main from './pages/Main/index';
 import Advertiser from './pages/Advertiser';
 import Influencer from './pages/Influencer';
@@ -13,37 +15,45 @@ import { NavbarProvider, useNavbar } from './store/NavbarContext';
 import AdvertiserNavbar from './components/Navbar/AdvertiserNavbar';
 import InfluencerNavbar from './components/Navbar/InfluencerNavbar';
 import Footer from './components/Footer/Footer';
+import RecommendPage from './pages/Recommend/RecommendPage';
+import Chat from './pages/Recommend/Chat';
 import KakaoRedirect from './pages/Login/Redirect';
 
 function App() {
     return (
-        <NavbarProvider>
-            <Router>
-                <NavbarRenderer /> {/* Navbar 렌더링 */}
-                <ResetNavbarOnMain />
-                <Routes>
-                    <Route path="/" element={<Main />} />
-                    <Route path="/advertiser" element={<Advertiser />} />
-                    <Route path="/influencer" element={<Influencer />} />
-                    <Route path="/report/:id" element={<Report />} />
-                    <Route path="/influmypage" element={<InfluencerMypage />} />
-                    <Route path="/admypage" element={<AdvertiserMypage />} />
-                    <Route path="/matchingPage" element={<MatchingPage />} />
-                    <Route path="/matchingPage2" element={<MatchingPage2 />} />
-                    <Route path="/signup" element={<SignUp />} />
-                    <Route path="/oauth" element={<KakaoRedirect />} />
-                    <Route
-                        path="/*"
-                        element={
-                            <div>
-                                <h2>이 페이지는 존재하지 않습니다</h2>
-                            </div>
-                        }
-                    />
-                </Routes>
-                <Footer />
-            </Router>
-        </NavbarProvider>
+        <Provider store={store}>
+            {' '}
+            {/* Redux Store를 Provider로 감싸기 */}
+            <NavbarProvider>
+                <Router>
+                    <NavbarRenderer /> {/* Navbar 렌더링 */}
+                    <ResetNavbarOnMain />
+                    <Routes>
+                        <Route path="/" element={<Main />} />
+                        <Route path="/advertiser" element={<Advertiser />} />
+                        <Route path="/influencer" element={<Influencer />} />
+                        <Route path="/report/:id" element={<Report />} />
+                        <Route path="/influmypage" element={<InfluencerMypage />} />
+                        <Route path="/admypage" element={<AdvertiserMypage />} />
+                        <Route path="/matchingPage" element={<MatchingPage />} />
+                        <Route path="/matchingPage2" element={<MatchingPage2 />} />
+                        <Route path="/signup" element={<SignUp />} />
+                        <Route path="/recommend" element={<RecommendPage />} />
+                        <Route path="/chat" element={<Chat />} />
+                        <Route path="/oauth" element={<KakaoRedirect />} />
+                        <Route
+                            path="/*"
+                            element={
+                                <div>
+                                    <h2>이 페이지는 존재하지 않습니다</h2>
+                                </div>
+                            }
+                        />
+                    </Routes>
+                    <Footer />
+                </Router>
+            </NavbarProvider>
+        </Provider>
     );
 }
 
