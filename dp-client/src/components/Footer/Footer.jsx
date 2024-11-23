@@ -64,6 +64,7 @@ const FooterContainer = styled.div`
 const LeftSection = styled.div`
     display: flex;
     flex-direction: column;
+    margin-left: -100px;
     gap: 20px;
 `;
 
