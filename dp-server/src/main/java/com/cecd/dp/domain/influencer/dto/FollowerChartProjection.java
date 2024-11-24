@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 
 
 public interface FollowerChartProjection {
-    Integer followerCnt();
-    LocalDateTime createdAt();
+    Integer getFollowerCnt();
+
+    LocalDateTime getCreatedAt();
 }

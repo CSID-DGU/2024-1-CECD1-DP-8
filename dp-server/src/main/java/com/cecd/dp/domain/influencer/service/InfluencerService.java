@@ -76,17 +76,16 @@ public class InfluencerService {
 
     List<MediaChartProjection> reelsChartComments = null;
     List<MediaChartProjection> reelsChartLikes = null;
-    List<FollowerChartProjection> followerChart = null;
+    List<FollowerChartProjection> followerChart = metaRepository.findFollowerChart(influencerId);
+
 
     if (period.equals("W")) {
       reelsChartComments = mediaRepository.getReelsChartCommentsByWeek(influencerId);
       reelsChartLikes = mediaRepository.getReelsChartLikesByWeek(influencerId);
-      metaRepository.findFollowerChart(influencerId);
     } else if (period.equals("D")) {
 
       reelsChartComments = mediaRepository.getReelsChartCommentsByDay(influencerId);
       reelsChartLikes = mediaRepository.getReelsChartLikesByDay(influencerId);
-      metaRepository.findFollowerChart(influencerId);
     }
 
 
@@ -103,6 +102,7 @@ public class InfluencerService {
         .reelsRatio(reelsRatio)
         .reelsChartComments(reelsChartComments)
         .reelsChartLikes(reelsChartLikes)
+        .followerCharts(followerChart)
         .build();
   }
 }
