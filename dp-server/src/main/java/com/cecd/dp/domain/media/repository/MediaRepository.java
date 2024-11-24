@@ -90,5 +90,4 @@ public interface MediaRepository extends JpaRepository<Media, Long> {
               + "ORDER BY CAST(m.posted_at AS DATE) ASC",
       nativeQuery = true)
   List<MediaChartProjection> getReelsChartCommentsByDay(@Param("id") Long influencerId);
-
 }

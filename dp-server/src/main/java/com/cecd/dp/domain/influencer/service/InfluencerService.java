@@ -78,7 +78,6 @@ public class InfluencerService {
     List<MediaChartProjection> reelsChartLikes = null;
     List<FollowerChartProjection> followerChart = metaRepository.findFollowerChart(influencerId);
 
-
     if (period.equals("W")) {
       reelsChartComments = mediaRepository.getReelsChartCommentsByWeek(influencerId);
       reelsChartLikes = mediaRepository.getReelsChartLikesByWeek(influencerId);
@@ -87,7 +86,6 @@ public class InfluencerService {
       reelsChartComments = mediaRepository.getReelsChartCommentsByDay(influencerId);
       reelsChartLikes = mediaRepository.getReelsChartLikesByDay(influencerId);
     }
-
 
     return GetInfluencerReportDTO.builder()
         .profile(profile)

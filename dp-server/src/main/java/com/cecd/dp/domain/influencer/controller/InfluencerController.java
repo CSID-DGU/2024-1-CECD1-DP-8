@@ -13,7 +13,6 @@ public class InfluencerController {
 
   private final InfluencerService influencerService;
 
-
   public InfluencerController(InfluencerService influencerService) {
     this.influencerService = influencerService;
   }
@@ -22,7 +21,7 @@ public class InfluencerController {
   @GetMapping("/report/{id}")
   // TODO: period가 W 와 D 만 받도록 글로벌 예외처리 어
   public ApiResponse<?> getReport(
-          @PathVariable(name = "id") Long influencerId, @RequestParam("period") String period) {
+      @PathVariable(name = "id") Long influencerId, @RequestParam("period") String period) {
     return ApiResponse.onSuccess(influencerService.getReport(influencerId, period));
   }
 }

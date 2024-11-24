@@ -14,10 +14,9 @@ public interface MetaRepository extends JpaRepository<Meta, Long> {
   List<Meta> findMetaByInfluencerId(@Param("id") Long influencerId, Pageable pageable);
 
   @Query(
-          "SELECT m.followerCnt AS followerCnt, m.createdAt AS createdAt "+
-          "FROM Meta AS m "+
-          "WHERE m.influencer.id = :influencerId "+
-          "ORDER BY m.createdAt ASC"
-  )
+      "SELECT m.followerCnt AS followerCnt, m.createdAt AS createdAt "
+          + "FROM Meta AS m "
+          + "WHERE m.influencer.id = :influencerId "
+          + "ORDER BY m.createdAt ASC")
   List<FollowerChartProjection> findFollowerChart(Long influencerId);
 }

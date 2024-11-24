@@ -69,6 +69,4 @@ public interface InfluencerRepository extends JpaRepository<Influencer, Long> {
               + ") AS subquery",
       nativeQuery = true)
   Float getCurrentWeekCommentsAvgById(@Param("id") Long influencerId);
-
-
 }
