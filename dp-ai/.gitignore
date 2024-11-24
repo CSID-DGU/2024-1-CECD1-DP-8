@@ -16,7 +16,7 @@ __pycache__/
 
 # Python virtual environment (venv) 제외
 venv/
-
+39venv/
 
 # fast_api_server의 config.py 제외
 fast_api_server/config.py
