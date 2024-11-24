@@ -22,7 +22,7 @@ public class InfluencerController {
   @GetMapping("/report/{id}")
   // TODO: period가 W 와 D 만 받도록 글로벌 예외처리 어
   public ApiResponse<?> getReport(
-          @PathVariable(name = "id") String id, @RequestParam("period") String period) {
+      @PathVariable(name = "id") String id, @RequestParam("period") String period) {
 
     GetInfluencerReportDTO report = null;
 
@@ -43,7 +43,4 @@ public class InfluencerController {
       return false;
     }
   }
-
 }
-
-
