@@ -23,24 +23,27 @@ public class Media extends BaseEntity {
   // 게시글 아이디
   private Long id;
 
+  // 게시글 고유 Code
+  private String uniqueCode;
+
   // Grfaph조회_미디어_아이디
   @Column(unique = true)
   private String graphMediaId;
 
   // 댓글 수
-  private Integer replyCnt;
+  private Integer commentsCnt;
 
   // 좋아요 수
   private Integer likeCnt;
 
   // 게시글 생성 유형(FEED||REELS)
-  private String generatedType;
+  private String mediaProductType;
 
   // 게시글 유형(VIDEO|||CAROUSEL_ALBUM)
   private String postType;
 
   // 게시글 링크
-  private String link;
+  private String permaLink;
 
   // 광고 글 여부
   private Boolean isAd;
