@@ -1,5 +1,6 @@
 package com.cecd.dp.domain.influencer.controller;
 
+import com.cecd.dp.domain.influencer.dto.GetInfluencerReportDTO;
 import com.cecd.dp.domain.influencer.service.InfluencerService;
 import com.cecd.dp.global.common.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
@@ -21,7 +22,28 @@ public class InfluencerController {
   @GetMapping("/report/{id}")
   // TODO: period가 W 와 D 만 받도록 글로벌 예외처리 어
   public ApiResponse<?> getReport(
-      @PathVariable(name = "id") Long influencerId, @RequestParam("period") String period) {
-    return ApiResponse.onSuccess(influencerService.getReport(influencerId, period));
+          @PathVariable(name = "id") String id, @RequestParam("period") String period) {
+
+    GetInfluencerReportDTO report = null;
+
+    if (isNumeric(id)) {
+      report = influencerService.getReportByLongId(Long.parseLong(id), period);
+    } else {
+      report = influencerService.getReportByStringId(id, period);
+    }
+
+    return ApiResponse.onSuccess(report);
   }
+
+  private boolean isNumeric(String str) {
+    try {
+      Long.parseLong(str);
+      return true;
+    } catch (NumberFormatException e) {
+      return false;
+    }
+  }
+
 }
+
+

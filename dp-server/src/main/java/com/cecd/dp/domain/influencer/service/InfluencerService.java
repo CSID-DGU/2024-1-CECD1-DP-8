@@ -35,7 +35,7 @@ public class InfluencerService {
     this.mediaRepository = mediaRepository;
   }
 
-  public GetInfluencerReportDTO getReport(Long influencerId, String period) {
+  public GetInfluencerReportDTO getReportByLongId(Long influencerId, String period) {
 
     Influencer influencer =
         influencerRepository
@@ -76,7 +76,7 @@ public class InfluencerService {
 
     List<MediaChartProjection> reelsChartComments = null;
     List<MediaChartProjection> reelsChartLikes = null;
-    List<FollowerChartProjection> followerChart = metaRepository.findFollowerChart(influencerId);
+    List<FollowerChartProjection> followerChart = metaRepository.findFollowerChartById(influencerId);
 
     if (period.equals("W")) {
       reelsChartComments = mediaRepository.getReelsChartCommentsByWeek(influencerId);
@@ -102,5 +102,76 @@ public class InfluencerService {
         .reelsChartLikes(reelsChartLikes)
         .followerCharts(followerChart)
         .build();
+  }
+
+  public GetInfluencerReportDTO getReportByStringId(String nickname, String period) {
+
+    Influencer influencer =
+            influencerRepository
+                    .findByNickname(nickname)
+                    .orElseThrow(() -> new InfluencerHandler(ErrorStatus._NOT_FOUND_USER));
+
+    Long influencerId = influencer.getId();
+
+    // 프로필 정도
+    ProfileProjection profile =
+            influencerRepository.getProfileById(influencerId, PageRequest.of(0, 1)).get(0);
+
+    // 인기 게시물 3개의 고유 코드
+    List<MostPostsProjection> mostCodes =
+            influencerRepository.getMostThreePostsCodesById(influencerId, PageRequest.of(0, 3));
+
+    // 인플루언서 모든 게시물의 모든 해시태그 이름 (DISTINCT)
+    List<String> allTagsOfMedias = influencerRepository.getAllTagNamesById(influencerId);
+
+    // 반응 지수
+    List<Float> reactionQuotient =
+            influencerRepository.calculateReactionQuotientById(influencerId, PageRequest.of(0, 1));
+
+    // 최근 7일 게시물 좋아요 평균
+    Float currentWeekLikeAvg = influencerRepository.getCurrentWeekLikeAvgById(influencerId);
+
+    // 최근 7일 댓글 좋아요 평균
+    Float currentWeekCommentsAvg = influencerRepository.getCurrentWeekCommentsAvgById(influencerId);
+
+    Meta latestMeta =
+            metaRepository.findMetaByInfluencerId(influencerId, PageRequest.of(0, 1)).get(0);
+
+    Float likeAvg = latestMeta.getLikeAvg();
+    Float commentsAvg = latestMeta.getCommentsAvg();
+
+    Float adMediaRatio = mediaRepository.calculateAdMediaPercentageByInfluencerId(influencerId);
+    Float reelsRatio = mediaRepository.calculateReelsMediaPercentageByInfluencerId(influencerId);
+
+    // Chart 관련
+
+    List<MediaChartProjection> reelsChartComments = null;
+    List<MediaChartProjection> reelsChartLikes = null;
+    List<FollowerChartProjection> followerChart = metaRepository.findFollowerChartById(influencerId);
+
+    if (period.equals("W")) {
+      reelsChartComments = mediaRepository.getReelsChartCommentsByWeek(influencerId);
+      reelsChartLikes = mediaRepository.getReelsChartLikesByWeek(influencerId);
+    } else if (period.equals("D")) {
+
+      reelsChartComments = mediaRepository.getReelsChartCommentsByDay(influencerId);
+      reelsChartLikes = mediaRepository.getReelsChartLikesByDay(influencerId);
+    }
+
+    return GetInfluencerReportDTO.builder()
+            .profile(profile)
+            .mostThreePostsCodes(mostCodes)
+            .allTagsOfMedias(allTagsOfMedias)
+            .reactionQuotient(reactionQuotient)
+            .currentWeekLikeAvg(currentWeekLikeAvg)
+            .currentWeekCommentsAvg(currentWeekCommentsAvg)
+            .likeAvg(likeAvg)
+            .commentsAvg(commentsAvg)
+            .adMediaRatio(adMediaRatio)
+            .reelsRatio(reelsRatio)
+            .reelsChartComments(reelsChartComments)
+            .reelsChartLikes(reelsChartLikes)
+            .followerCharts(followerChart)
+            .build();
   }
 }
