@@ -39,8 +39,8 @@ export default function PostAnalysisPage({ reportData }) {
             return (
                 <iframe
                     src={postUrl}
-                    width="400"
-                    height="700"
+                    width="300"
+                    height="600"
                     frameBorder="0"
                     scrolling="no"
                     allowTransparency="true"
@@ -69,7 +69,7 @@ export default function PostAnalysisPage({ reportData }) {
         labels: reelsChartLikes.map((item) => item.postedAt),
         datasets: [
             {
-                label: 'Reels Likes Trend',
+                label: '릴스 좋아요 추이',
                 data: reelsChartLikes.map((item) => item.totalCnt),
                 fill: false,
                 backgroundColor: '#4A3AFF',
@@ -82,7 +82,7 @@ export default function PostAnalysisPage({ reportData }) {
         labels: reelsChartComments.map((item) => item.postedAt),
         datasets: [
             {
-                label: 'Reels Comments Trend',
+                label: '릴스 댓글 추이',
                 data: reelsChartComments.map((item) => item.totalCnt),
                 fill: false,
                 backgroundColor: '#FF3A4A',
@@ -96,31 +96,78 @@ export default function PostAnalysisPage({ reportData }) {
             {
                 label: '팔로워 추이',
                 data: followerCharts.map((entry) => entry.followerCnt), // y축 데이터 (팔로워 수)
-                borderColor: '#4A90E2',
-                backgroundColor: 'rgba(74, 144, 226, 0.2)',
-                fill: true,
-                tension: 0.3,
-                pointRadius: 3,
+                borderColor: 'rgba(103, 58, 183, 1)', // 선 색상
+                backgroundColor: 'rgba(103, 58, 183, 0.2)', // 투명 배경색
+                fill: true, // 배경색 채우기
+                tension: 0.4, // 곡선 정도
+                pointRadius: 5, // 포인트 크기
+                pointBackgroundColor: 'rgba(255, 255, 255, 1)', // 포인트 배경색
+                pointBorderColor: 'rgba(103, 58, 183, 1)', // 포인트 테두리 색상
+                pointHoverRadius: 8, // 호버 시 포인트 크기
             },
         ],
     };
+
     const followerTrendOptions = {
         responsive: true,
         maintainAspectRatio: false,
         plugins: {
-            legend: { display: false },
+            legend: {
+                display: true,
+                labels: {
+                    color: '#333',
+                    font: {
+                        size: 14,
+                        family: "'Roboto', sans-serif",
+                    },
+                },
+            },
+            tooltip: {
+                enabled: true,
+                backgroundColor: 'rgba(50, 50, 50, 0.8)',
+                titleColor: '#fff',
+                bodyColor: '#fff',
+                borderColor: 'rgba(103, 58, 183, 1)',
+                borderWidth: 1,
+                cornerRadius: 4,
+            },
         },
         scales: {
             x: {
                 type: 'time', // 시간 데이터로 설정
                 time: { unit: 'day', tooltipFormat: 'yyyy-MM-dd' }, // 일 단위 표시
+                grid: {
+                    color: 'rgba(200, 200, 200, 0.3)',
+                    drawBorder: true,
+                },
+                ticks: {
+                    color: '#666',
+                    font: {
+                        size: 12,
+                    },
+                },
             },
             y: {
                 beginAtZero: true,
-                ticks: { stepSize: 10 },
+                grid: {
+                    color: 'rgba(200, 200, 200, 0.3)',
+                    drawBorder: true,
+                },
+                ticks: {
+                    stepSize: 10,
+                    color: '#666',
+                    font: {
+                        size: 12,
+                    },
+                },
             },
         },
+        animation: {
+            duration: 1500,
+            easing: 'easeInOutQuart',
+        },
     };
+
     // Word Cloud data mapping
     const wordCloudData = allTagsOfMedias.map((tag) => ({
         text: tag,
@@ -238,22 +285,28 @@ export default function PostAnalysisPage({ reportData }) {
 const PostAnalysisWrapper = styled.div`
     display: flex;
     flex-direction: column;
-    padding: 0 5vw; /* 좌우 padding을 뷰포트 단위로 설정 */
-    width: 100%;
     box-sizing: border-box;
-    max-width: 1500px; /* 최대 너비 제한 */
-    margin: 0 auto; /* 가운데 정렬 */
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 5%;
 `;
 
 const PeriodButton = styled.button`
     background: ${(props) =>
         props.active ? 'linear-gradient(90deg, rgba(74, 58, 255, 0.80) 0%, rgba(102, 48, 170, 0.80) 100%)' : '#ddd'};
     color: white;
-    padding: 10px 20px;
-    margin-left: 10px;
-    border-radius: 10px;
+    padding: 8px 16px;
+    margin-left: 8px;
+    border-radius: 8px;
     cursor: pointer;
     transition: background 0.3s ease;
+    font-size: 14px;
+`;
+
+const PostSection = styled.div`
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* 최소 크기를 줄임 */
+    gap: 16px;
 `;
 
 const PeriodSelector = styled.div`
@@ -270,38 +323,30 @@ const SectionTitle = styled.h2`
     font-weight: 600;
     margin-bottom: 20px;
 `;
-
-const PostSection = styled.div`
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* 반응형 그리드 */
-    gap: 20px;
-`;
-
 const Post = styled.div`
-    border-radius: 20px;
+    border-radius: 16px;
     background-color: #fff;
-    padding: 10px;
+    padding: 8px;
     text-align: center;
-    min-height: 200px;
+    min-height: 180px;
 `;
 
 const AnalysisWrapper = styled.div`
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 20px;
-    margin-top: 20px;
-    min-height: 500px;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* 최소 크기 조정 */
+    gap: 16px;
+    margin-top: 16px;
 `;
 
 const WordCloudSection = styled.div`
-    padding: 20px;
-    border-radius: 20px;
+    padding: 16px;
+    border-radius: 16px;
     background-color: #fff;
 `;
 
 const ReactionIndexSection = styled.div`
-    padding: 20px;
-    border-radius: 20px;
+    padding: 16px;
+    border-radius: 16px;
     background-color: #fff;
     text-align: center;
     justify-content: center;
@@ -310,36 +355,22 @@ const ReactionIndexSection = styled.div`
 const Label = styled.h3`
     color: #000;
     text-align: center;
-    font-size: 19px;
+    font-size: 16px;
     font-weight: 600;
     line-height: normal;
-    margin-bottom: 10px;
-`;
-
-const Reaction = styled.div`
-    display: flex;
-    justify-content: center;
-    gap: 50px;
-    margin-top: 180px;
-    flex-direction: column;
-`;
-
-const ReactionData = styled.p`
-    font-size: 50px;
-    font-weight: 600;
-    color: #7f00ff;
+    margin-bottom: 8px;
 `;
 
 const AverageStatsWrapper = styled.div`
     display: grid;
-    grid-template-columns: repeat(4, 1fr); /* Four columns for the stats */
-    gap: 20px;
-    margin-top: 30px;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); /* 최소 크기 감소 */
+    gap: 16px;
+    margin-top: 24px;
 `;
 
 const StatBox = styled.div`
-    padding: 20px;
-    border-radius: 20px;
+    padding: 16px;
+    border-radius: 16px;
     background-color: #fff;
     text-align: center;
 `;
@@ -350,34 +381,53 @@ const StatContent = styled.div`
     justify-content: center;
 
     img {
-        width: 40px;
-        height: 40px;
-        margin-right: 10px;
+        width: 32px;
+        height: 32px;
+        margin-right: 8px;
     }
 `;
 
 const DataValue = styled.p`
     color: #4a3aff;
-    font-size: 32px;
+    font-size: 24px;
     font-weight: 600;
 `;
 
 const GraphWrapper = styled.div`
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 20px;
-    margin-top: 30px;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* 최소 크기 조정 */
+    gap: 16px;
+    margin-top: 24px;
 `;
 
 const GraphBox = styled.div`
-    padding: 20px;
+    padding: 16px;
     display: flex;
     flex-direction: column;
     background-color: #fff;
-    border-radius: 20px;
+    border-radius: 16px;
     text-align: center;
     align-items: center;
 `;
+
+const FollowerChartWrapper = styled.div`
+    height: 300px;
+`;
+
+const Reaction = styled.div`
+    display: flex;
+    justify-content: center;
+    gap: 50px;
+    margin-top: 100px;
+    flex-direction: column;
+`;
+
+const ReactionData = styled.p`
+    font-size: 50px;
+    font-weight: 600;
+    color: #7f00ff;
+`;
+
 const Description = styled.p`
     color: #000;
     text-align: center;
@@ -393,7 +443,7 @@ const SpinnerWrapper = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 300px; /* 스피너가 중앙에 위치하도록 하기 위한 높이 설정 */
+    height: 300px;
 `;
 
 const Spinner = styled.div`
@@ -418,8 +468,4 @@ const FollowerTrendWrapper = styled.div`
     border-radius: 20px;
     background-color: #fff;
     text-align: center;
-`;
-
-const FollowerChartWrapper = styled.div`
-    height: 400px; /* 차트 높이 설정 */
 `;

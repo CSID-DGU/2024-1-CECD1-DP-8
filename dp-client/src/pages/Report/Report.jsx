@@ -66,7 +66,7 @@ export default function Report() {
 
     const [{ x }, setSpring] = useSpring(() => ({
         x: 0,
-        config: { tension: 100, friction: 15 }, // Increase tension for faster motion
+        config: { tension: 100, friction: 15 },
     }));
 
     const bind = useDrag((state) => {
@@ -84,7 +84,6 @@ export default function Report() {
                 setSpring.start({ x: x.get() - 2 });
                 setScrollX((prev) => {
                     if (Math.abs(prev) >= scrollContainerRef.current.scrollWidth / 2) {
-                        return 0; // 콘텐츠 위치 초기화
                     }
                     return prev - 2;
                 });
@@ -154,7 +153,7 @@ const ReportWrapper = styled.div`
     max-width: 100%;
     width: 100%;
     margin: 0 auto;
-    padding: 10px;
+    padding: 20px;
 `;
 const ContentWrapper = styled.div`
     flex: 1;
@@ -169,20 +168,20 @@ const Section = styled.div`
 `;
 
 const SectionTitle = styled.h1`
-    font-size: 48px;
+    font-size: 28px;
     font-weight: 600;
     text-align: center;
     background: linear-gradient(180deg, #780bc2 0%, #39055c 100%);
     background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    margin-bottom: 20px;
 `;
 const ScrollableContainer = styled.div`
     overflow: hidden;
     position: relative;
     width: 100%;
     height: 100%;
+    padding: 10px;
 `;
 
 const AnimatedScroll = styled(animated.div)`
