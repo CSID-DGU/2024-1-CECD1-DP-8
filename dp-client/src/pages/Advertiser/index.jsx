@@ -14,7 +14,7 @@ export default function AdvertiserMain() {
                         편하게 찾아보세요!
                     </h1>
                 </IntroWrapper>
-                <StyledLink to="/matchingpage">
+                <StyledLink to="/recommend">
                     <SearchButton>인플루언서 추천 받기</SearchButton>
                 </StyledLink>
                 <HomepageSection>
