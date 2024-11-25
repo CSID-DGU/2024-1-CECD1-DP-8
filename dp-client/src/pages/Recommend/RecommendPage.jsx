@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { useNavigate } from 'react-router-dom'; // React Router로 페이지 이동을 처리
+import { useNavigate } from 'react-router-dom';
 import FilterIcon from '../../assets/filter-add.svg';
 import SearchIcon from '../../assets/search-icon.png';
 import InfluencerFilterModal from '../../components/Filter/InfluencerFilterModal';
 
 export default function RecommendPage() {
     const [showModal, setShowModal] = useState(false);
-    const [searchPrompt, setSearchPrompt] = useState(''); // 검색 프롬프트 상태
+    const [searchPrompt, setSearchPrompt] = useState('');
     const [filters, setFilters] = useState({
         beauty: false,
         fashion: false,
@@ -20,16 +20,39 @@ export default function RecommendPage() {
         hashtagInput: '',
     });
 
-    const navigate = useNavigate(); // 페이지 이동을 위한 navigate 함수
+    const navigate = useNavigate();
 
     const handleOpenModal = () => setShowModal(true);
     const handleCloseModal = () => setShowModal(false);
 
-    const handleSearch = () => {
-        if (searchPrompt.trim() !== '') {
-            navigate(`/chat?prompt=${encodeURIComponent(searchPrompt)}`);
-        } else {
+    const handleSearch = async () => {
+        if (searchPrompt.trim() === '') {
             alert('검색어를 입력해주세요!');
+            return;
+        }
+
+        try {
+            const response = await fetch('https://949f-35-186-158-225.ngrok-free.app/chat', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ question: searchPrompt }),
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+
+            const data = await response.json();
+
+            navigate('/chat', {
+                state: {
+                    question: searchPrompt,
+                    chatResponse: data.result,
+                },
+            });
+        } catch (err) {
+            console.error('API 호출 오류:', err);
+            alert('서버와 연결할 수 없습니다. 다시 시도해주세요.');
         }
     };
 
@@ -52,7 +75,7 @@ export default function RecommendPage() {
                             placeholder="원하는 인플루언서를 검색해보세요"
                             value={searchPrompt}
                             onChange={(e) => setSearchPrompt(e.target.value)}
-                            onKeyPress={handleKeyPress} // 엔터 키 입력 처리
+                            onKeyPress={handleKeyPress}
                         />
                         <SearchIconContainer onClick={handleSearch}>
                             <StyledSearchIcon src={SearchIcon} alt="Search Icon" />
@@ -152,6 +175,26 @@ const SearchIconContainer = styled.div`
     font-size: 20px;
     color: #666;
     cursor: pointer;
+`;
+
+const KeywordSection = styled.div`
+    margin: 20px auto;
+    text-align: center;
+`;
+
+const KeywordInput = styled.input`
+    width: 60%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 30px;
+    font-size: 16px;
+    outline: none;
+`;
+
+const KeywordDescription = styled.p`
+    margin-top: 10px;
+    font-size: 14px;
+    color: #666;
 `;
 
 const Description = styled.p`
