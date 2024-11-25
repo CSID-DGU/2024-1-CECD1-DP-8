@@ -79,7 +79,7 @@ export default function Chat() {
 
         try {
             setLoading(true);
-            const response = await fetch('https://949f-35-186-158-225.ngrok-free.app/chat', {
+            const response = await fetch('https://49a5-35-186-158-225.ngrok-free.app/chat', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ question: text }),
