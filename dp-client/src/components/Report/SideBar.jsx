@@ -1,14 +1,7 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 
-export default function SideBar({ profile, onSelect }) {
-    const [activeButton, setActiveButton] = useState('postAnalysis');
-
-    const handleButtonClick = (button) => {
-        setActiveButton(button);
-        onSelect(button);
-    };
-
+export default function SideBar({ profile }) {
     return (
         <SidebarWrapper>
             <ProfileImage>
@@ -27,27 +20,6 @@ export default function SideBar({ profile, onSelect }) {
                     <DataLabel>팔로워</DataLabel>
                 </ProfileDataItem>
             </ProfileData>
-            <ButtonGroup>
-                <SidebarButton
-                    isActive={activeButton === 'postAnalysis'}
-                    onClick={() => handleButtonClick('postAnalysis')}
-                >
-                    포스트 분석
-                </SidebarButton>
-                <SidebarButton
-                    isActive={activeButton === 'followerTrend'}
-                    onClick={() => handleButtonClick('followerTrend')}
-                >
-                    팔로워 분석
-                </SidebarButton>
-                <SidebarButton
-                    isActive={activeButton === 'similarFollower'}
-                    onClick={() => handleButtonClick('similarFollower')}
-                >
-                    유사 인플루언서
-                </SidebarButton>
-            </ButtonGroup>
-            <Logo>LOGO</Logo>
         </SidebarWrapper>
     );
 }
@@ -61,6 +33,7 @@ const SidebarWrapper = styled.div`
     flex-direction: column;
     align-items: center;
     text-align: center;
+    height: 600px;
 `;
 
 const ProfileImage = styled.div`
@@ -124,47 +97,4 @@ const DataLabel = styled.p`
     font-size: 14px;
     font-weight: 400;
     color: #666;
-`;
-
-const ButtonGroup = styled.div`
-    width: 100%;
-    margin-top: 20px;
-`;
-
-const SidebarButton = styled.button`
-    display: flex;
-    height: 55px;
-    width: 210px;
-    padding: 15px;
-    flex-direction: column;
-    gap: 10px;
-    align-self: stretch;
-    margin-bottom: 10px;
-    border: none;
-    border-radius: 10px;
-    color: var(--white-100, #fff);
-    font-size: 16px;
-    font-style: normal;
-    font-weight: 500;
-    line-height: normal;
-    letter-spacing: -0.5px;
-    text-transform: capitalize;
-    background: ${({ isActive }) =>
-        isActive ? 'linear-gradient(90deg, rgba(74, 58, 255, 0.80) 0%, rgba(102, 48, 170, 0.80) 100%)' : '#d3d3d3'};
-    cursor: pointer;
-    transition: background 0.3s ease;
-
-    &:hover {
-        background: ${({ isActive }) =>
-            isActive
-                ? 'linear-gradient(90deg, rgba(74, 58, 255, 0.80) 0%, rgba(102, 48, 170, 0.80) 100%)'
-                : 'rgba(200, 200, 200, 1)'};
-    }
-`;
-
-const Logo = styled.div`
-    font-size: 18px;
-    font-weight: 600;
-    margin-top: 20px;
-    text-transform: uppercase;
 `;

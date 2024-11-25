@@ -19,7 +19,7 @@ export default function InfluencerMain() {
                 </StyledLink>
                 <HomepageSection>
                     <h2>인스타그램 계정 분석</h2>
-                    <p>팔로워 추이부터 유효 팔로워 비율, 해시태그 분석, 평균 좋아요, 댓글 수 등의 정보를 제공합니다.</p>
+                    <p>팔로워 추이부터 인기 포스트, 해시태그 분석, 평균 좋아요, 댓글 수 등의 정보를 제공합니다.</p>
                     <img src={require('../../assets/influintro.png')} alt="홈페이지 스크린샷" />
                 </HomepageSection>
             </Wrapper>
