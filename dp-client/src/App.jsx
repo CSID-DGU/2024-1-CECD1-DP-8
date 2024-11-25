@@ -23,7 +23,6 @@ function App() {
     return (
         <Provider store={store}>
             {' '}
-            {/* Redux Store를 Provider로 감싸기 */}
             <NavbarProvider>
                 <Router>
                     <NavbarRenderer /> {/* Navbar 렌더링 */}
@@ -33,6 +32,7 @@ function App() {
                         <Route path="/advertiser" element={<Advertiser />} />
                         <Route path="/influencer" element={<Influencer />} />
                         <Route path="/report/:id" element={<Report />} />
+                        <Route path="/report" element={<Report />} />
                         <Route path="/influmypage" element={<InfluencerMypage />} />
                         <Route path="/admypage" element={<AdvertiserMypage />} />
                         <Route path="/matchingPage" element={<MatchingPage />} />

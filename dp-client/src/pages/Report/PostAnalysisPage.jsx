@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { Line } from 'react-chartjs-2';
-import { Chart as ChartJS, LineElement, CategoryScale, LinearScale, PointElement } from 'chart.js';
+import { Chart as ChartJS, LineElement, CategoryScale, LinearScale, PointElement, TimeScale } from 'chart.js';
 import styled from 'styled-components';
 import likeIcon from '../../assets/like-icon.png';
 import commentIcon from '../../assets/comment-icon.png';
 import WordCloudComponent from '../../components/Report/WordCloudComponent'; // New Component
-
+import 'chartjs-adapter-date-fns';
 // Register chart.js components
-ChartJS.register(LineElement, CategoryScale, LinearScale, PointElement);
+ChartJS.register(LineElement, CategoryScale, LinearScale, PointElement, TimeScale);
 
 export default function PostAnalysisPage({ reportData }) {
     const [period, setPeriod] = useState('W'); // Default period is 'Weekly'
@@ -25,6 +25,7 @@ export default function PostAnalysisPage({ reportData }) {
         reelsChartComments = [],
         likeAvg = 0,
         commentsAvg = 0,
+        followerCharts = [], // 팔로워 추이 데이터
     } = reportData || {}; // Fallback to default values if properties are missing
 
     const handlePeriodChange = (newPeriod) => {
@@ -89,7 +90,37 @@ export default function PostAnalysisPage({ reportData }) {
             },
         ],
     };
-
+    const followerTrendData = {
+        labels: followerCharts.map((entry) => entry.createdAt), // x축 데이터 (날짜)
+        datasets: [
+            {
+                label: '팔로워 추이',
+                data: followerCharts.map((entry) => entry.followerCnt), // y축 데이터 (팔로워 수)
+                borderColor: '#4A90E2',
+                backgroundColor: 'rgba(74, 144, 226, 0.2)',
+                fill: true,
+                tension: 0.3,
+                pointRadius: 3,
+            },
+        ],
+    };
+    const followerTrendOptions = {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+            legend: { display: false },
+        },
+        scales: {
+            x: {
+                type: 'time', // 시간 데이터로 설정
+                time: { unit: 'day', tooltipFormat: 'yyyy-MM-dd' }, // 일 단위 표시
+            },
+            y: {
+                beginAtZero: true,
+                ticks: { stepSize: 10 },
+            },
+        },
+    };
     // Word Cloud data mapping
     const wordCloudData = allTagsOfMedias.map((tag) => ({
         text: tag,
@@ -190,18 +221,28 @@ export default function PostAnalysisPage({ reportData }) {
                     </GraphBox>
                 </GraphWrapper>
             </Section>
+            <Section>
+                <Section>
+                    <FollowerTrendWrapper>
+                        <Label>팔로워 추이</Label>
+                        <FollowerChartWrapper>
+                            <Line data={followerTrendData} options={followerTrendOptions} />
+                        </FollowerChartWrapper>
+                    </FollowerTrendWrapper>
+                </Section>
+            </Section>
         </PostAnalysisWrapper>
     );
 }
 
-// Styled components for layout
 const PostAnalysisWrapper = styled.div`
     display: flex;
     flex-direction: column;
+    padding: 0 5vw; /* 좌우 padding을 뷰포트 단위로 설정 */
     width: 100%;
-    min-width: 1000px;
-    padding: 40px;
     box-sizing: border-box;
+    max-width: 1500px; /* 최대 너비 제한 */
+    margin: 0 auto; /* 가운데 정렬 */
 `;
 
 const PeriodButton = styled.button`
@@ -218,7 +259,7 @@ const PeriodButton = styled.button`
 const PeriodSelector = styled.div`
     display: flex;
     justify-content: flex-end;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
 `;
 const Section = styled.div`
     margin-bottom: 30px;
@@ -232,7 +273,7 @@ const SectionTitle = styled.h2`
 
 const PostSection = styled.div`
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* 반응형 그리드 */
     gap: 20px;
 `;
 
@@ -371,4 +412,14 @@ const Spinner = styled.div`
             transform: rotate(360deg);
         }
     }
+`;
+const FollowerTrendWrapper = styled.div`
+    padding: 20px;
+    border-radius: 20px;
+    background-color: #fff;
+    text-align: center;
+`;
+
+const FollowerChartWrapper = styled.div`
+    height: 400px; /* 차트 높이 설정 */
 `;

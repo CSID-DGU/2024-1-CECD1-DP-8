@@ -36,6 +36,7 @@ export default function Main() {
                 <Logo>
                     <img src={LogoImg} alt="Logo" />
                 </Logo>
+
                 <LeftSection>
                     <p>사업자이신가요?</p>
                     <Links>
@@ -78,21 +79,71 @@ export default function Main() {
     );
 }
 const Wrapper = styled.div`
-    position: relative;
-    overflow-x: hidden; /* 수평 스크롤 방지 */
-    overflow-y: auto; /* 세로 스크롤만 허용 */
+    display: flex;
     width: 100vw; /* Viewport width */
     height: 100vh; /* Viewport height */
+    overflow: hidden; /* 스크롤 방지 */
     margin: 0;
     padding: 0;
-    box-sizing: border-box; /* 여백 계산 포함 */
+    box-sizing: border-box;
 `;
 
 const Container = styled.div`
     display: flex;
-    flex-grow: 1;
     width: 100%; /* Full width */
     height: 100%; /* Full height */
+`;
+
+const LeftSection = styled.div`
+    flex: 1; /* 화면의 반 차지 */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-image: url(${advertiserBackground});
+    background-size: cover;
+    background-position: center;
+    text-align: center;
+    padding: 20px;
+    color: var(--white-100, #fff);
+
+    p {
+        font-size: clamp(1.5rem, 4vw, 3rem); /* 반응형 폰트 크기 */
+        font-weight: bold;
+        text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    }
+`;
+
+const RightSection = styled.div`
+    flex: 1; /* 화면의 반 차지 */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-image: url(${influencerBackground});
+    background-size: cover;
+    background-position: center;
+    text-align: center;
+    padding: 20px;
+    margin-left: -5px;
+    filter: contrast(1.1); /* 대비 조정 */
+    color: var(--white-100, #fff);
+
+    p {
+        font-size: clamp(1.5rem, 4vw, 3rem); /* 반응형 폰트 크기 */
+        font-weight: bold;
+        text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+        margin: 0;
+    }
+`;
+
+const Links = styled.div`
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: auto;
+    margin-top: 300px;
+
     button {
         border: none;
         display: flex;
@@ -116,67 +167,6 @@ const Container = styled.div`
     }
 `;
 
-const LeftSection = styled.div`
-    box-sizing: border-box;
-    background-image: url(${advertiserBackground});
-    background-size: cover;
-    background-position: center; /* Center the image */
-    flex: 1;
-    height: 100%;
-    margin-right: -5px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 0 2%; /* 좌우 여백 */
-    p {
-        color: var(--white-100, #fff);
-        text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-        -webkit-text-stroke-width: 1;
-        -webkit-text-stroke-color: var(--white-100, #fff);
-        font-family: Inter;
-        font-size: 64px;
-        font-style: normal;
-        font-weight: 700;
-        line-height: 36px; /* 56.25% */
-        text-align: center;
-    }
-`;
-
-const RightSection = styled.div`
-    background-image: url(${influencerBackground});
-    background-size: cover;
-    background-position: center; /* Center the image */
-    flex: 1;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 0 2%; /* 좌우 여백 */
-    filter: contrast(1.1); /* 높인 대비 */
-    p {
-        color: var(--white-100, #fff);
-        text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-        -webkit-text-stroke-width: 1;
-        -webkit-text-stroke-color: var(--white-100, #fff);
-        font-family: Inter;
-        font-size: 64px;
-        font-style: normal;
-        font-weight: 700;
-        line-height: 36px;
-        text-align: center;
-    }
-`;
-
-const Links = styled.div`
-    display: flex;
-    flex-direction: column;
-    position: absolute;
-    bottom: 7.5rem;
-    width: auto; /* 부모 컨테이너에 맞게 크기 조정 */
-`;
-
 const Logo = styled.div`
     display: flex;
     position: absolute;
@@ -184,25 +174,39 @@ const Logo = styled.div`
 `;
 
 const LoginLink = styled(Link)`
-    color: var(--white-100, #fff);
-    font-family: Inter;
-    font-size: 23px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: normal;
+    font-size: clamp(0.8rem, 2vw, 1rem);
     text-decoration: none;
-    display: flex;
-    justify-content: center;
-    padding: 10px;
+    color: inherit;
+    text-align: center;
+    cursor: pointer;
 `;
 
 const ColumnLine = styled.div`
-    display: flex;
-    width: 0px;
-    right: 90px;
+    width: 1px;
     height: 100%;
-    border: 1px solid var(--black-10, rgba(28, 28, 28, 0.1));
+    background-color: var(--black-10, rgba(28, 28, 28, 0.1));
 `;
+
+// const LoginLink = styled(Link)`
+//     color: var(--white-100, #fff);
+//     font-family: Inter;
+//     font-size: 23px;
+//     font-style: normal;
+//     font-weight: 400;
+//     line-height: normal;
+//     text-decoration: none;
+//     display: flex;
+//     justify-content: center;
+//     padding: 10px;
+// `;
+
+// const ColumnLine = styled.div`
+//     display: flex;
+//     width: 0px;
+//     right: 90px;
+//     height: 100%;
+//     border: 1px solid var(--black-10, rgba(28, 28, 28, 0.1));
+// `;
 // const Container = styled.div`
 //     display: flex;
 //     width: auto;
@@ -232,12 +236,10 @@ const ColumnLine = styled.div`
 
 const ButtonText = styled.span`
     position: relative;
-    left: -17px;
 `;
 
 const ButtonIcon = styled.img`
     position: relative;
-    left: -10px;
 `;
 
 const Arrow = styled.div`
