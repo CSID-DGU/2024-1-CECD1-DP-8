@@ -1,72 +1,108 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import styled from 'styled-components';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { setProfiles } from '../../store/slices/profileSlice';
-import { addMessage } from '../../store/slices/chatSlice';
 import ProfileCard from '../../components/Recommend/ProfileCard';
 import SendIcon from '../../assets/send-icon.svg';
 import ReloadIcon from '../../assets/reload-icon.svg';
+import { fetchData } from '../../services/api';
+import { useLocation } from 'react-router-dom';
 
 export default function Chat() {
+    const location = useLocation();
+    const [messages, setMessages] = useState(
+        location.state?.question && location.state?.chatResponse
+            ? [
+                  { type: 'user', text: location.state.question }, // RecommendPage에서 입력한 질문
+                  { type: 'bot', text: location.state.chatResponse }, // RecommendPage에서 전달된 응답
+              ]
+            : []
+    );
+    const [influencers, setInfluencers] = useState([]);
     const dispatch = useDispatch();
-    const profiles = useSelector((state) => state.profiles);
-    const messages = useSelector((state) => state.chat.messages);
-    const [loading, setLoading] = useState(false); // 챗봇 응답 로딩 상태
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
+    const [inputText, setInputText] = useState('');
+    const messagesEndRef = useRef(null);
 
-    // 로컬 스토리지에서 상태 복원
+    const extractInfluencerIds = (responseText) => {
+        const idRegex = /id:([a-zA-Z0-9_]+)/g;
+        const matches = [...responseText.matchAll(idRegex)];
+        return matches.map((match) => match[1]);
+    };
     useEffect(() => {
-        const savedMessages = localStorage.getItem('chatMessages');
-        if (savedMessages) {
-            JSON.parse(savedMessages).forEach((msg) => dispatch(addMessage(msg)));
+        if (messagesEndRef.current) {
+            messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
         }
-
-        const savedProfiles = localStorage.getItem('profiles');
-        if (savedProfiles) {
-            dispatch(setProfiles(JSON.parse(savedProfiles)));
-        }
-    }, [dispatch]);
-
-    // 메시지가 변경될 때 로컬 스토리지에 저장
-    useEffect(() => {
-        localStorage.setItem('chatMessages', JSON.stringify(messages));
     }, [messages]);
 
-    // 프로필 변경 시 로컬 스토리지에 저장
-    useEffect(() => {
-        localStorage.setItem('profiles', JSON.stringify(profiles));
-    }, [profiles]);
+    const loadInfluencerProfiles = async (ids) => {
+        try {
+            const promises = ids.map((id) =>
+                fetchData(`/influencer/report/${id}`, { period: 'W' }).then((res) => ({
+                    ...res.result.profile,
+                    allTagsOfMedias: res.result.allTagsOfMedias,
+                    id,
+                }))
+            );
 
-    // 메시지 전송 핸들러
-    const handleSendMessage = (text) => {
-        if (text.trim() !== '') {
-            dispatch(addMessage({ type: 'user', text })); // 유저 메시지 추가
-            setLoading(true); // 로딩 상태 활성화
-
-            // 챗봇 응답 API 요청
-            fetch('/api/chat', {
-                method: 'POST',
-                body: JSON.stringify({ message: text }),
-                headers: { 'Content-Type': 'application/json' },
-            })
-                .then((res) => res.json())
-                .then((response) => {
-                    dispatch(addMessage({ type: 'bot', text: response.answer })); // 봇 응답 추가
-                    setLoading(false); // 로딩 상태 비활성화
-                    fetchInfluencerProfiles(); // 인플루언서 카드 업데이트
-                })
-                .catch((err) => {
-                    console.error(err);
-                    setLoading(false);
-                });
+            const results = await Promise.all(promises);
+            setInfluencers(results);
+        } catch (err) {
+            console.error('Error fetching influencer profiles:', err);
         }
     };
 
-    // 인플루언서 API 호출
-    const fetchInfluencerProfiles = () => {
-        fetch('/api/influencer-profiles')
-            .then((res) => res.json())
-            .then((data) => dispatch(setProfiles(data)))
-            .catch(console.error);
+    useEffect(() => {
+        if (messagesEndRef.current) {
+            messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
+        }
+    }, [messages]);
+
+    useEffect(() => {
+        if (messages.length > 0) {
+            const lastMessage = messages[messages.length - 1];
+            if (lastMessage.type === 'bot') {
+                const ids = extractInfluencerIds(lastMessage.text);
+                if (ids.length > 0) {
+                    loadInfluencerProfiles(ids);
+                }
+            }
+        }
+    }, [messages]);
+
+    const handleSendMessage = async (text) => {
+        if (text.trim() === '') return;
+
+        const userMessage = { type: 'user', text };
+        setMessages((prev) => [...prev, userMessage]);
+
+        try {
+            setLoading(true);
+            const response = await fetch('https://949f-35-186-158-225.ngrok-free.app/chat', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ question: text }),
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+
+            const data = await response.json();
+            const botMessage = { type: 'bot', text: data.result };
+
+            setMessages((prev) => [...prev, botMessage]);
+
+            const ids = extractInfluencerIds(data.result);
+            if (ids.length > 0) {
+                loadInfluencerProfiles(ids);
+            }
+        } catch (err) {
+            console.error('Error fetching chat response:', err);
+        } finally {
+            setLoading(false);
+        }
     };
 
     const handleReload = () => {
@@ -76,9 +112,10 @@ export default function Chat() {
     return (
         <PageWrapper>
             <LeftSidebar>
-                {profiles.map((profile) => (
+                {influencers.map((profile) => (
                     <ProfileCard key={profile.id} profile={profile} />
                 ))}
+                {error && <ErrorText>{error}</ErrorText>}
             </LeftSidebar>
             <ChatWrapper>
                 <ChatContainer>
@@ -93,8 +130,32 @@ export default function Chat() {
                                 <TypingDots />
                             </Message>
                         )}
+                        <div ref={messagesEndRef} />
                     </Messages>
-                    <MessageInput onSend={handleSendMessage} onReload={handleReload} />
+                    <InputWrapper>
+                        <ReloadButton onClick={handleReload}>
+                            <img src={ReloadIcon} alt="Reload" />
+                        </ReloadButton>
+                        <Input
+                            value={inputText}
+                            onChange={(e) => setInputText(e.target.value)}
+                            onKeyPress={(e) => {
+                                if (e.key === 'Enter') {
+                                    handleSendMessage(inputText);
+                                    setInputText('');
+                                }
+                            }}
+                            placeholder="메시지를 입력하세요..."
+                        />
+                        <SendButton
+                            onClick={() => {
+                                handleSendMessage(inputText);
+                                setInputText('');
+                            }}
+                        >
+                            <img src={SendIcon} alt="Send" />
+                        </SendButton>
+                    </InputWrapper>
                 </ChatContainer>
             </ChatWrapper>
         </PageWrapper>
@@ -108,6 +169,103 @@ const TypingDots = () => (
         <Dot />
     </TypingDotsWrapper>
 );
+
+const PageWrapper = styled.div`
+    display: flex;
+    height: 100vh;
+`;
+
+const LeftSidebar = styled.div`
+    flex: 1;
+    background: #f9f9f9;
+    padding: 20px;
+    overflow-y: auto;
+`;
+
+const ChatWrapper = styled.div`
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0 20px 20px 20px;
+`;
+
+const ChatContainer = styled.div`
+    width: 90%;
+    height: 90%;
+    border-radius: 30px;
+    background: rgba(232, 230, 255, 0.9);
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+`;
+
+const Messages = styled.div`
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+`;
+
+const Message = styled.div`
+    max-width: 70%;
+    margin-bottom: 15px;
+    padding: 12px 20px;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 1.5;
+    border-radius: 20px;
+    color: ${(props) => (props.isUser ? '#FFF' : '#333')};
+    background: ${(props) => (props.isUser ? '#8a54ff' : '#FFF')};
+    align-self: ${(props) => (props.isUser ? 'flex-end' : 'flex-start')};
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+`;
+
+const InputWrapper = styled.div`
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    background: #f9f9f9;
+    border-radius: 30px;
+    margin: 20px;
+`;
+
+const Input = styled.input`
+    flex: 1;
+    padding: 12px 20px;
+    font-size: 14px;
+    border: none;
+    border-radius: 20px;
+    outline: none;
+`;
+
+const ReloadButton = styled.button`
+    width: 40px;
+    height: 40px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+
+    img {
+        width: 100%;
+        height: 100%;
+    }
+`;
+
+const SendButton = styled.button`
+    width: 40px;
+    height: 40px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+
+    img {
+        width: 100%;
+        height: 100%;
+    }
+`;
 
 const TypingDotsWrapper = styled.div`
     display: flex;
@@ -143,150 +301,8 @@ const Dot = styled.div`
     }
 `;
 
-const MessageInput = ({ onSend, onReload }) => {
-    const [text, setText] = useState('');
-
-    const handleKeyPress = (e) => {
-        if (e.key === 'Enter') {
-            onSend(text);
-            setText('');
-        }
-    };
-
-    return (
-        <InputWrapper>
-            <ReloadButton onClick={onReload}>
-                <img src={ReloadIcon} alt="Reload" />
-            </ReloadButton>
-            <Input
-                value={text}
-                onChange={(e) => setText(e.target.value)}
-                onKeyPress={handleKeyPress}
-                placeholder="메시지를 입력하세요..."
-            />
-            <SendButton
-                onClick={() => {
-                    onSend(text);
-                    setText('');
-                }}
-            >
-                <img src={SendIcon} alt="Send" />
-            </SendButton>
-        </InputWrapper>
-    );
-};
-
-// 스타일링
-const PageWrapper = styled.div`
-    display: flex;
-    width: 100vw;
-    height: 100vh;
-`;
-
-const LeftSidebar = styled.div`
-    width: 300px;
-    background: #f9f9f9;
-    padding: 10px;
-    overflow-y: auto;
-`;
-
-const ChatWrapper = styled.div`
-    flex: 1;
-    display: flex;
-    justify-content: flex-end;
-    padding: 20px;
-    background: #f5f5fc;
-`;
-
-const ChatContainer = styled.div`
-    width: 750px;
-    height: 700px;
-    border-radius: 30px;
-    background: rgba(232, 230, 255, 0.9);
-    display: flex;
-    flex-direction: column;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    margin-right: 20px;
-`;
-
-const Messages = styled.div`
-    flex: 1;
-    padding: 20px;
-    overflow-y: auto;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    border-radius: 20px;
-    box-shadow: inset 0px 2px 6px rgba(0, 0, 0, 0.05);
-`;
-
-const Message = styled.div`
-    max-width: 70%;
-    margin-bottom: 15px;
-    padding: 12px 20px;
-    font-size: 16px;
-    font-weight: 500;
-    line-height: 1.5;
-    border-radius: 20px;
-    color: ${(props) => (props.isUser ? '#FFF' : '#333')};
-    background: ${(props) => (props.isUser ? '#8a54ff' : '#FFF')};
-    align-self: ${(props) => (props.isUser ? 'flex-end' : 'flex-start')};
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-`;
-
-const InputWrapper = styled.div`
-    display: flex;
-    align-items: center;
-    padding: 10px;
-    background: #f9f9f9;
-    border-radius: 30px;
-    border: 1px solid #ddd;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
-    margin: 20px;
-`;
-
-const Input = styled.input`
-    flex: 1;
-    padding: 12px 20px;
-    font-size: 14px;
-    border: none;
-    border-radius: 20px;
-    outline: none;
-    background: #fff;
-    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
-    margin: 0 10px;
-`;
-
-const ReloadButton = styled.button`
-    width: 40px;
-    height: 40px;
-    border: none;
-    background: transparent;
-    cursor: pointer;
-
-    img {
-        width: 100%;
-        height: 100%;
-    }
-
-    &:hover {
-        opacity: 0.8;
-    }
-`;
-
-const SendButton = styled.button`
-    width: 40px;
-    height: 40px;
-    border: none;
-    background: transparent;
-    cursor: pointer;
-
-    img {
-        width: 100%;
-        height: 100%;
-    }
-
-    &:hover {
-        opacity: 0.8;
-    }
+const ErrorText = styled.div`
+    color: red;
+    text-align: center;
+    margin-top: 20px;
 `;
