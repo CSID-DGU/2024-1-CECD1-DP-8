@@ -35,12 +35,14 @@ public class InfluencerService {
     this.mediaRepository = mediaRepository;
   }
 
-  public GetInfluencerReportDTO getReportByLongId(Long influencerId, String period) {
+  public GetInfluencerReportDTO getReportByLongId(Long id, String period) {
 
     Influencer influencer =
         influencerRepository
-            .findById(influencerId)
+            .findById(id)
             .orElseThrow(() -> new InfluencerHandler(ErrorStatus._NOT_FOUND_USER));
+
+    Long influencerId = influencer.getId();
 
     // 프로필 정도
     ProfileProjection profile =
@@ -102,6 +104,13 @@ public class InfluencerService {
         .reelsChartComments(reelsChartComments)
         .reelsChartLikes(reelsChartLikes)
         .followerCharts(followerChart)
+            //TODO
+            .feedCnt(influencer.getMediaCnt())
+            .reelsCnt(influencer.getReelsMediaCnt())
+            .adCnt(influencer.getAdMediaCnt())
+            .nonAdCnt(influencer.getNonAdMediaCnt())
+            .commentsAvgOfAdMedia(influencer.getLikeAvgOfAdMediaWithOutHide())
+            .likeAvgOfAdMedia(influencer.getLikeAvgOfAdMedia())
         .build();
   }
 
@@ -174,6 +183,13 @@ public class InfluencerService {
         .reelsChartComments(reelsChartComments)
         .reelsChartLikes(reelsChartLikes)
         .followerCharts(followerChart)
+            //TODO
+            .feedCnt(influencer.getMediaCnt())
+            .reelsCnt(influencer.getReelsMediaCnt())
+            .adCnt(influencer.getAdMediaCnt())
+            .nonAdCnt(influencer.getNonAdMediaCnt())
+            .commentsAvgOfAdMedia(influencer.getLikeAvgOfAdMediaWithOutHide())
+            .likeAvgOfAdMedia(influencer.getLikeAvgOfAdMedia())
         .build();
   }
 }
