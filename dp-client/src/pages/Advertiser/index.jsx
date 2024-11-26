@@ -10,18 +10,18 @@ export default function AdvertiserMain() {
                 <IntroWrapper>
                     <a>인플루언서 추천</a>
                     <h1>
-                        원하는 인플루언서를 쉽고 <br />
-                        편하게 찾아보세요!
+                        원하는 인플루언서를 <br />
+                        AI에게 물어보세요!
                     </h1>
                 </IntroWrapper>
                 <StyledLink to="/recommend">
                     <SearchButton>인플루언서 추천 받기</SearchButton>
                 </StyledLink>
                 <HomepageSection>
-                    <h2>필터링과 키워드로 탐색하세요.</h2>
+                    <h2>AI 모델에게 인플루언서를 추천 받으세요.</h2>
                     <p>
-                        카테고리 (관심 분야), 팔로워수, 성별, 해시태그 등을 선택하세요. 해당 필터 조건에 맞춰 원하는
-                        인플루언서 리스트를 바로 확인할 수 있습니다.
+                        고객님의 원하는 인플루언서의 요구사항을 포함하여, 카테고리 (관심 분야), 팔로워수, 성별, 해시태그
+                        등을 선택하세요. 해당 조건에 맞춰 원하는 인플루언서 리스트를 바로 확인할 수 있습니다.
                     </p>
                     <img src={require('../../assets/adintro.png')} alt="홈페이지 스크린샷" />
                 </HomepageSection>
@@ -120,7 +120,7 @@ const HomepageSection = styled.div`
         margin-bottom: 2rem;
     }
     img {
-        width: 50%;
+        width: 80%;
         height: auto;
         border-radius: 8px;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);

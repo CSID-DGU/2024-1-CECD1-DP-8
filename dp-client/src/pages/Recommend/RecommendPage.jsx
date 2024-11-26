@@ -4,10 +4,11 @@ import { useNavigate } from 'react-router-dom';
 import FilterIcon from '../../assets/filter-add.svg';
 import SearchIcon from '../../assets/search-icon.png';
 import InfluencerFilterModal from '../../components/Filter/InfluencerFilterModal';
-
+import Spinner from '../../components/Spinner/Spinner';
 export default function RecommendPage() {
     const [showModal, setShowModal] = useState(false);
     const [searchPrompt, setSearchPrompt] = useState('');
+    const [loading, setLoading] = useState(false);
     const [filters, setFilters] = useState({
         beauty: false,
         fashion: false,
@@ -31,8 +32,9 @@ export default function RecommendPage() {
             return;
         }
 
+        setLoading(true); // 로딩 시작
         try {
-            const response = await fetch('https://49a5-35-186-158-225.ngrok-free.app/chat', {
+            const response = await fetch('https://4e4e-34-87-133-241.ngrok-free.app/chat', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ question: searchPrompt }),
@@ -53,6 +55,8 @@ export default function RecommendPage() {
         } catch (err) {
             console.error('API 호출 오류:', err);
             alert('서버와 연결할 수 없습니다. 다시 시도해주세요.');
+        } finally {
+            setLoading(false); // 로딩 종료
         }
     };
 
@@ -64,6 +68,7 @@ export default function RecommendPage() {
 
     return (
         <PageWrapper>
+            {loading && <Spinner />}
             <Container>
                 <MainContent>
                     <Title>원하는 인플루언서를 쉽고 편하게 찾아보세요!</Title>

@@ -74,9 +74,6 @@ const LoginModal = ({ show, onClose }) => {
             <Modal>
                 <CloseButton onClick={onClose}>&times;</CloseButton>
                 <Wrapper>
-                    <Logo>
-                        <img src={LogoImg} alt="Logo" />
-                    </Logo>
                     <SubText>로그인</SubText>
                     <FacebookButton onClick={handleFacebookLogin}>
                         <LogoIcon src={FacebookLogo} alt="Facebook logo" />
@@ -96,13 +93,134 @@ const LoginModal = ({ show, onClose }) => {
                             <ForgotPasswordLink onClick={handleSignup}>회원가입</ForgotPasswordLink>
                             <ForgotPasswordLink>비밀번호 찾기</ForgotPasswordLink>
                         </SubContainer>
-                        <LoginButton>Log in</LoginButton>
+                        <ButtonContainer>
+                            <LoginButton>Log in</LoginButton>
+                        </ButtonContainer>
                     </Form>
                 </Wrapper>
             </Modal>
         </Overlay>
     );
 };
+const FacebookButton = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    width: 100%;
+    max-width: 528px;
+    height: 60px;
+    background: #1877f2;
+    border-radius: 12px;
+    color: white;
+    font-family: 'Poppins', sans-serif;
+    font-size: 18px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    &:hover {
+        background: #145dbf;
+        transform: translateY(-2px);
+        box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.2);
+    }
+`;
+
+const KakaoButton = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    width: 100%;
+    max-width: 528px;
+    height: 60px;
+    background: #fee500;
+    border-radius: 12px;
+    color: #3c1e1e;
+    font-family: 'Poppins', sans-serif;
+    font-size: 18px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+
+    &:hover {
+        background: #f2d700;
+        transform: translateY(-2px);
+        box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.2);
+    }
+`;
+
+const Input = styled.input`
+    height: 56px;
+    align-self: stretch;
+    border-radius: 12px;
+    border: 1px solid rgba(102, 102, 102, 0.35);
+    width: 100%;
+    padding: 0.5rem 1rem;
+    font-size: 16px;
+    font-family: 'Poppins', sans-serif;
+    transition: all 0.3s ease-in-out;
+
+    &:focus {
+        outline: none;
+        border-color: #463392;
+        box-shadow: 0px 0px 8px rgba(70, 51, 146, 0.4);
+    }
+`;
+const ButtonContainer = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+`;
+const LoginButton = styled.button`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 350px;
+    max-width: 528px;
+    height: 55px;
+    background: #463392;
+    color: white;
+    font-size: 18px;
+    font-weight: 600;
+    font-family: 'Poppins', sans-serif;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+
+    &:hover {
+        background: #352366;
+        transform: translateY(-2px);
+        box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.2);
+    }
+`;
+
+const ForgotPasswordLink = styled.a`
+    font-size: 14px;
+    color: #463392;
+    cursor: pointer;
+    text-decoration: none;
+    font-family: 'Poppins', sans-serif;
+
+    &:hover {
+        text-decoration: underline;
+        color: #352366;
+    }
+`;
+
+const Separator = styled.hr`
+    width: 100%;
+    max-width: 528px;
+    border: none;
+    height: 1px;
+    background-color: rgba(102, 102, 102, 0.25);
+    margin: 2rem 0;
+`;
 
 const Overlay = styled.div`
     position: fixed;
@@ -121,8 +239,8 @@ const Modal = styled.div`
     background: white;
     padding: 20px;
     border-radius: 24px;
-    width: 795px;
-    height: 861px;
+    width: 705px;
+    height: 700px;
     max-width: 90%;
     position: relative;
 `;
@@ -148,6 +266,7 @@ const Wrapper = styled.div`
     flex-direction: column;
     align-items: center;
     height: 100%;
+    padding-top: 50px;
     p {
         color: #333;
         text-align: center;
@@ -167,57 +286,10 @@ const SubText = styled.p`
     margin-bottom: 1.5rem;
 `;
 
-const FacebookButton = styled.div`
-    display: flex;
-    width: 528px;
-    height: 60px;
-    justify-content: center;
-    align-items: center;
-    border-radius: 5px;
-    background: #3b5998;
-    color: #fff;
-    font-family: Arial, sans-serif;
-    font-size: 18px;
-    font-weight: bold;
-    cursor: pointer;
-    margin-bottom: 1rem;
-    &:hover {
-        background: #2d4373;
-    }
-`;
-
-const KakaoButton = styled.div`
-    display: flex;
-    width: 528px;
-    height: 60px;
-    justify-content: center;
-    align-items: center;
-    border-radius: 5px;
-    background: #fee500;
-    color: #3c1e1e;
-    font-family: Arial, sans-serif;
-    font-size: 18px;
-    font-weight: bold;
-    cursor: pointer;
-    margin-bottom: 2rem;
-    &:hover {
-        background: #f2d700;
-    }
-`;
-
 const LogoIcon = styled.img`
     width: 24px;
     height: 24px;
     margin-right: 12px;
-`;
-
-const Separator = styled.hr`
-    width: 528px;
-    border: none;
-    height: 2px;
-    background-color: rgba(102, 102, 102, 0.25);
-    margin-top: 2rem;
-    margin-bottom: 2rem;
 `;
 
 const Form = styled.div`
@@ -235,52 +307,11 @@ const Label = styled.label`
     font-size: 16px;
 `;
 
-const Input = styled.input`
-    height: 56px;
-    align-self: stretch;
-    border-radius: 8px;
-    border: 1px solid rgba(102, 102, 102, 0.35);
-    width: 100%;
-    padding: 0.5rem;
-    margin-bottom: 1rem;
-`;
-
-const ForgotPasswordLink = styled.a`
-    align-self: flex-end;
-    margin-bottom: 1rem;
-    cursor: pointer;
-    color: #333;
-    text-decoration: none;
-    &:hover {
-        text-decoration: underline;
-    }
-`;
-
 const SubContainer = styled.div`
     display: flex;
     flex-direction: row;
     gap: 20px;
     justify-content: flex-end;
-`;
-
-const LoginButton = styled.button`
-    display: flex;
-    width: 528px;
-    height: 64px;
-    padding: 15px 0px 16px 0px;
-    justify-content: center;
-    align-items: center;
-    background-color: #ccc;
-    border: none;
-    border-radius: 20px;
-    color: white;
-    font-size: 22px;
-    font-style: normal;
-    font-weight: 500;
-    cursor: pointer;
-    &:hover {
-        background-color: #bbb;
-    }
 `;
 
 export default LoginModal;
