@@ -2,14 +2,15 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useSpring, animated } from '@react-spring/web'; // For smooth animation
 import { useDrag } from '@use-gesture/react';
-
+import Spinner from '../../components/Spinner/Spinner';
 import styled from 'styled-components';
 import { fetchData } from '../../services/api';
 import SideBar from '../../components/Report/SideBar';
 import PostAnalysisPage from './PostAnalysisPage';
 
 const influencerIds = [
-    1, 2, 3, 4, 5, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 42,
+    1, 2, 3, 4, 5, 8, 9, 10, 11, 12, 14, 16, 17, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 42, 43, 44, 45, 47, 48, 49,
+    50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60,
 ];
 
 export default function Report() {
@@ -29,6 +30,7 @@ export default function Report() {
         const loadReportData = async () => {
             if (id) {
                 try {
+                    setLoading(true);
                     const data = await fetchData(`/influencer/report/${id}`, { period: 'W' });
                     setReportData(data.result);
                 } catch (error) {
@@ -46,6 +48,7 @@ export default function Report() {
         if (!id) {
             const loadInfluencers = async () => {
                 try {
+                    setLoading(true);
                     const promises = influencerIds.map((id) =>
                         fetchData(`/influencer/report/${id}`, { period: 'W' }).then((res) => ({
                             ...res.result.profile,
@@ -93,7 +96,7 @@ export default function Report() {
         return () => clearInterval(interval);
     }, [x, setSpring]);
 
-    if (loading) return <div>로딩 중...</div>;
+    if (loading) return <Spinner />;
     if (error) return <div>{error}</div>;
 
     if (!id) {
@@ -171,11 +174,12 @@ const SectionTitle = styled.h1`
     font-size: 28px;
     font-weight: 600;
     text-align: center;
-    background: linear-gradient(180deg, #780bc2 0%, #39055c 100%);
+    background: linear-gradient(180deg, #d16ba5 0%, #c777b9 50%, #ba83ca 100%);
     background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 `;
+
 const ScrollableContainer = styled.div`
     overflow: hidden;
     position: relative;

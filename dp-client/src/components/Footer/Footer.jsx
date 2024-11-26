@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { Link, useNavigate } from 'react-router-dom';
-import logo from '../../assets/Collabo.png';
+import logo from '../../assets/Collabo.svg';
 
 export default function Footer() {
     const navigate = useNavigate();
@@ -26,14 +26,14 @@ export default function Footer() {
                     <Column>
                         <StyledLink to="/report">인플루언서 리포트</StyledLink>
                     </Column>
-                    <Column>
+                    {/* <Column>
                         <StyledLink
                             to="/influmypage
                         "
                         >
                             마이페이지
                         </StyledLink>
-                    </Column>
+                    </Column> */}
                 </RightSection>
             </FooterContainer>
         </FooterWrapper>
