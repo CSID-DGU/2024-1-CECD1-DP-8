@@ -102,7 +102,6 @@ export default function RecommendPage() {
         </PageWrapper>
     );
 }
-
 const PageWrapper = styled.div`
     width: 100vw;
     height: 100vh;
@@ -111,17 +110,30 @@ const PageWrapper = styled.div`
     align-items: center;
     background: linear-gradient(180deg, #f8fafb 0%, #ade3fe 100%);
     box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+
+    @media (max-width: 768px) {
+        height: auto;
+        padding: 20px;
+    }
 `;
 
 const Container = styled.div`
     width: 100%;
     max-width: 1200px;
     padding: 20px;
+
+    @media (max-width: 768px) {
+        padding: 10px;
+    }
 `;
 
 const MainContent = styled.div`
     margin-top: 100px;
     text-align: center;
+
+    @media (max-width: 768px) {
+        margin-top: 50px;
+    }
 `;
 
 const Title = styled.h2`
@@ -131,37 +143,69 @@ const Title = styled.h2`
     -webkit-text-fill-color: transparent;
     font-family: Inter;
     font-size: 48px;
-    font-style: normal;
     font-weight: 600;
     line-height: normal;
+
+    @media (max-width: 768px) {
+        font-size: 36px;
+    }
+
+    @media (max-width: 480px) {
+        font-size: 28px;
+    }
 `;
 
 const Subtitle = styled.p`
     background: linear-gradient(180deg, #780bc2 0%, #39055c 100%);
     background-clip: text;
-    margin-top: 10px;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
+    font-size: 20px;
+    margin-top: 10px;
+
+    @media (max-width: 768px) {
+        font-size: 18px;
+    }
+
+    @media (max-width: 480px) {
+        font-size: 16px;
+    }
 `;
 
 const StyledSearchIcon = styled.img`
     width: 19px;
     height: 19px;
-    flex-shrink: 0;
     cursor: pointer;
+
+    @media (max-width: 480px) {
+        width: 16px;
+        height: 16px;
+    }
 `;
 
 const StyledFilterIcon = styled.img`
     width: 24px;
     height: 24px;
-    color: #fff;
     margin-left: 3px;
+
+    @media (max-width: 480px) {
+        width: 20px;
+        height: 20px;
+    }
 `;
 
 const SearchContainer = styled.div`
     position: relative;
     margin: 40px auto;
     width: 60%;
+
+    @media (max-width: 768px) {
+        width: 80%;
+    }
+
+    @media (max-width: 480px) {
+        width: 90%;
+    }
 `;
 
 const SearchInput = styled.input`
@@ -170,6 +214,11 @@ const SearchInput = styled.input`
     font-size: 16px;
     border: 1px solid #ddd;
     border-radius: 50px;
+
+    @media (max-width: 480px) {
+        padding: 12px 15px;
+        font-size: 14px;
+    }
 `;
 
 const SearchIconContainer = styled.div`
@@ -177,14 +226,20 @@ const SearchIconContainer = styled.div`
     right: 20px;
     top: 50%;
     transform: translateY(-50%);
-    font-size: 20px;
-    color: #666;
     cursor: pointer;
+
+    @media (max-width: 480px) {
+        right: 15px;
+    }
 `;
 
 const KeywordSection = styled.div`
     margin: 20px auto;
     text-align: center;
+
+    @media (max-width: 480px) {
+        margin: 10px auto;
+    }
 `;
 
 const KeywordInput = styled.input`
@@ -193,13 +248,26 @@ const KeywordInput = styled.input`
     border: 1px solid #ddd;
     border-radius: 30px;
     font-size: 16px;
-    outline: none;
+
+    @media (max-width: 768px) {
+        width: 80%;
+    }
+
+    @media (max-width: 480px) {
+        width: 90%;
+        padding: 10px;
+        font-size: 14px;
+    }
 `;
 
 const KeywordDescription = styled.p`
     margin-top: 10px;
     font-size: 14px;
     color: #666;
+
+    @media (max-width: 480px) {
+        font-size: 12px;
+    }
 `;
 
 const Description = styled.p`
@@ -207,9 +275,15 @@ const Description = styled.p`
     text-align: center;
     font-family: Inter;
     font-size: 20px;
-    font-style: normal;
     font-weight: 600;
-    line-height: normal;
+
+    @media (max-width: 768px) {
+        font-size: 18px;
+    }
+
+    @media (max-width: 480px) {
+        font-size: 16px;
+    }
 `;
 
 const KeywordButton = styled.button`
@@ -227,5 +301,15 @@ const KeywordButton = styled.button`
 
     &:hover {
         background: #6a40cc;
+    }
+
+    @media (max-width: 768px) {
+        font-size: 18px;
+        padding: 10px 15px;
+    }
+
+    @media (max-width: 480px) {
+        font-size: 16px;
+        padding: 8px 12px;
     }
 `;

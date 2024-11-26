@@ -74,6 +74,12 @@ const CardWrapper = styled.div`
     margin-bottom: 20px;
     width: 100%;
     position: relative;
+
+    @media (max-width: 768px) {
+        flex-direction: column;
+        padding: 15px;
+        text-align: center;
+    }
 `;
 
 const ProfileImage = styled.div`
@@ -88,12 +94,21 @@ const ProfileImage = styled.div`
         height: 100%;
         object-fit: cover;
     }
+
+    @media (max-width: 768px) {
+        margin-right: 0;
+        margin-bottom: 15px;
+    }
 `;
 
 const ProfileDetails = styled.div`
     flex: 1;
     display: flex;
     flex-direction: column;
+
+    @media (max-width: 768px) {
+        align-items: center;
+    }
 `;
 
 const TopRow = styled.div`
@@ -101,16 +116,29 @@ const TopRow = styled.div`
     align-items: center;
     justify-content: space-between;
     margin-bottom: 10px;
+
+    @media (max-width: 768px) {
+        flex-direction: column;
+        gap: 5px;
+    }
 `;
 
 const Username = styled.p`
     font-size: 18px;
     font-weight: 600;
     color: #333;
+
+    @media (max-width: 768px) {
+        font-size: 16px;
+    }
 `;
 
 const CategorySection = styled.div`
     text-align: center;
+
+    @media (max-width: 768px) {
+        margin-top: 5px;
+    }
 `;
 
 const CategoryTitle = styled.p`
@@ -118,6 +146,10 @@ const CategoryTitle = styled.p`
     font-weight: 500;
     color: #888;
     margin-bottom: 2px;
+
+    @media (max-width: 768px) {
+        font-size: 10px;
+    }
 `;
 
 const Category = styled.span`
@@ -127,6 +159,11 @@ const Category = styled.span`
     background: #ff8585;
     padding: 5px 10px;
     border-radius: 15px;
+
+    @media (max-width: 768px) {
+        font-size: 12px;
+        padding: 4px 8px;
+    }
 `;
 
 const Name = styled.p`
@@ -134,33 +171,60 @@ const Name = styled.p`
     font-weight: 500;
     color: #555;
     margin-bottom: 10px;
+
+    @media (max-width: 768px) {
+        font-size: 14px;
+        margin-bottom: 8px;
+    }
 `;
 
 const BottomRow = styled.div`
     display: flex;
     align-items: center;
     justify-content: space-between;
+
+    @media (max-width: 768px) {
+        flex-direction: column;
+        gap: 10px;
+    }
 `;
 
 const ProfileDataItem = styled.div`
     text-align: left;
+
+    @media (max-width: 768px) {
+        text-align: center;
+    }
 `;
 
 const DataValue = styled.p`
     font-size: 18px;
     font-weight: 600;
     color: #333;
+
+    @media (max-width: 768px) {
+        font-size: 16px;
+    }
 `;
 
 const DataLabel = styled.p`
     font-size: 14px;
     font-weight: 400;
     color: #888;
+
+    @media (max-width: 768px) {
+        font-size: 12px;
+    }
 `;
 
 const ActionButtons = styled.div`
     display: flex;
     gap: 10px;
+
+    @media (max-width: 768px) {
+        flex-direction: column;
+        gap: 8px;
+    }
 `;
 
 const Button = styled.button`
@@ -176,6 +240,11 @@ const Button = styled.button`
     &:hover {
         background: #9f66ff;
     }
+
+    @media (max-width: 768px) {
+        font-size: 12px;
+        padding: 8px 12px;
+    }
 `;
 
 const TagsBubble = styled.div`
@@ -189,6 +258,12 @@ const TagsBubble = styled.div`
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     display: flex;
     gap: 8px;
+
+    @media (max-width: 768px) {
+        top: 70px;
+        padding: 8px 10px;
+        gap: 6px;
+    }
 `;
 
 const Tag = styled.span`
@@ -198,4 +273,9 @@ const Tag = styled.span`
     background: #e0e0e0;
     padding: 5px 10px;
     border-radius: 10px;
+
+    @media (max-width: 768px) {
+        font-size: 10px;
+        padding: 4px 8px;
+    }
 `;

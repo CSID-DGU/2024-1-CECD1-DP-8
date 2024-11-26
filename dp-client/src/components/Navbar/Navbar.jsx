@@ -65,7 +65,8 @@ const Wrapper = styled.nav`
     background-color: #ffffff;
 
     @media (max-width: 768px) {
-        min-width: auto; /* 모바일에서 너비 자동 조정 */
+        min-width: 100%; /* 모바일에서 전체 너비로 조정 */
+        height: auto;
     }
 `;
 
@@ -79,7 +80,7 @@ const Nav = styled.nav`
     background-color: #fff;
 
     @media (max-width: 768px) {
-        flex-direction: column; /* 모바일에서는 세로 정렬 */
+        flex-direction: row; /* 모바일에서도 수평 정렬 */
         height: auto;
         padding: 10px 15px;
     }
@@ -91,11 +92,15 @@ const Logo = styled(Link)`
 
     img {
         height: 40px;
+        transition: height 0.3s ease;
+
+        @media (max-width: 768px) {
+            height: 30px; /* 모바일에서 로고 크기 조정 */
+        }
     }
 
     @media (max-width: 768px) {
-        margin-left: 0;
-        margin-bottom: 10px;
+        margin-left: 10px; /* 모바일에서 왼쪽 상단에 위치 */
     }
 `;
 
@@ -106,10 +111,10 @@ const Links = styled.div`
     cursor: pointer;
 
     @media (max-width: 768px) {
-        gap: 20px;
+        gap: 10px; /* 모바일에서 링크 간격 조정 */
         flex-wrap: wrap; /* 링크를 줄바꿈 가능하도록 */
         justify-content: center;
-        margin-bottom: 10px;
+        margin: 10px 0; /* 모바일에서 상하 여백 추가 */
     }
 `;
 
@@ -120,9 +125,8 @@ const RightMenu = styled.div`
     margin-right: 200px;
 
     @media (max-width: 768px) {
-        margin-right: 0;
-        margin-top: 10px;
-        justify-content: center;
+        margin-right: 10px; /* 모바일에서 오른쪽 상단에 위치 */
+        margin-top: 0;
     }
 `;
 
@@ -142,7 +146,7 @@ const NavLink = styled(Link)`
     }
 
     @media (max-width: 768px) {
-        font-size: 16px;
+        font-size: 14px; /* 모바일에서 링크 글꼴 크기 축소 */
     }
 `;
 

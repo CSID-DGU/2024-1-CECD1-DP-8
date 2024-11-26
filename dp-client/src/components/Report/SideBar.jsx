@@ -23,7 +23,6 @@ export default function SideBar({ profile }) {
         </SidebarWrapper>
     );
 }
-
 const SidebarWrapper = styled.div`
     width: 282px;
     padding: 20px;
@@ -34,6 +33,12 @@ const SidebarWrapper = styled.div`
     align-items: center;
     text-align: center;
     height: 600px;
+
+    @media (max-width: 768px) {
+        width: 100%;
+        height: auto;
+        padding: 16px;
+    }
 `;
 
 const ProfileImage = styled.div`
@@ -53,6 +58,17 @@ const ProfileImage = styled.div`
         border-radius: 50%;
         border: 2px solid white;
     }
+
+    @media (max-width: 768px) {
+        margin-top: 20px;
+        width: 130px;
+        height: 130px;
+
+        img {
+            width: 120px;
+            height: 120px;
+        }
+    }
 `;
 
 const Username = styled.p`
@@ -60,12 +76,20 @@ const Username = styled.p`
     font-size: 20px;
     font-weight: 600;
     margin-top: 10px;
+
+    @media (max-width: 768px) {
+        font-size: 18px;
+    }
 `;
 
 const Name = styled.p`
     font-size: 18px;
     font-weight: 500;
     margin: 5px 0;
+
+    @media (max-width: 768px) {
+        font-size: 16px;
+    }
 `;
 
 const Category = styled.p`
@@ -73,6 +97,10 @@ const Category = styled.p`
     font-weight: 400;
     color: #666;
     margin-bottom: 20px;
+
+    @media (max-width: 768px) {
+        font-size: 14px;
+    }
 `;
 
 const ProfileData = styled.div`
@@ -81,20 +109,38 @@ const ProfileData = styled.div`
     width: 100%;
     margin: 20px 0;
     padding: 20px;
+
+    @media (max-width: 768px) {
+        flex-direction: column;
+        align-items: center;
+        padding: 12px;
+    }
 `;
 
 const ProfileDataItem = styled.div`
     text-align: center;
     margin-bottom: 10px;
+
+    @media (max-width: 768px) {
+        margin-bottom: 8px;
+    }
 `;
 
 const DataValue = styled.p`
     font-size: 18px;
     font-weight: 600;
+
+    @media (max-width: 768px) {
+        font-size: 16px;
+    }
 `;
 
 const DataLabel = styled.p`
     font-size: 14px;
     font-weight: 400;
     color: #666;
+
+    @media (max-width: 768px) {
+        font-size: 12px;
+    }
 `;
