@@ -39,7 +39,6 @@ export default function Footer() {
         </FooterWrapper>
     );
 }
-
 const FooterWrapper = styled.div`
     display: flex;
     flex-direction: column;
@@ -47,10 +46,18 @@ const FooterWrapper = styled.div`
     justify-content: center;
     width: 100%;
     height: auto;
-    padding: 40px 20px; /* 위아래 패딩 조정 */
+    padding: 40px 20px; /* 위아래 패딩 */
     border-top: 1px solid #bdbdbd;
     background: #fafafa;
     box-sizing: border-box;
+
+    @media (max-width: 768px) {
+        padding: 30px 15px;
+    }
+
+    @media (max-width: 480px) {
+        padding: 20px 10px;
+    }
 `;
 
 const FooterContainer = styled.div`
@@ -58,9 +65,19 @@ const FooterContainer = styled.div`
     justify-content: space-between;
     align-items: center;
     width: 100%;
-    max-width: 1200px; /* 최대 너비 설정 */
-    flex-wrap: wrap; /* 화면 크기에 따라 자동 줄바꿈 */
+    max-width: 1200px; /* 최대 너비 */
+    flex-wrap: wrap; /* 작은 화면에서 자동 줄바꿈 */
     gap: 20px;
+
+    @media (max-width: 768px) {
+        flex-direction: column; /* 세로 정렬 */
+        align-items: flex-start;
+        gap: 15px;
+    }
+
+    @media (max-width: 480px) {
+        gap: 10px;
+    }
 `;
 
 const LeftSection = styled.div`
@@ -68,6 +85,14 @@ const LeftSection = styled.div`
     flex-direction: column;
     align-items: flex-start; /* 왼쪽 정렬 */
     gap: 15px;
+
+    @media (max-width: 768px) {
+        gap: 10px;
+    }
+
+    @media (max-width: 480px) {
+        gap: 8px;
+    }
 `;
 
 const RightSection = styled.div`
@@ -79,33 +104,77 @@ const RightSection = styled.div`
     width: 100%;
     max-width: 600px;
     gap: 20px;
+
+    @media (max-width: 768px) {
+        max-width: 100%;
+        gap: 15px;
+        justify-content: flex-start; /* 왼쪽 정렬 */
+    }
+
+    @media (max-width: 480px) {
+        gap: 10px;
+    }
 `;
 
 const Column = styled.div`
     display: flex;
     flex-direction: column;
     gap: 10px;
+
+    @media (max-width: 768px) {
+        gap: 8px;
+    }
+
+    @media (max-width: 480px) {
+        gap: 5px;
+    }
 `;
 
 const Logo = styled.img`
-    width: 120px; /* 로고 크기 조정 */
+    width: 120px; /* 로고 크기 */
     height: auto;
     cursor: pointer;
+
+    @media (max-width: 768px) {
+        width: 100px;
+    }
+
+    @media (max-width: 480px) {
+        width: 80px;
+    }
 `;
 
 const LinkRow = styled.div`
     display: flex;
-    flex-wrap: wrap; /* 작은 화면에서 링크를 줄바꿈 */
+    flex-wrap: wrap; /* 작은 화면에서 링크 줄바꿈 */
     gap: 15px;
     font-size: 14px;
     color: #222;
     line-height: 1.4;
+
+    @media (max-width: 768px) {
+        gap: 10px;
+        font-size: 13px;
+    }
+
+    @media (max-width: 480px) {
+        gap: 8px;
+        font-size: 12px;
+    }
 `;
 
 const Copyright = styled.div`
     font-size: 12px;
     color: #666;
     text-align: left;
+
+    @media (max-width: 768px) {
+        font-size: 11px;
+    }
+
+    @media (max-width: 480px) {
+        font-size: 10px;
+    }
 `;
 
 const StyledLink = styled(Link)`
@@ -113,4 +182,12 @@ const StyledLink = styled(Link)`
     color: inherit;
     font-size: 14px;
     white-space: nowrap;
+
+    @media (max-width: 768px) {
+        font-size: 13px;
+    }
+
+    @media (max-width: 480px) {
+        font-size: 12px;
+    }
 `;

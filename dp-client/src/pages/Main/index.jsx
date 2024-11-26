@@ -251,14 +251,14 @@ const Subtitle = styled.h2`
 const SearchContainer = styled.div`
     position: relative;
     margin: 20px auto;
-
+    width: 800px;
     @media (max-width: 768px) {
         width: 100%;
     }
 `;
 
 const SearchInput = styled.input`
-    width: 800px;
+    width: 100%;
     padding: 15px 20px;
     font-size: 16px;
     border: 1px solid #ddd;

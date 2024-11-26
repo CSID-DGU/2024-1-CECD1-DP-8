@@ -102,6 +102,98 @@ const LoginModal = ({ show, onClose }) => {
         </Overlay>
     );
 };
+
+const Modal = styled.div`
+    background: white;
+    padding: 20px;
+    border-radius: 24px;
+    width: 705px;
+    height: 700px;
+    max-width: 90%;
+    position: relative;
+
+    @media (max-width: 768px) {
+        width: 90%;
+        height: auto;
+        padding: 16px;
+        border-radius: 16px;
+    }
+`;
+
+const Wrapper = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
+    padding-top: 50px;
+
+    @media (max-width: 768px) {
+        padding-top: 30px;
+    }
+
+    p {
+        color: #333;
+        text-align: center;
+        font-family: Poppins, sans-serif;
+        font-size: 32px;
+        font-weight: 500;
+        margin-bottom: 1rem;
+
+        @media (max-width: 768px) {
+            font-size: 24px;
+        }
+    }
+`;
+
+const SubText = styled.p`
+    font-family: Poppins, sans-serif;
+    font-size: 18px;
+    color: #666;
+    margin-bottom: 1.5rem;
+
+    @media (max-width: 768px) {
+        font-size: 14px;
+    }
+`;
+
+const CloseButton = styled.button`
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+
+    @media (max-width: 768px) {
+        font-size: 1.2rem;
+        top: 8px;
+        right: 8px;
+    }
+`;
+
+const Input = styled.input`
+    height: 56px;
+    border-radius: 12px;
+    border: 1px solid rgba(102, 102, 102, 0.35);
+    width: 100%;
+    padding: 0.5rem 1rem;
+    font-size: 16px;
+    font-family: 'Poppins', sans-serif;
+    transition: all 0.3s ease-in-out;
+
+    &:focus {
+        outline: none;
+        border-color: #463392;
+        box-shadow: 0px 0px 8px rgba(70, 51, 146, 0.4);
+    }
+
+    @media (max-width: 768px) {
+        height: 48px;
+        font-size: 14px;
+    }
+`;
+
 const FacebookButton = styled.div`
     display: flex;
     align-items: center;
@@ -120,61 +212,29 @@ const FacebookButton = styled.div`
     transition: all 0.3s ease-in-out;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
     margin-bottom: 20px;
+
     &:hover {
         background: #145dbf;
         transform: translateY(-2px);
         box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.2);
     }
+
+    @media (max-width: 768px) {
+        height: 50px;
+        font-size: 14px;
+        margin-bottom: 16px;
+    }
 `;
 
-const KakaoButton = styled.div`
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 12px;
-    width: 100%;
-    max-width: 528px;
-    height: 60px;
+const KakaoButton = styled(FacebookButton)`
     background: #fee500;
-    border-radius: 12px;
     color: #3c1e1e;
-    font-family: 'Poppins', sans-serif;
-    font-size: 18px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s ease-in-out;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
 
     &:hover {
         background: #f2d700;
-        transform: translateY(-2px);
-        box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.2);
     }
 `;
 
-const Input = styled.input`
-    height: 56px;
-    align-self: stretch;
-    border-radius: 12px;
-    border: 1px solid rgba(102, 102, 102, 0.35);
-    width: 100%;
-    padding: 0.5rem 1rem;
-    font-size: 16px;
-    font-family: 'Poppins', sans-serif;
-    transition: all 0.3s ease-in-out;
-
-    &:focus {
-        outline: none;
-        border-color: #463392;
-        box-shadow: 0px 0px 8px rgba(70, 51, 146, 0.4);
-    }
-`;
-const ButtonContainer = styled.div`
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 10px;
-`;
 const LoginButton = styled.button`
     display: flex;
     justify-content: center;
@@ -198,6 +258,66 @@ const LoginButton = styled.button`
         transform: translateY(-2px);
         box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.2);
     }
+
+    @media (max-width: 768px) {
+        width: 100%;
+        height: 50px;
+        font-size: 16px;
+    }
+`;
+
+const Separator = styled.hr`
+    width: 100%;
+    max-width: 528px;
+    border: none;
+    height: 1px;
+    background-color: rgba(102, 102, 102, 0.25);
+    margin: 2rem 0;
+
+    @media (max-width: 768px) {
+        margin: 1.5rem 0;
+    }
+`;
+
+const Form = styled.div`
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 528px;
+
+    @media (max-width: 768px) {
+        max-width: 100%;
+    }
+`;
+
+const Label = styled.label`
+    margin-bottom: 0.5rem;
+    color: #333;
+    font-family: 'Poppins', sans-serif;
+    font-size: 16px;
+
+    @media (max-width: 768px) {
+        font-size: 14px;
+    }
+`;
+
+const LogoIcon = styled.img`
+    width: 24px;
+    height: 24px;
+    margin-right: 12px;
+
+    @media (max-width: 768px) {
+        width: 20px;
+        height: 20px;
+        margin-right: 8px;
+    }
+`;
+
+const ButtonContainer = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
 `;
 
 const ForgotPasswordLink = styled.a`
@@ -213,15 +333,6 @@ const ForgotPasswordLink = styled.a`
     }
 `;
 
-const Separator = styled.hr`
-    width: 100%;
-    max-width: 528px;
-    border: none;
-    height: 1px;
-    background-color: rgba(102, 102, 102, 0.25);
-    margin: 2rem 0;
-`;
-
 const Overlay = styled.div`
     position: fixed;
     top: 0;
@@ -235,76 +346,10 @@ const Overlay = styled.div`
     z-index: 1000;
 `;
 
-const Modal = styled.div`
-    background: white;
-    padding: 20px;
-    border-radius: 24px;
-    width: 705px;
-    height: 700px;
-    max-width: 90%;
-    position: relative;
-`;
-
 const Logo = styled.div`
     font-size: 1.5rem;
     text-decoration: none;
     margin: 3rem;
-`;
-
-const CloseButton = styled.button`
-    background: none;
-    border: none;
-    font-size: 1.5rem;
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    cursor: pointer;
-`;
-
-const Wrapper = styled.div`
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    height: 100%;
-    padding-top: 50px;
-    p {
-        color: #333;
-        text-align: center;
-        font-family: Poppins;
-        font-size: 32px;
-        font-style: normal;
-        font-weight: 500;
-        line-height: normal;
-        margin-bottom: 1rem;
-    }
-`;
-
-const SubText = styled.p`
-    font-family: Poppins, sans-serif;
-    font-size: 18px;
-    color: #666;
-    margin-bottom: 1.5rem;
-`;
-
-const LogoIcon = styled.img`
-    width: 24px;
-    height: 24px;
-    margin-right: 12px;
-`;
-
-const Form = styled.div`
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    max-width: 528px;
-    margin-top: 1rem;
-`;
-
-const Label = styled.label`
-    margin-bottom: 0.5rem;
-    color: #333;
-    font-family: Inter;
-    font-size: 16px;
 `;
 
 const SubContainer = styled.div`

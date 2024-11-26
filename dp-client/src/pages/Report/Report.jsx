@@ -149,6 +149,11 @@ const Wrapper = styled.div`
     height: 100vh;
     flex-direction: column;
     background: linear-gradient(180deg, #f8fafb 0%, #ffb7f2 100%);
+
+    @media (max-width: 768px) {
+        padding: 10px;
+        height: auto;
+    }
 `;
 
 const ReportWrapper = styled.div`
@@ -157,10 +162,20 @@ const ReportWrapper = styled.div`
     width: 100%;
     margin: 0 auto;
     padding: 20px;
+
+    @media (max-width: 768px) {
+        flex-direction: column;
+        padding: 10px;
+    }
 `;
+
 const ContentWrapper = styled.div`
     flex: 1;
     padding: 20px;
+
+    @media (max-width: 768px) {
+        padding: 10px;
+    }
 `;
 
 const Section = styled.div`
@@ -168,6 +183,11 @@ const Section = styled.div`
     flex-direction: column;
     padding-top: 20px;
     gap: 20px;
+
+    @media (max-width: 768px) {
+        padding-top: 10px;
+        gap: 10px;
+    }
 `;
 
 const SectionTitle = styled.h1`
@@ -178,6 +198,14 @@ const SectionTitle = styled.h1`
     background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
+
+    @media (max-width: 768px) {
+        font-size: 24px;
+    }
+
+    @media (max-width: 480px) {
+        font-size: 20px;
+    }
 `;
 
 const ScrollableContainer = styled.div`
@@ -186,12 +214,24 @@ const ScrollableContainer = styled.div`
     width: 100%;
     height: 100%;
     padding: 10px;
+
+    @media (max-width: 768px) {
+        padding: 5px;
+    }
 `;
 
 const AnimatedScroll = styled(animated.div)`
     display: flex;
     gap: 40px;
     will-change: transform;
+
+    @media (max-width: 768px) {
+        gap: 20px;
+    }
+
+    @media (max-width: 480px) {
+        gap: 10px;
+    }
 `;
 
 const CardWrapper = styled.div`
@@ -199,10 +239,27 @@ const CardWrapper = styled.div`
     position: relative;
     transition: transform 0.3s ease, box-shadow 0.3s ease, opacity 0.3s ease;
     border-radius: 20px;
+
     &:hover {
         transform: translateY(-10px);
         box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2);
         opacity: 0.8;
+    }
+
+    @media (max-width: 768px) {
+        border-radius: 15px;
+
+        &:hover {
+            transform: translateY(-5px);
+        }
+    }
+
+    @media (max-width: 480px) {
+        border-radius: 10px;
+
+        &:hover {
+            transform: translateY(-3px);
+        }
     }
 `;
 
@@ -217,9 +274,22 @@ const Overlay = styled.div`
     color: white;
     background: rgba(0, 0, 0, 0.6);
     padding: 15px 10px;
-    border-radius: 0 0 20px 20px; /* 둥근 하단 모서리 */
+    border-radius: 0 0 20px 20px;
     visibility: hidden;
+
     ${CardWrapper}:hover & {
         visibility: visible;
+    }
+
+    @media (max-width: 768px) {
+        font-size: 16px;
+        padding: 10px 8px;
+        border-radius: 0 0 15px 15px;
+    }
+
+    @media (max-width: 480px) {
+        font-size: 14px;
+        padding: 8px 5px;
+        border-radius: 0 0 10px 10px;
     }
 `;

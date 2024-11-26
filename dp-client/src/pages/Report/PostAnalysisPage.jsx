@@ -35,18 +35,17 @@ export default function PostAnalysisPage({ reportData }) {
     const renderInstagramEmbed = (uniqueCode) => {
         try {
             const postUrl = `https://www.instagram.com/p/${uniqueCode}/embed`; // 고유코드 사용
-            console.log('Embedding Instagram post:', postUrl); // 고유코드 확인용 콘솔 로그
             return (
-                <iframe
-                    src={postUrl}
-                    width="300"
-                    height="600"
-                    frameBorder="0"
-                    scrolling="no"
-                    allowTransparency="true"
-                    allow="encrypted-media"
-                    title="Instagram Post"
-                ></iframe>
+                <EmbedWrapper>
+                    <iframe
+                        src={postUrl}
+                        frameBorder="0"
+                        scrolling="no"
+                        allowTransparency="true"
+                        allow="encrypted-media"
+                        title="Instagram Post"
+                    ></iframe>
+                </EmbedWrapper>
             );
         } catch (error) {
             console.error('Error embedding Instagram post:', error);
@@ -282,6 +281,29 @@ export default function PostAnalysisPage({ reportData }) {
     );
 }
 
+const EmbedWrapper = styled.div`
+    position: relative;
+    width: 100%;
+    max-width: 400px; /* 최대 너비 설정 */
+    margin: 0 auto;
+    overflow: hidden;
+    padding-top: 170%;
+
+    iframe {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        border: none;
+    }
+
+    @media (max-width: 768px) {
+        max-width: 100%; /* 모바일 화면에서 너비를 부모에 맞춤 */
+        padding-top: 133%; /* 3:4 비율로 조정 */
+    }
+`;
+
 const PostAnalysisWrapper = styled.div`
     display: flex;
     flex-direction: column;
@@ -289,6 +311,10 @@ const PostAnalysisWrapper = styled.div`
     max-width: 1100px;
     margin: 0 auto;
     padding: 0 5%;
+
+    @media (max-width: 768px) {
+        padding: 0 2%;
+    }
 `;
 
 const PeriodButton = styled.button`
@@ -301,47 +327,85 @@ const PeriodButton = styled.button`
     cursor: pointer;
     transition: background 0.3s ease;
     font-size: 14px;
+
+    @media (max-width: 768px) {
+        font-size: 12px;
+        padding: 6px 12px;
+        margin-left: 4px;
+    }
 `;
 
 const PostSection = styled.div`
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* 최소 크기를 줄임 */
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: 16px;
+
+    @media (max-width: 768px) {
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 12px;
+    }
 `;
 
 const PeriodSelector = styled.div`
     display: flex;
     justify-content: flex-end;
     margin-bottom: 10px;
+
+    @media (max-width: 768px) {
+        justify-content: center;
+    }
 `;
+
 const Section = styled.div`
     margin-bottom: 30px;
+
+    @media (max-width: 768px) {
+        margin-bottom: 20px;
+    }
 `;
 
 const SectionTitle = styled.h2`
     font-size: 24px;
     font-weight: 600;
     margin-bottom: 20px;
+
+    @media (max-width: 768px) {
+        font-size: 20px;
+    }
 `;
+
 const Post = styled.div`
     border-radius: 16px;
     background-color: #fff;
     padding: 8px;
     text-align: center;
     min-height: 180px;
+
+    @media (max-width: 768px) {
+        padding: 6px;
+        min-height: 150px;
+    }
 `;
 
 const AnalysisWrapper = styled.div`
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* 최소 크기 조정 */
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     gap: 16px;
-    margin-top: 16px;
+
+    @media (max-width: 768px) {
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 12px;
+    }
 `;
 
 const WordCloudSection = styled.div`
     padding: 16px;
     border-radius: 16px;
     background-color: #fff;
+
+    @media (max-width: 768px) {
+        padding: 12px;
+    }
 `;
 
 const ReactionIndexSection = styled.div`
@@ -349,7 +413,64 @@ const ReactionIndexSection = styled.div`
     border-radius: 16px;
     background-color: #fff;
     text-align: center;
-    justify-content: center;
+
+    @media (max-width: 768px) {
+        padding: 12px;
+    }
+`;
+
+const AverageStatsWrapper = styled.div`
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 16px;
+
+    @media (max-width: 768px) {
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+        gap: 12px;
+    }
+`;
+
+const StatBox = styled.div`
+    padding: 16px;
+    border-radius: 16px;
+    background-color: #fff;
+    text-align: center;
+
+    @media (max-width: 768px) {
+        padding: 12px;
+    }
+`;
+
+const GraphWrapper = styled.div`
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 16px;
+
+    @media (max-width: 768px) {
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 12px;
+    }
+`;
+
+const GraphBox = styled.div`
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    background-color: #fff;
+    border-radius: 16px;
+    text-align: center;
+
+    @media (max-width: 768px) {
+        padding: 12px;
+    }
+`;
+
+const FollowerChartWrapper = styled.div`
+    height: 300px;
+
+    @media (max-width: 768px) {
+        height: 200px;
+    }
 `;
 
 const Label = styled.h3`
@@ -359,20 +480,6 @@ const Label = styled.h3`
     font-weight: 600;
     line-height: normal;
     margin-bottom: 8px;
-`;
-
-const AverageStatsWrapper = styled.div`
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); /* 최소 크기 감소 */
-    gap: 16px;
-    margin-top: 24px;
-`;
-
-const StatBox = styled.div`
-    padding: 16px;
-    border-radius: 16px;
-    background-color: #fff;
-    text-align: center;
 `;
 
 const StatContent = styled.div`
@@ -393,39 +500,24 @@ const DataValue = styled.p`
     font-weight: 600;
 `;
 
-const GraphWrapper = styled.div`
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* 최소 크기 조정 */
-    gap: 16px;
-    margin-top: 24px;
-`;
-
-const GraphBox = styled.div`
-    padding: 16px;
-    display: flex;
-    flex-direction: column;
-    background-color: #fff;
-    border-radius: 16px;
-    text-align: center;
-    align-items: center;
-`;
-
-const FollowerChartWrapper = styled.div`
-    height: 300px;
-`;
-
 const Reaction = styled.div`
     display: flex;
     justify-content: center;
     gap: 50px;
     margin-top: 100px;
     flex-direction: column;
+    @media (max-width: 768px) {
+        font-size: 20px;
+    }
 `;
 
 const ReactionData = styled.p`
     font-size: 50px;
     font-weight: 600;
     color: #7f00ff;
+    @media (max-width: 768px) {
+        font-size: 30px;
+    }
 `;
 
 const Description = styled.p`
@@ -438,6 +530,9 @@ const Description = styled.p`
     letter-spacing: -0.5px;
     text-transform: capitalize;
     margin-top: 20px;
+    @media (max-width: 768px) {
+        font-size: 20px;
+    }
 `;
 const SpinnerWrapper = styled.div`
     display: flex;
