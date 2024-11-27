@@ -7,7 +7,7 @@ import SendIcon from '../../assets/send-icon.svg';
 import ReloadIcon from '../../assets/reload-icon.svg';
 import { fetchData } from '../../services/api';
 import { useLocation } from 'react-router-dom';
-
+import { fetchChatResponse } from '../../services/chatApi';
 export default function Chat() {
     const location = useLocation();
     const [messages, setMessages] = useState(
@@ -27,14 +27,11 @@ export default function Chat() {
 
     const extractInfluencerIds = (responseText) => {
         try {
-            // ID가 문자, 숫자, _, 또는 .을 포함하도록 정규식을 수정
-            const idRegex = /id:(?:@)?([a-zA-Z0-9._]+)/g;
+            const idRegex = /\b(?:id\s*[:：]\s*@?)([a-zA-Z0-9._]+)/g;
             const matches = [...responseText.matchAll(idRegex)];
-            console.log(
-                'Extracted IDs:',
-                matches.map((match) => match[1])
-            ); // 디버깅 출력
-            return matches.map((match) => match[1]);
+            const ids = matches.map((match) => match[1]);
+            console.log('Extracted IDs:', ids); // 디버깅
+            return ids;
         } catch (error) {
             console.error('Error in extractInfluencerIds:', error);
             return [];
@@ -100,19 +97,11 @@ export default function Chat() {
 
         try {
             setLoading(true);
-            const response = await fetch('https://8c49-104-196-152-227.ngrok-free.app/chat', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ question: text }),
-            });
 
-            if (!response.ok) {
-                throw new Error(`HTTP error! Status: ${response.status}`);
-            }
+            // fetchChatResponse 함수 호출
+            const data = await fetchChatResponse(text);
 
-            const data = await response.json();
             const botMessage = { type: 'bot', text: data.result };
-
             setMessages((prev) => [...prev, botMessage]);
 
             const ids = extractInfluencerIds(data.result);

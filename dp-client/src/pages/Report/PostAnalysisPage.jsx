@@ -8,7 +8,7 @@ import commentIcon from '../../assets/comment-icon.png';
 import WordCloudComponent from '../../components/Report/WordCloudComponent';
 import 'chartjs-adapter-date-fns';
 import { fetchData } from '../../services/api';
-import ReportAdditionalStats from './ReportAdditionalStats';
+import ReportAdditionalStats from '../../components/Report/ReportAdditionalStats';
 ChartJS.register(LineElement, CategoryScale, LinearScale, PointElement, TimeScale);
 
 export default function PostAnalysisPage({ reportData }) {

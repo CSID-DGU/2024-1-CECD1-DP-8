@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-export default function SideBar({ profile }) {
+export default function SideBar({ profile, selectedPage, setSelectedPage }) {
     return (
         <SidebarWrapper>
             <ProfileImage>
@@ -20,9 +20,21 @@ export default function SideBar({ profile }) {
                     <DataLabel>팔로워</DataLabel>
                 </ProfileDataItem>
             </ProfileData>
+            <ButtonWrapper>
+                <Button isSelected={selectedPage === 'postAnalysis'} onClick={() => setSelectedPage('postAnalysis')}>
+                    포스트 분석
+                </Button>
+                <Button
+                    isSelected={selectedPage === 'hashtagAnalysis'}
+                    onClick={() => setSelectedPage('hashtagAnalysis')}
+                >
+                    해시태그 분석
+                </Button>
+            </ButtonWrapper>
         </SidebarWrapper>
     );
 }
+
 const SidebarWrapper = styled.div`
     width: 282px;
     padding: 20px;
@@ -32,7 +44,6 @@ const SidebarWrapper = styled.div`
     flex-direction: column;
     align-items: center;
     text-align: center;
-    height: 600px;
 
     @media (max-width: 768px) {
         width: 100%;
@@ -142,5 +153,38 @@ const DataLabel = styled.p`
 
     @media (max-width: 768px) {
         font-size: 12px;
+    }
+`;
+
+const ButtonWrapper = styled.div`
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+`;
+
+const Button = styled.button`
+    background: ${(props) =>
+        props.isSelected
+            ? 'linear-gradient(90deg, rgba(74, 58, 255, 0.80) 0%, rgba(102, 48, 170, 0.80) 100%)'
+            : '#b0b0b0'};
+    color: #fff;
+    font-size: 16px;
+    font-weight: 600;
+    padding: 10px 35px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+
+    &:hover {
+        background: ${(props) =>
+            props.isSelected
+                ? 'linear-gradient(90deg, rgba(74, 58, 255, 0.9) 0%, rgba(102, 48, 170, 0.9) 100%)'
+                : '#808080'};
+    }
+
+    @media (max-width: 768px) {
+        font-size: 14px;
+        padding: 8px 12px;
     }
 `;

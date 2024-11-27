@@ -8,6 +8,8 @@ import { fetchData } from '../../services/api';
 import SideBar from '../../components/Report/SideBar';
 import PostAnalysisPage from './PostAnalysisPage';
 import ReportCard from '../../components/Report/ReportCard';
+import HashtagAnalysisPage from './HashtagAnalysisPage';
+
 const influencerIds = [
     1, 2, 3, 4, 5, 8, 9, 10, 11, 12, 14, 16, 17, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 42, 43, 44, 45, 47, 48, 49,
     50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60,
@@ -22,7 +24,7 @@ export default function Report() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [scrollX, setScrollX] = useState(0);
-
+    const [selectedPage, setSelectedPage] = useState('postAnalysis'); // Default 페이지 설정
     const scrollContainerRef = useRef();
 
     useEffect(() => {
@@ -127,9 +129,10 @@ export default function Report() {
     if (id && reportData) {
         return (
             <ReportWrapper>
-                <SideBar profile={reportData.profile} onSelect={() => {}} />
+                <SideBar profile={reportData.profile} selectedPage={selectedPage} setSelectedPage={setSelectedPage} />
                 <ContentWrapper>
-                    <PostAnalysisPage reportData={reportData} />
+                    {selectedPage === 'postAnalysis' && <PostAnalysisPage reportData={reportData} />}
+                    {selectedPage === 'hashtagAnalysis' && <HashtagAnalysisPage id={id} />}
                 </ContentWrapper>
             </ReportWrapper>
         );

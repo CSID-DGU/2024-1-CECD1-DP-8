@@ -5,6 +5,7 @@ import FilterIcon from '../../assets/filter-add.svg';
 import SearchIcon from '../../assets/search-icon.png';
 import InfluencerFilterModal from '../../components/Filter/InfluencerFilterModal';
 import Spinner from '../../components/Spinner/Spinner';
+import { fetchChatResponse } from '../../services/chatApi';
 export default function RecommendPage() {
     const [showModal, setShowModal] = useState(false);
     const [searchPrompt, setSearchPrompt] = useState('');
@@ -34,18 +35,10 @@ export default function RecommendPage() {
 
         setLoading(true); // 로딩 시작
         try {
-            const response = await fetch('https://8c49-104-196-152-227.ngrok-free.app/chat', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ question: searchPrompt }),
-            });
+            // fetchChatResponse를 호출
+            const data = await fetchChatResponse(searchPrompt);
 
-            if (!response.ok) {
-                throw new Error(`HTTP error! Status: ${response.status}`);
-            }
-
-            const data = await response.json();
-
+            // 검색 결과를 Chat 페이지로 전달
             navigate('/chat', {
                 state: {
                     question: searchPrompt,

@@ -65,7 +65,7 @@ const Wrapper = styled.nav`
     background-color: #ffffff;
 
     @media (max-width: 768px) {
-        min-width: 100%; /* 모바일에서 전체 너비로 조정 */
+        min-width: 100%;
         height: auto;
     }
 `;
@@ -80,9 +80,10 @@ const Nav = styled.nav`
     background-color: #fff;
 
     @media (max-width: 768px) {
-        flex-direction: row; /* 모바일에서도 수평 정렬 */
-        height: auto;
-        padding: 10px 15px;
+        flex-wrap: nowrap;
+        justify-content: space-between;
+        padding: 10px;
+        gap: 10px;
     }
 `;
 
@@ -95,15 +96,15 @@ const Logo = styled(Link)`
         transition: height 0.3s ease;
 
         @media (max-width: 768px) {
-            height: 30px; /* 모바일에서 로고 크기 조정 */
+            height: 20px;
+            margin-left: 0;
         }
     }
 
     @media (max-width: 768px) {
-        margin-left: 10px; /* 모바일에서 왼쪽 상단에 위치 */
+        margin-left: 10px;
     }
 `;
-
 const Links = styled.div`
     display: flex;
     list-style: none;
@@ -111,10 +112,8 @@ const Links = styled.div`
     cursor: pointer;
 
     @media (max-width: 768px) {
-        gap: 10px; /* 모바일에서 링크 간격 조정 */
-        flex-wrap: wrap; /* 링크를 줄바꿈 가능하도록 */
-        justify-content: center;
-        margin: 10px 0; /* 모바일에서 상하 여백 추가 */
+        gap: 25px;
+        flex-wrap: nowrap;
     }
 `;
 
@@ -125,8 +124,8 @@ const RightMenu = styled.div`
     margin-right: 200px;
 
     @media (max-width: 768px) {
-        margin-right: 10px; /* 모바일에서 오른쪽 상단에 위치 */
-        margin-top: 0;
+        gap: 5px; /* 버튼 간격 최소화 */
+        margin-right: 0; /* 오른쪽 여백 제거 */
     }
 `;
 
@@ -146,13 +145,13 @@ const NavLink = styled(Link)`
     }
 
     @media (max-width: 768px) {
-        font-size: 14px; /* 모바일에서 링크 글꼴 크기 축소 */
+        font-size: 12px; /* 링크 글꼴 크기 축소 */
     }
 `;
 
 const LoginButton = styled.button`
     display: flex;
-    padding: 13px 24px;
+    padding: 10px 15px; /* 버튼 패딩 축소 */
     justify-content: center;
     align-items: center;
     gap: 4px;
@@ -173,8 +172,8 @@ const LoginButton = styled.button`
     }
 
     @media (max-width: 768px) {
-        font-size: 14px;
-        padding: 10px 20px;
+        font-size: 12px; /* 글꼴 크기 축소 */
+        padding: 8px 10px; /* 패딩 더 축소 */
     }
 `;
 
