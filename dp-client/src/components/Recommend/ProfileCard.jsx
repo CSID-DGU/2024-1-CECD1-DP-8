@@ -16,6 +16,14 @@ export default function ProfileCard({ profile }) {
         setShowTags(false);
     };
 
+    // 카테고리별 색상 정의
+    const categoryColors = {
+        뷰티: '#FCA5A5',
+        패션: '#FDE68A',
+        일상: '#86EFAC',
+        여행: '#E9D5FF',
+    };
+
     // Check if allTagsOfMedias exists and slice top 3 tags safely
     const topTags =
         Array.isArray(profile.allTagsOfMedias) && profile.allTagsOfMedias.length > 0
@@ -32,7 +40,9 @@ export default function ProfileCard({ profile }) {
                     <Username>@{profile.nickname}</Username>
                     <CategorySection>
                         <CategoryTitle>카테고리</CategoryTitle>
-                        <Category>{profile.category}</Category>
+                        <Category style={{ backgroundColor: categoryColors[profile.category] || '#ccc' }}>
+                            {profile.category}
+                        </Category>
                     </CategorySection>
                 </TopRow>
                 <Name>{profile.name}</Name>
@@ -56,7 +66,9 @@ export default function ProfileCard({ profile }) {
                                 ))}
                             </TagsBubble>
                         )}
-                        <Button onClick={() => navigate(`/report/${profile.nickname}`)}>리포트 보러가기</Button>
+                        <ReportButton onClick={() => navigate(`/report/${profile.nickname}`)}>
+                            리포트 보러가기
+                        </ReportButton>
                     </ActionButtons>
                 </BottomRow>
             </ProfileDetails>
@@ -156,7 +168,6 @@ const Category = styled.span`
     font-size: 14px;
     font-weight: 500;
     color: #fff;
-    background: #ff8585;
     padding: 5px 10px;
     border-radius: 15px;
 
@@ -216,7 +227,6 @@ const DataLabel = styled.p`
         font-size: 12px;
     }
 `;
-
 const ActionButtons = styled.div`
     display: flex;
     gap: 10px;
@@ -231,19 +241,23 @@ const Button = styled.button`
     font-size: 14px;
     font-weight: 500;
     color: #fff;
-    background: #b785ff;
+    background: #b0b0b0;
     padding: 10px 15px;
     border: none;
     border-radius: 15px;
     cursor: pointer;
-
     &:hover {
-        background: #9f66ff;
+        background: #808080;
     }
-
     @media (max-width: 768px) {
         font-size: 12px;
         padding: 8px 12px;
+    }
+`;
+const ReportButton = styled(Button)`
+    background: #b785ff; /* 리포트 보러가기 버튼 색상 (밝은 회색) */
+    &:hover {
+        background: #9f66ff; /* hover 시 색상 (어두운 회색) */
     }
 `;
 

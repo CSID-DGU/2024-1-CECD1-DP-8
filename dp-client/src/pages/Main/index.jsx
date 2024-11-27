@@ -10,6 +10,7 @@ import SearchIcon from '../../assets/search-icon.png';
 import InfluencerFilterModal from '../../components/Filter/InfluencerFilterModal';
 import AdvertiserMain from '../Advertiser/index';
 import InfluencerMain from '../Influencer/index';
+import { fetchChatResponse } from '../../services/chatApi';
 const imagePaths = Array.from({ length: 18 }, (_, i) => require(`../../assets/influimg/influ_${i + 1}.png`));
 
 export default function Main() {
@@ -43,26 +44,13 @@ export default function Main() {
 
         setLoading(true); // 로딩 시작
         try {
-            const response = await fetch('https://8c49-104-196-152-227.ngrok-free.app/chat', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    question: searchPrompt,
-                    filters: {
-                        ...(filters.selectedCategory && { category: filters.selectedCategory }),
-                        ...(filters.minFollower && { minFollower: filters.minFollower }),
-                        ...(filters.maxFollower && { maxFollower: filters.maxFollower }),
-                        ...(filters.gender !== 'unset' && { gender: filters.gender }),
-                        ...(filters.hashtagInput && { tag: filters.hashtagInput.split(' ') }),
-                    },
-                }),
+            const data = await fetchChatResponse(searchPrompt, {
+                ...(filters.selectedCategory && { category: filters.selectedCategory }),
+                ...(filters.minFollower && { minFollower: filters.minFollower }),
+                ...(filters.maxFollower && { maxFollower: filters.maxFollower }),
+                ...(filters.gender !== 'unset' && { gender: filters.gender }),
+                ...(filters.hashtagInput && { tag: filters.hashtagInput.split(' ') }),
             });
-
-            if (!response.ok) {
-                throw new Error(`HTTP error! Status: ${response.status}`);
-            }
-
-            const data = await response.json();
 
             navigate('/chat', {
                 state: {
@@ -319,7 +307,7 @@ const InfluencerTitle = styled.div`
     color: #1c1c1c;
     margin-bottom: 2rem;
     line-height: 1.2;
-    background: linear-gradient(90deg, #ff6f91 0%, #ff9671 40%, #ffc75f 70%, #ffa07a 100%);
+    background: linear-gradient(90deg, #4a58ff 0%, #7854f7 50%, #00c6ff 100%);
     background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -329,7 +317,11 @@ const InfluencerTitle = styled.div`
     }
 
     @media (max-width: 768px) {
-        font-size: 1.8rem;
+        font-size: 1.5rem; /* 모바일 환경에서 크기 축소 */
+    }
+
+    @media (max-width: 480px) {
+        font-size: 1.2rem; /* 작은 화면에서 더 작게 */
     }
 `;
 
