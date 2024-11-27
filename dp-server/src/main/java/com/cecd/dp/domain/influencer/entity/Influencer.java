@@ -73,6 +73,38 @@ public class Influencer {
   }
 
   public Integer getMediaCnt() {
-    return mediaList.size();
+    return this.mediaList.size();
+  }
+
+  public Integer getReelsMediaCnt() {
+    return this.mediaList.stream()
+        .filter(m -> m.getMediaProductType().equals("REELS"))
+        .toList()
+        .size();
+  }
+
+  public Integer getAdMediaCnt() {
+    return this.mediaList.stream().filter(Media::getIsAd).toList().size();
+  }
+
+  public Integer getNonAdMediaCnt() {
+    return this.mediaList.stream().filter(m -> !m.getIsAd()).toList().size();
+  }
+
+  public Double getLikeAvgOfAdMediaWithOutHide() {
+    return this.mediaList.stream()
+        .filter(Media::getIsAd) // 광고 게시물만 필터링
+        .filter(m -> m.getLikeCnt() > 0) // 좋아요 숨기기한 게시물 제외 (isLikeHidden을 예로 가정)
+        .mapToDouble(Media::getLikeCnt) // 좋아요 수를 IntStream으로 변환
+        .average() // 평균을 구함
+        .orElse(0.0); // 만약 결과가 없으면 0을 반환
+  }
+
+  public Double getLikeAvgOfAdMedia() {
+    return this.mediaList.stream()
+        .filter(Media::getIsAd)
+        .mapToDouble(Media::getCommentsCnt)
+        .average()
+        .orElse(0.0);
   }
 }
