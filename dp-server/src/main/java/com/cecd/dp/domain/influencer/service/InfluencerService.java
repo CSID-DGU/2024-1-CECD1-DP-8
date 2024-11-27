@@ -1,7 +1,13 @@
 package com.cecd.dp.domain.influencer.service;
 
 import com.cecd.dp.domain.influencer.dto.FollowerChartProjection;
+import com.cecd.dp.domain.influencer.dto.GetHashTagReportDTO;
+import com.cecd.dp.domain.influencer.dto.GetHashTagReportDTO.AvgEngagement;
+import com.cecd.dp.domain.influencer.dto.GetHashTagReportDTO.MaxEngagement;
+import com.cecd.dp.domain.influencer.dto.GetHashTagReportDTO.TotalEngagement;
+import com.cecd.dp.domain.influencer.dto.GetHashTagReportDTO.UsageCount;
 import com.cecd.dp.domain.influencer.dto.GetInfluencerReportDTO;
+import com.cecd.dp.domain.influencer.dto.HashTagInfoProjection;
 import com.cecd.dp.domain.influencer.dto.MostPostsProjection;
 import com.cecd.dp.domain.influencer.dto.ProfileProjection;
 import com.cecd.dp.domain.influencer.entity.Influencer;
@@ -104,13 +110,12 @@ public class InfluencerService {
         .reelsChartComments(reelsChartComments)
         .reelsChartLikes(reelsChartLikes)
         .followerCharts(followerChart)
-            //TODO
-            .feedCnt(influencer.getMediaCnt())
-            .reelsCnt(influencer.getReelsMediaCnt())
-            .adCnt(influencer.getAdMediaCnt())
-            .nonAdCnt(influencer.getNonAdMediaCnt())
-            .commentsAvgOfAdMedia(influencer.getLikeAvgOfAdMediaWithOutHide())
-            .likeAvgOfAdMedia(influencer.getLikeAvgOfAdMedia())
+        .feedCnt(influencer.getMediaCnt())
+        .reelsCnt(influencer.getReelsMediaCnt())
+        .adCnt(influencer.getAdMediaCnt())
+        .nonAdCnt(influencer.getNonAdMediaCnt())
+        .commentsAvgOfAdMedia(influencer.getLikeAvgOfAdMediaWithOutHide())
+        .likeAvgOfAdMedia(influencer.getLikeAvgOfAdMedia())
         .build();
   }
 
@@ -183,13 +188,67 @@ public class InfluencerService {
         .reelsChartComments(reelsChartComments)
         .reelsChartLikes(reelsChartLikes)
         .followerCharts(followerChart)
-            //TODO
-            .feedCnt(influencer.getMediaCnt())
-            .reelsCnt(influencer.getReelsMediaCnt())
-            .adCnt(influencer.getAdMediaCnt())
-            .nonAdCnt(influencer.getNonAdMediaCnt())
-            .commentsAvgOfAdMedia(influencer.getLikeAvgOfAdMediaWithOutHide())
-            .likeAvgOfAdMedia(influencer.getLikeAvgOfAdMedia())
+        .feedCnt(influencer.getMediaCnt())
+        .reelsCnt(influencer.getReelsMediaCnt())
+        .adCnt(influencer.getAdMediaCnt())
+        .nonAdCnt(influencer.getNonAdMediaCnt())
+        .commentsAvgOfAdMedia(influencer.getLikeAvgOfAdMediaWithOutHide())
+        .likeAvgOfAdMedia(influencer.getLikeAvgOfAdMedia())
+        .build();
+  }
+
+  public GetHashTagReportDTO getHashTagReport(Long id) {
+    List<HashTagInfoProjection> hashTagReports = mediaRepository.getHashTagReportByInfluencerId(id);
+
+    List<UsageCount> usageCounts =
+        hashTagReports.stream()
+            .map(
+                report -> {
+                  return UsageCount.builder()
+                      .usageCount(report.getUsageCount())
+                      .hashTag(report.getHashTagName())
+                      .build();
+                })
+            .toList();
+
+    List<AvgEngagement> avgEngagements =
+        hashTagReports.stream()
+            .map(
+                report -> {
+                  return AvgEngagement.builder()
+                      .avgEngagement(report.getAvgEngagement())
+                      .hashTag(report.getHashTagName())
+                      .build();
+                })
+            .toList();
+
+    List<MaxEngagement> maxEngagements =
+        hashTagReports.stream()
+            .map(
+                report -> {
+                  return MaxEngagement.builder()
+                      .maxEngagement(report.getMaxEngagement())
+                      .hashTag(report.getHashTagName())
+                      .build();
+                })
+            .toList();
+
+    List<TotalEngagement> totalEngagements =
+        hashTagReports.stream()
+            .map(
+                report -> {
+                  return TotalEngagement.builder()
+                      .totalEngagement(report.getTotalEngagement())
+                      .hashTag(report.getHashTagName())
+                      .build();
+                })
+            .toList();
+
+    return GetHashTagReportDTO.builder()
+        .maxEngagements(maxEngagements)
+        .totalEngagements(totalEngagements)
+        .avgEngagements(avgEngagements)
+        .usageCounts(usageCounts)
         .build();
   }
 }

@@ -4,7 +4,6 @@ import com.cecd.dp.domain.image.entity.Image;
 import com.cecd.dp.domain.influencer.entity.Influencer;
 import com.cecd.dp.domain.mediahashtag.entity.MediaHashTag;
 import com.cecd.dp.global.BaseEntity;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
