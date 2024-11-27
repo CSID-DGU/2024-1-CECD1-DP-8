@@ -152,7 +152,7 @@ const NavLink = styled(Link)`
 
 const LoginButton = styled.button`
     display: flex;
-    padding: 18px 24px;
+    padding: 13px 24px;
     justify-content: center;
     align-items: center;
     gap: 4px;

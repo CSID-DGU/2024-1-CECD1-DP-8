@@ -7,7 +7,7 @@ import styled from 'styled-components';
 import { fetchData } from '../../services/api';
 import SideBar from '../../components/Report/SideBar';
 import PostAnalysisPage from './PostAnalysisPage';
-
+import ReportCard from '../../components/Report/ReportCard';
 const influencerIds = [
     1, 2, 3, 4, 5, 8, 9, 10, 11, 12, 14, 16, 17, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 42, 43, 44, 45, 47, 48, 49,
     50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60,
@@ -25,7 +25,6 @@ export default function Report() {
 
     const scrollContainerRef = useRef();
 
-    // Fetch report data if id is present
     useEffect(() => {
         const loadReportData = async () => {
             if (id) {
@@ -43,7 +42,6 @@ export default function Report() {
         loadReportData();
     }, [id]);
 
-    // Fetch influencer data for the initial screen
     useEffect(() => {
         if (!id) {
             const loadInfluencers = async () => {
@@ -108,7 +106,7 @@ export default function Report() {
                         <AnimatedScroll {...bind()} style={{ x }}>
                             {influencers.concat(influencers).map((profile, idx) => (
                                 <CardWrapper key={`${profile.id}-${idx}`}>
-                                    <SideBar profile={profile} />
+                                    <ReportCard profile={profile} />
                                     <Overlay
                                         onClick={(e) => {
                                             e.stopPropagation(); // 이벤트 버블링 방지
