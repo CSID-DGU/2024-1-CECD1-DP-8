@@ -4,6 +4,7 @@ import com.cecd.dp.domain.media.entity.Media;
 import com.cecd.dp.domain.meta.entity.Meta;
 import jakarta.persistence.*;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -73,26 +74,45 @@ public class Influencer {
   }
 
   public Integer getMediaCnt() {
-    return this.mediaList.size();
+    return this.mediaList.stream()
+        .sorted(Comparator.comparing(Media::getPostedAt).reversed())
+        .limit(50)
+        .filter(m -> m.getMediaProductType().equals("FEED"))
+        .toList()
+        .size();
   }
 
   public Integer getReelsMediaCnt() {
     return this.mediaList.stream()
+        .sorted(Comparator.comparing(Media::getPostedAt).reversed())
+        .limit(50)
         .filter(m -> m.getMediaProductType().equals("REELS"))
         .toList()
         .size();
   }
 
   public Integer getAdMediaCnt() {
-    return this.mediaList.stream().filter(Media::getIsAd).toList().size();
+    return this.mediaList.stream()
+        .sorted(Comparator.comparing(Media::getPostedAt).reversed())
+        .limit(50)
+        .filter(Media::getIsAd)
+        .toList()
+        .size();
   }
 
   public Integer getNonAdMediaCnt() {
-    return this.mediaList.stream().filter(m -> !m.getIsAd()).toList().size();
+    return this.mediaList.stream()
+        .sorted(Comparator.comparing(Media::getPostedAt).reversed())
+        .limit(50)
+        .filter(m -> !m.getIsAd())
+        .toList()
+        .size();
   }
 
   public Double getLikeAvgOfAdMediaWithOutHide() {
     return this.mediaList.stream()
+        .sorted(Comparator.comparing(Media::getPostedAt).reversed())
+        .limit(50)
         .filter(Media::getIsAd) // 광고 게시물만 필터링
         .filter(m -> m.getLikeCnt() > 0) // 좋아요 숨기기한 게시물 제외 (isLikeHidden을 예로 가정)
         .mapToDouble(Media::getLikeCnt) // 좋아요 수를 IntStream으로 변환
@@ -102,6 +122,8 @@ public class Influencer {
 
   public Double getLikeAvgOfAdMedia() {
     return this.mediaList.stream()
+        .sorted(Comparator.comparing(Media::getPostedAt).reversed())
+        .limit(50)
         .filter(Media::getIsAd)
         .mapToDouble(Media::getCommentsCnt)
         .average()
