@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { useNavigate } from 'react-router-dom'; // React Router로 페이지 이동을 처리
+import { useNavigate } from 'react-router-dom';
 import FilterIcon from '../../assets/filter-add.svg';
 import SearchIcon from '../../assets/search-icon.png';
 import InfluencerFilterModal from '../../components/Filter/InfluencerFilterModal';
-
+import Spinner from '../../components/Spinner/Spinner';
 export default function RecommendPage() {
     const [showModal, setShowModal] = useState(false);
-    const [searchPrompt, setSearchPrompt] = useState(''); // 검색 프롬프트 상태
+    const [searchPrompt, setSearchPrompt] = useState('');
+    const [loading, setLoading] = useState(false);
     const [filters, setFilters] = useState({
         beauty: false,
         fashion: false,
@@ -20,16 +21,42 @@ export default function RecommendPage() {
         hashtagInput: '',
     });
 
-    const navigate = useNavigate(); // 페이지 이동을 위한 navigate 함수
+    const navigate = useNavigate();
 
     const handleOpenModal = () => setShowModal(true);
     const handleCloseModal = () => setShowModal(false);
 
-    const handleSearch = () => {
-        if (searchPrompt.trim() !== '') {
-            navigate(`/chat?prompt=${encodeURIComponent(searchPrompt)}`);
-        } else {
+    const handleSearch = async () => {
+        if (searchPrompt.trim() === '') {
             alert('검색어를 입력해주세요!');
+            return;
+        }
+
+        setLoading(true); // 로딩 시작
+        try {
+            const response = await fetch('https://4e4e-34-87-133-241.ngrok-free.app/chat', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ question: searchPrompt }),
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+
+            const data = await response.json();
+
+            navigate('/chat', {
+                state: {
+                    question: searchPrompt,
+                    chatResponse: data.result,
+                },
+            });
+        } catch (err) {
+            console.error('API 호출 오류:', err);
+            alert('서버와 연결할 수 없습니다. 다시 시도해주세요.');
+        } finally {
+            setLoading(false); // 로딩 종료
         }
     };
 
@@ -41,6 +68,7 @@ export default function RecommendPage() {
 
     return (
         <PageWrapper>
+            {loading && <Spinner />}
             <Container>
                 <MainContent>
                     <Title>원하는 인플루언서를 쉽고 편하게 찾아보세요!</Title>
@@ -52,7 +80,7 @@ export default function RecommendPage() {
                             placeholder="원하는 인플루언서를 검색해보세요"
                             value={searchPrompt}
                             onChange={(e) => setSearchPrompt(e.target.value)}
-                            onKeyPress={handleKeyPress} // 엔터 키 입력 처리
+                            onKeyPress={handleKeyPress}
                         />
                         <SearchIconContainer onClick={handleSearch}>
                             <StyledSearchIcon src={SearchIcon} alt="Search Icon" />
@@ -74,7 +102,6 @@ export default function RecommendPage() {
         </PageWrapper>
     );
 }
-
 const PageWrapper = styled.div`
     width: 100vw;
     height: 100vh;
@@ -83,17 +110,30 @@ const PageWrapper = styled.div`
     align-items: center;
     background: linear-gradient(180deg, #f8fafb 0%, #ade3fe 100%);
     box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+
+    @media (max-width: 768px) {
+        height: auto;
+        padding: 20px;
+    }
 `;
 
 const Container = styled.div`
     width: 100%;
     max-width: 1200px;
     padding: 20px;
+
+    @media (max-width: 768px) {
+        padding: 10px;
+    }
 `;
 
 const MainContent = styled.div`
     margin-top: 100px;
     text-align: center;
+
+    @media (max-width: 768px) {
+        margin-top: 50px;
+    }
 `;
 
 const Title = styled.h2`
@@ -103,37 +143,69 @@ const Title = styled.h2`
     -webkit-text-fill-color: transparent;
     font-family: Inter;
     font-size: 48px;
-    font-style: normal;
     font-weight: 600;
     line-height: normal;
+
+    @media (max-width: 768px) {
+        font-size: 36px;
+    }
+
+    @media (max-width: 480px) {
+        font-size: 28px;
+    }
 `;
 
 const Subtitle = styled.p`
     background: linear-gradient(180deg, #780bc2 0%, #39055c 100%);
     background-clip: text;
-    margin-top: 10px;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
+    font-size: 20px;
+    margin-top: 10px;
+
+    @media (max-width: 768px) {
+        font-size: 18px;
+    }
+
+    @media (max-width: 480px) {
+        font-size: 16px;
+    }
 `;
 
 const StyledSearchIcon = styled.img`
     width: 19px;
     height: 19px;
-    flex-shrink: 0;
     cursor: pointer;
+
+    @media (max-width: 480px) {
+        width: 16px;
+        height: 16px;
+    }
 `;
 
 const StyledFilterIcon = styled.img`
     width: 24px;
     height: 24px;
-    color: #fff;
     margin-left: 3px;
+
+    @media (max-width: 480px) {
+        width: 20px;
+        height: 20px;
+    }
 `;
 
 const SearchContainer = styled.div`
     position: relative;
     margin: 40px auto;
     width: 60%;
+
+    @media (max-width: 768px) {
+        width: 80%;
+    }
+
+    @media (max-width: 480px) {
+        width: 90%;
+    }
 `;
 
 const SearchInput = styled.input`
@@ -142,6 +214,11 @@ const SearchInput = styled.input`
     font-size: 16px;
     border: 1px solid #ddd;
     border-radius: 50px;
+
+    @media (max-width: 480px) {
+        padding: 12px 15px;
+        font-size: 14px;
+    }
 `;
 
 const SearchIconContainer = styled.div`
@@ -149,9 +226,48 @@ const SearchIconContainer = styled.div`
     right: 20px;
     top: 50%;
     transform: translateY(-50%);
-    font-size: 20px;
-    color: #666;
     cursor: pointer;
+
+    @media (max-width: 480px) {
+        right: 15px;
+    }
+`;
+
+const KeywordSection = styled.div`
+    margin: 20px auto;
+    text-align: center;
+
+    @media (max-width: 480px) {
+        margin: 10px auto;
+    }
+`;
+
+const KeywordInput = styled.input`
+    width: 60%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 30px;
+    font-size: 16px;
+
+    @media (max-width: 768px) {
+        width: 80%;
+    }
+
+    @media (max-width: 480px) {
+        width: 90%;
+        padding: 10px;
+        font-size: 14px;
+    }
+`;
+
+const KeywordDescription = styled.p`
+    margin-top: 10px;
+    font-size: 14px;
+    color: #666;
+
+    @media (max-width: 480px) {
+        font-size: 12px;
+    }
 `;
 
 const Description = styled.p`
@@ -159,9 +275,15 @@ const Description = styled.p`
     text-align: center;
     font-family: Inter;
     font-size: 20px;
-    font-style: normal;
     font-weight: 600;
-    line-height: normal;
+
+    @media (max-width: 768px) {
+        font-size: 18px;
+    }
+
+    @media (max-width: 480px) {
+        font-size: 16px;
+    }
 `;
 
 const KeywordButton = styled.button`
@@ -179,5 +301,15 @@ const KeywordButton = styled.button`
 
     &:hover {
         background: #6a40cc;
+    }
+
+    @media (max-width: 768px) {
+        font-size: 18px;
+        padding: 10px 15px;
+    }
+
+    @media (max-width: 480px) {
+        font-size: 16px;
+        padding: 8px 12px;
     }
 `;

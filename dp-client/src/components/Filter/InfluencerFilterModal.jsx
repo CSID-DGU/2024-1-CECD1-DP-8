@@ -12,9 +12,8 @@ export default function InfluencerFilterModal({ setModalOpen, filters, setFilter
     const categories = [
         { id: 'beauty', label: '뷰티', color: '#FCA5A5' },
         { id: 'fashion', label: '패션', color: '#FDE68A' },
-        { id: 'sports', label: '스포츠', color: '#86EFAC' },
-        { id: 'homeLiving', label: '홈 / 리빙', color: '#E9D5FF' },
-        { id: 'music', label: '음악', color: '#BAE6FD' },
+        { id: 'living', label: '일상', color: '#86EFAC' },
+        { id: 'travel', label: '여행', color: '#E9D5FF' },
     ];
 
     useEffect(() => {
@@ -123,9 +122,9 @@ export default function InfluencerFilterModal({ setModalOpen, filters, setFilter
                         </SelectField>
                     </FormGroup>
                     <FormGroup>
-                        <Label>키워드 #해시태그 로 추가</Label>
+                        <Label>원하는 키워드 추가</Label>
                         <TextArea
-                            placeholder="해시태그 형식으로 입력하세요! 예: #뷰티 #패션"
+                            placeholder="예: 일상정보, 릴스, 토너패트"
                             value={hashtagInput}
                             onChange={(e) => setHashtagInput(e.target.value)}
                         />
@@ -142,6 +141,179 @@ export default function InfluencerFilterModal({ setModalOpen, filters, setFilter
         </ModalOverlay>
     );
 }
+const ModalContainer = styled.div`
+    width: 600px;
+    background: white;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    animation: fadeIn 0.3s ease-in-out;
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+`;
+
+const ModalHeader = styled.div`
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    background: linear-gradient(90deg, #aa96fc 0%, #463392 100%);
+    color: white;
+`;
+
+const HeaderTitle = styled.h2`
+    font-size: 22px;
+    margin: 0;
+    font-weight: bold;
+`;
+
+const CloseButton = styled.button`
+    background: transparent;
+    border: none;
+    font-size: 18px;
+    color: white;
+    cursor: pointer;
+    transition: transform 0.2s;
+
+    &:hover {
+        transform: rotate(90deg);
+    }
+`;
+
+const ModalContent = styled.div`
+    padding: 20px;
+`;
+
+const FormGroup = styled.div`
+    margin-bottom: 20px;
+
+    label {
+        font-size: 14px;
+        font-weight: bold;
+        margin-bottom: 8px;
+        display: block;
+        color: #333;
+    }
+`;
+
+const CategoryContainer = styled.div`
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+`;
+
+const CategoryButton = styled.button`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 14px;
+    padding: 10px 16px;
+    border-radius: 24px;
+    border: 1px solid ${(props) => (props.selected ? props.color : '#ddd')};
+    background: ${(props) => (props.selected ? props.color : 'white')};
+    color: ${(props) => (props.selected ? 'white' : '#333')};
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+
+    &:hover {
+        background: ${(props) => props.color};
+        color: white;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+`;
+
+const InputField = styled.input`
+    width: calc(50% - 10px);
+    padding: 12px 16px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 16px;
+    transition: border-color 0.2s;
+
+    &:focus {
+        border-color: #463392;
+        outline: none;
+        box-shadow: 0 0 4px rgba(70, 51, 146, 0.3);
+    }
+`;
+
+const SelectField = styled.select`
+    width: 100%;
+    padding: 12px 16px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 16px;
+    transition: border-color 0.2s;
+
+    &:focus {
+        border-color: #463392;
+        outline: none;
+        box-shadow: 0 0 4px rgba(70, 51, 146, 0.3);
+    }
+`;
+
+const TextArea = styled.textarea`
+    width: 100%;
+    height: 100px;
+    padding: 12px 16px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 16px;
+    transition: border-color 0.2s;
+
+    &:focus {
+        border-color: #463392;
+        outline: none;
+        box-shadow: 0 0 4px rgba(70, 51, 146, 0.3);
+    }
+`;
+
+const FooterButton = styled.button`
+    padding: 12px 24px;
+    border-radius: 24px;
+    border: none;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background: ${(props) => (props.primary ? '#463392' : '#ddd')};
+    color: ${(props) => (props.primary ? 'white' : '#333')};
+
+    &:hover {
+        background: ${(props) => (props.primary ? '#301f72' : '#ccc')};
+        transform: scale(1.05);
+    }
+`;
+
+const ErrorText = styled.p`
+    color: red;
+    font-size: 14px;
+    margin: 10px 0;
+    animation: shake 0.3s;
+
+    @keyframes shake {
+        0%,
+        100% {
+            transform: translateX(0);
+        }
+        25% {
+            transform: translateX(-4px);
+        }
+        75% {
+            transform: translateX(4px);
+        }
+    }
+`;
 
 const ModalOverlay = styled.div`
     position: fixed;
@@ -156,43 +328,6 @@ const ModalOverlay = styled.div`
     z-index: 9999;
 `;
 
-const ModalContainer = styled.div`
-    width: 600px;
-    background: white;
-    border-radius: 12px;
-    overflow: hidden;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-`;
-
-const ModalHeader = styled.div`
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 20px;
-    background: #f5f5f5;
-    border-bottom: 1px solid #ddd;
-`;
-
-const HeaderTitle = styled.h2`
-    font-size: 20px;
-    margin: 0;
-`;
-
-const CloseButton = styled.button`
-    background: none;
-    border: none;
-    font-size: 18px;
-    cursor: pointer;
-`;
-
-const ModalContent = styled.div`
-    padding: 20px;
-`;
-
-const FormGroup = styled.div`
-    margin-bottom: 20px;
-`;
-
 const Label = styled.label`
     display: block;
     font-size: 14px;
@@ -200,68 +335,11 @@ const Label = styled.label`
     font-weight: bold;
 `;
 
-const CategoryContainer = styled.div`
-    display: flex;
-    gap: 10px;
-    flex-wrap: wrap;
-`;
-
-const CategoryButton = styled.button`
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 15px;
-    width: 91.478px;
-    height: 35px;
-    padding: 10px;
-    gap: 10px;
-    border-radius: 20px;
-    border: none;
-    background: ${(props) => (props.selected ? props.color : '#f1f1f1')};
-    color: ${(props) => (props.selected ? 'white' : 'black')};
-    cursor: pointer;
-    box-shadow: ${(props) => (props.selected ? '0px 4px 8px rgba(0, 0, 0, 0.15)' : '0px 2px 4px rgba(0, 0, 0, 0.1)')};
-    transition: all 0.3s ease;
-
-    &:hover {
-        background: ${(props) => props.color};
-        color: white;
-    }
-`;
-
 const FollowerInputContainer = styled.div`
     display: flex;
-    width: 100px;
+    width: 300px;
     gap: 12px;
-`;
-
-const InputField = styled.input`
-    width: 120px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    font-size: 20px;
-`;
-
-const SelectField = styled.select`
-    width: 100%;
-    padding: 8px 10px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-`;
-
-const TextArea = styled.textarea`
-    width: 100%;
-    height: 80px;
-    padding: 8px 10px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-`;
-
-const ErrorText = styled.p`
-    color: red;
-    font-size: 14px;
-    margin-top: -10px;
-    margin-bottom: 20px;
+    height: 40px;
 `;
 
 const ModalFooter = styled.div`
@@ -271,19 +349,4 @@ const ModalFooter = styled.div`
     padding: 20px;
     background: #f5f5f5;
     border-top: 1px solid #ddd;
-`;
-
-const FooterButton = styled.button`
-    display: flex;
-    width: 60px;
-    height: 35px;
-    justify-content: center;
-    align-items: center;
-    gap: 16px;
-    font-size: 10px;
-    background: ${(props) => (props.primary ? '#8a54ff' : '#f1f1f1')};
-    color: ${(props) => (props.primary ? 'white' : 'black')};
-    border: none;
-    border-radius: 70px;
-    cursor: pointer;
 `;

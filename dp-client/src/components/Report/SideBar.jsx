@@ -1,14 +1,7 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 
-export default function SideBar({ profile, onSelect }) {
-    const [activeButton, setActiveButton] = useState('postAnalysis');
-
-    const handleButtonClick = (button) => {
-        setActiveButton(button);
-        onSelect(button);
-    };
-
+export default function SideBar({ profile }) {
     return (
         <SidebarWrapper>
             <ProfileImage>
@@ -27,31 +20,9 @@ export default function SideBar({ profile, onSelect }) {
                     <DataLabel>팔로워</DataLabel>
                 </ProfileDataItem>
             </ProfileData>
-            <ButtonGroup>
-                <SidebarButton
-                    isActive={activeButton === 'postAnalysis'}
-                    onClick={() => handleButtonClick('postAnalysis')}
-                >
-                    포스트 분석
-                </SidebarButton>
-                <SidebarButton
-                    isActive={activeButton === 'followerTrend'}
-                    onClick={() => handleButtonClick('followerTrend')}
-                >
-                    팔로워 분석
-                </SidebarButton>
-                <SidebarButton
-                    isActive={activeButton === 'similarFollower'}
-                    onClick={() => handleButtonClick('similarFollower')}
-                >
-                    유사 인플루언서
-                </SidebarButton>
-            </ButtonGroup>
-            <Logo>LOGO</Logo>
         </SidebarWrapper>
     );
 }
-
 const SidebarWrapper = styled.div`
     width: 282px;
     padding: 20px;
@@ -61,6 +32,13 @@ const SidebarWrapper = styled.div`
     flex-direction: column;
     align-items: center;
     text-align: center;
+    height: 600px;
+
+    @media (max-width: 768px) {
+        width: 100%;
+        height: auto;
+        padding: 16px;
+    }
 `;
 
 const ProfileImage = styled.div`
@@ -80,6 +58,17 @@ const ProfileImage = styled.div`
         border-radius: 50%;
         border: 2px solid white;
     }
+
+    @media (max-width: 768px) {
+        margin-top: 20px;
+        width: 130px;
+        height: 130px;
+
+        img {
+            width: 120px;
+            height: 120px;
+        }
+    }
 `;
 
 const Username = styled.p`
@@ -87,12 +76,20 @@ const Username = styled.p`
     font-size: 20px;
     font-weight: 600;
     margin-top: 10px;
+
+    @media (max-width: 768px) {
+        font-size: 18px;
+    }
 `;
 
 const Name = styled.p`
     font-size: 18px;
     font-weight: 500;
     margin: 5px 0;
+
+    @media (max-width: 768px) {
+        font-size: 16px;
+    }
 `;
 
 const Category = styled.p`
@@ -100,6 +97,10 @@ const Category = styled.p`
     font-weight: 400;
     color: #666;
     margin-bottom: 20px;
+
+    @media (max-width: 768px) {
+        font-size: 14px;
+    }
 `;
 
 const ProfileData = styled.div`
@@ -108,63 +109,38 @@ const ProfileData = styled.div`
     width: 100%;
     margin: 20px 0;
     padding: 20px;
+
+    @media (max-width: 768px) {
+        flex-direction: column;
+        align-items: center;
+        padding: 12px;
+    }
 `;
 
 const ProfileDataItem = styled.div`
     text-align: center;
     margin-bottom: 10px;
+
+    @media (max-width: 768px) {
+        margin-bottom: 8px;
+    }
 `;
 
 const DataValue = styled.p`
     font-size: 18px;
     font-weight: 600;
+
+    @media (max-width: 768px) {
+        font-size: 16px;
+    }
 `;
 
 const DataLabel = styled.p`
     font-size: 14px;
     font-weight: 400;
     color: #666;
-`;
 
-const ButtonGroup = styled.div`
-    width: 100%;
-    margin-top: 20px;
-`;
-
-const SidebarButton = styled.button`
-    display: flex;
-    height: 55px;
-    width: 210px;
-    padding: 15px;
-    flex-direction: column;
-    gap: 10px;
-    align-self: stretch;
-    margin-bottom: 10px;
-    border: none;
-    border-radius: 10px;
-    color: var(--white-100, #fff);
-    font-size: 16px;
-    font-style: normal;
-    font-weight: 500;
-    line-height: normal;
-    letter-spacing: -0.5px;
-    text-transform: capitalize;
-    background: ${({ isActive }) =>
-        isActive ? 'linear-gradient(90deg, rgba(74, 58, 255, 0.80) 0%, rgba(102, 48, 170, 0.80) 100%)' : '#d3d3d3'};
-    cursor: pointer;
-    transition: background 0.3s ease;
-
-    &:hover {
-        background: ${({ isActive }) =>
-            isActive
-                ? 'linear-gradient(90deg, rgba(74, 58, 255, 0.80) 0%, rgba(102, 48, 170, 0.80) 100%)'
-                : 'rgba(200, 200, 200, 1)'};
+    @media (max-width: 768px) {
+        font-size: 12px;
     }
-`;
-
-const Logo = styled.div`
-    font-size: 18px;
-    font-weight: 600;
-    margin-top: 20px;
-    text-transform: uppercase;
 `;
