@@ -75,11 +75,11 @@ public class Influencer {
 
   public Integer getMediaCnt() {
     return this.mediaList.stream()
-            .sorted(Comparator.comparing(Media::getPostedAt).reversed())
-            .limit(50)
-            .filter(m -> m.getMediaProductType().equals("FEED"))
-            .toList()
-            .size();
+        .sorted(Comparator.comparing(Media::getPostedAt).reversed())
+        .limit(50)
+        .filter(m -> m.getMediaProductType().equals("FEED"))
+        .toList()
+        .size();
   }
 
   public Integer getReelsMediaCnt() {
@@ -93,22 +93,26 @@ public class Influencer {
 
   public Integer getAdMediaCnt() {
     return this.mediaList.stream()
-            .sorted(Comparator.comparing(Media::getPostedAt).reversed())
-            .limit(50)
-            .filter(Media::getIsAd).toList().size();
+        .sorted(Comparator.comparing(Media::getPostedAt).reversed())
+        .limit(50)
+        .filter(Media::getIsAd)
+        .toList()
+        .size();
   }
 
   public Integer getNonAdMediaCnt() {
     return this.mediaList.stream()
-            .sorted(Comparator.comparing(Media::getPostedAt).reversed())
-            .limit(50)
-            .filter(m -> !m.getIsAd()).toList().size();
+        .sorted(Comparator.comparing(Media::getPostedAt).reversed())
+        .limit(50)
+        .filter(m -> !m.getIsAd())
+        .toList()
+        .size();
   }
 
   public Double getLikeAvgOfAdMediaWithOutHide() {
     return this.mediaList.stream()
-            .sorted(Comparator.comparing(Media::getPostedAt).reversed())
-            .limit(50)
+        .sorted(Comparator.comparing(Media::getPostedAt).reversed())
+        .limit(50)
         .filter(Media::getIsAd) // 광고 게시물만 필터링
         .filter(m -> m.getLikeCnt() > 0) // 좋아요 숨기기한 게시물 제외 (isLikeHidden을 예로 가정)
         .mapToDouble(Media::getLikeCnt) // 좋아요 수를 IntStream으로 변환
@@ -118,8 +122,8 @@ public class Influencer {
 
   public Double getLikeAvgOfAdMedia() {
     return this.mediaList.stream()
-            .sorted(Comparator.comparing(Media::getPostedAt).reversed())
-            .limit(50)
+        .sorted(Comparator.comparing(Media::getPostedAt).reversed())
+        .limit(50)
         .filter(Media::getIsAd)
         .mapToDouble(Media::getCommentsCnt)
         .average()

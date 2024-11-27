@@ -188,7 +188,7 @@ public class InfluencerService {
         .reelsChartComments(reelsChartComments)
         .reelsChartLikes(reelsChartLikes)
         .followerCharts(followerChart)
-            //TODO: 최근 50개 게시글 내에서
+        // TODO: 최근 50개 게시글 내에서
         .feedCnt(influencer.getMediaCnt())
         .reelsCnt(influencer.getReelsMediaCnt())
         .adCnt(influencer.getAdMediaCnt())
