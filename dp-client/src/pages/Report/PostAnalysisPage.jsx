@@ -2,17 +2,41 @@ import React, { useState, useEffect } from 'react';
 import { Line } from 'react-chartjs-2';
 import { Chart as ChartJS, LineElement, CategoryScale, LinearScale, PointElement, TimeScale } from 'chart.js';
 import styled from 'styled-components';
+import { useParams, useNavigate } from 'react-router-dom';
 import likeIcon from '../../assets/like-icon.png';
 import commentIcon from '../../assets/comment-icon.png';
-import WordCloudComponent from '../../components/Report/WordCloudComponent'; // New Component
+import WordCloudComponent from '../../components/Report/WordCloudComponent';
 import 'chartjs-adapter-date-fns';
-// Register chart.js components
+import { fetchData } from '../../services/api';
+import ReportAdditionalStats from './ReportAdditionalStats';
 ChartJS.register(LineElement, CategoryScale, LinearScale, PointElement, TimeScale);
 
 export default function PostAnalysisPage({ reportData }) {
-    const [period, setPeriod] = useState('W'); // Default period is 'Weekly'
-    const [isLoadingWordCloud, setIsLoadingWordCloud] = useState(true); // WordCloudComponent 로딩 상태
+    const [period, setPeriod] = useState('W');
+    const [isLoadingWordCloud, setIsLoadingWordCloud] = useState(true);
+    const [isLoading, setIsLoading] = useState(false); // 로딩 상태
+    const [currentData, setCurrentData] = useState(reportData); // 현재 보고서 데이터
+    const { id } = useParams();
+    useEffect(() => {
+        // 페이지 로드 시 초기 데이터를 설정
+        setCurrentData(reportData);
+    }, [reportData]);
+    const handlePeriodChange = async (newPeriod) => {
+        if (newPeriod !== period) {
+            setPeriod(newPeriod); // 기간 변경
+            setIsLoading(true); // 로딩 시작
 
+            try {
+                // 새로운 데이터 호출
+                const response = await fetchData(`/influencer/report/${id}`, { period: newPeriod });
+                setCurrentData(response.result);
+            } catch (error) {
+                console.error('데이터 호출 중 오류 발생:', error);
+            } finally {
+                setIsLoading(false); // 로딩 종료
+            }
+        }
+    };
     const {
         mostThreePostsCodes = [],
         allTagsOfMedias = [],
@@ -26,11 +50,7 @@ export default function PostAnalysisPage({ reportData }) {
         likeAvg = 0,
         commentsAvg = 0,
         followerCharts = [], // 팔로워 추이 데이터
-    } = reportData || {}; // Fallback to default values if properties are missing
-
-    const handlePeriodChange = (newPeriod) => {
-        setPeriod(newPeriod); // Update the period
-    };
+    } = reportData || {};
 
     const renderInstagramEmbed = (uniqueCode) => {
         try {
@@ -63,7 +83,6 @@ export default function PostAnalysisPage({ reportData }) {
     // Handle -1 cases and round values
     const renderValue = (value) => (value === -1 ? '숨김' : Math.round(value));
 
-    // Prepare data for the charts
     const likesData = {
         labels: reelsChartLikes.map((item) => item.postedAt),
         datasets: [
@@ -91,18 +110,19 @@ export default function PostAnalysisPage({ reportData }) {
     };
     const followerTrendData = {
         labels: followerCharts.map((entry) => entry.createdAt), // x축 데이터 (날짜)
+
         datasets: [
             {
                 label: '팔로워 추이',
-                data: followerCharts.map((entry) => entry.followerCnt), // y축 데이터 (팔로워 수)
+                data: followerCharts.map((entry) => entry.followerCnt), // y축 데이터
                 borderColor: 'rgba(103, 58, 183, 1)', // 선 색상
                 backgroundColor: 'rgba(103, 58, 183, 0.2)', // 투명 배경색
-                fill: true, // 배경색 채우기
-                tension: 0.4, // 곡선 정도
-                pointRadius: 5, // 포인트 크기
-                pointBackgroundColor: 'rgba(255, 255, 255, 1)', // 포인트 배경색
-                pointBorderColor: 'rgba(103, 58, 183, 1)', // 포인트 테두리 색상
-                pointHoverRadius: 8, // 호버 시 포인트 크기
+                fill: true,
+                tension: 0.4,
+                pointRadius: 5,
+                pointBackgroundColor: 'rgba(255, 255, 255, 1)',
+                pointBorderColor: 'rgba(103, 58, 183, 1)',
+                pointHoverRadius: 8,
             },
         ],
     };
@@ -129,12 +149,23 @@ export default function PostAnalysisPage({ reportData }) {
                 borderColor: 'rgba(103, 58, 183, 1)',
                 borderWidth: 1,
                 cornerRadius: 4,
+                callbacks: {
+                    title: (tooltipItems) => {
+                        return `날짜: ${tooltipItems[0]?.label || 'N/A'}`;
+                    },
+                    label: (tooltipItem) => {
+                        return `팔로워 수: ${tooltipItem.raw || 'N/A'}`;
+                    },
+                },
             },
         },
         scales: {
             x: {
                 type: 'time', // 시간 데이터로 설정
-                time: { unit: 'day', tooltipFormat: 'yyyy-MM-dd' }, // 일 단위 표시
+                time: {
+                    unit: 'day', // 일 단위
+                    tooltipFormat: 'yyyy-MM-dd', // 툴팁 날짜 형식
+                },
                 grid: {
                     color: 'rgba(200, 200, 200, 0.3)',
                     drawBorder: true,
@@ -147,7 +178,9 @@ export default function PostAnalysisPage({ reportData }) {
                 },
             },
             y: {
-                beginAtZero: true,
+                beginAtZero: false,
+                suggestedMin: Math.min(...followerCharts.map((entry) => entry.followerCnt)) * 0.9,
+                suggestedMax: Math.max(...followerCharts.map((entry) => entry.followerCnt)) * 1.1,
                 grid: {
                     color: 'rgba(200, 200, 200, 0.3)',
                     drawBorder: true,
@@ -172,10 +205,15 @@ export default function PostAnalysisPage({ reportData }) {
         text: tag,
         value: Math.random() * 1000 + 100, // Random value to simulate tag size
     }));
-
+    if (isLoading) {
+        return (
+            <SpinnerWrapper>
+                <Spinner />
+            </SpinnerWrapper>
+        );
+    }
     return (
         <PostAnalysisWrapper>
-            {/* Period Selector */}
             <PeriodSelector>
                 <PeriodButton active={period === 'W'} onClick={() => handlePeriodChange('W')}>
                     주간 리포트
@@ -184,8 +222,6 @@ export default function PostAnalysisPage({ reportData }) {
                     일간 리포트
                 </PeriodButton>
             </PeriodSelector>
-
-            {/* 인기 포스트 Section */}
             <Section>
                 <SectionTitle>인기 포스트</SectionTitle>
                 <PostSection>
@@ -200,17 +236,16 @@ export default function PostAnalysisPage({ reportData }) {
                 </PostSection>
             </Section>
 
-            {/* Analysis Section */}
             <Section>
                 <AnalysisWrapper>
                     <WordCloudSection>
                         <Label>게시글 해시태그</Label>
                         {isLoadingWordCloud ? (
                             <SpinnerWrapper>
-                                <Spinner /> {/* 로딩 중일 때 스피너 */}
+                                <Spinner />
                             </SpinnerWrapper>
                         ) : (
-                            <WordCloudComponent wordCloudData={wordCloudData} /> // WordCloud 렌더링
+                            <WordCloudComponent wordCloudData={wordCloudData} />
                         )}
                     </WordCloudSection>
                     <ReactionIndexSection>
@@ -254,6 +289,17 @@ export default function PostAnalysisPage({ reportData }) {
                         </StatContent>
                     </StatBox>
                 </AverageStatsWrapper>
+            </Section>
+            <Section>
+                <SectionTitle>최근 게시물 50개 분석</SectionTitle>
+                <ReportAdditionalStats
+                    feedCnt={reportData.feedCnt}
+                    reelsCnt={reportData.reelsCnt}
+                    adCnt={reportData.adCnt}
+                    nonAdCnt={reportData.nonAdCnt}
+                    commentsAvgOfAdMedia={reportData.commentsAvgOfAdMedia}
+                    likeAvgOfAdMedia={reportData.likeAvgOfAdMedia}
+                />
             </Section>
             <Section>
                 <GraphWrapper>

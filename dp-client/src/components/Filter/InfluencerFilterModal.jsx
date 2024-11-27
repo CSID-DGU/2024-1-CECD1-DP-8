@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 
-export default function InfluencerFilterModal({ setModalOpen, filters, setFilters }) {
+export default function InfluencerFilterModal({ setModalOpen, filters, setFilters, setSearchPrompt }) {
     const [selectedCategory, setSelectedCategory] = useState(null);
     const [minFollower, setMinFollower] = useState('');
     const [maxFollower, setMaxFollower] = useState('');
@@ -29,7 +29,6 @@ export default function InfluencerFilterModal({ setModalOpen, filters, setFilter
     const closeModal = () => setModalOpen(false);
 
     const handleCategoryClick = (categoryId) => {
-        // 선택된 카테고리를 다시 누르면 취소
         if (selectedCategory === categoryId) {
             setSelectedCategory(null);
         } else {
@@ -38,7 +37,6 @@ export default function InfluencerFilterModal({ setModalOpen, filters, setFilter
     };
 
     const validateInputs = () => {
-        // 최소/최대 팔로워 값이 숫자인지 확인
         if (minFollower && isNaN(minFollower)) {
             setErrorMessage('최소 팔로워 수는 숫자여야 합니다.');
             return false;
@@ -47,22 +45,30 @@ export default function InfluencerFilterModal({ setModalOpen, filters, setFilter
             setErrorMessage('최대 팔로워 수는 숫자여야 합니다.');
             return false;
         }
-        // 최소값이 최대값보다 크지 않은지 확인
         if (minFollower && maxFollower && Number(minFollower) > Number(maxFollower)) {
             setErrorMessage('최소 팔로워 수는 최대 팔로워 수보다 작아야 합니다.');
             return false;
         }
-        // 카테고리가 선택되지 않았을 경우
         if (!selectedCategory) {
             setErrorMessage('카테고리를 하나 이상 선택해주세요.');
             return false;
         }
-        setErrorMessage(''); // 모든 유효성 검사가 통과되면 에러 메시지 초기화
+        setErrorMessage('');
         return true;
+    };
+
+    const generatePrompt = () => {
+        const followerPrompt =
+            minFollower || maxFollower ? `팔로워 ${minFollower || '0'}명 이상 ${maxFollower || '제한없음'}명 이하` : '';
+        const genderPrompt = gender !== 'unset' ? `${gender === 'female' ? '여성' : '남성'}` : '';
+        const categoryPrompt = categories.find((cat) => cat.id === selectedCategory)?.label || '';
+        const hashtagPrompt = hashtagInput ? `자주 쓰는 해시태그는 ${hashtagInput}인` : '';
+        return `${followerPrompt} ${hashtagPrompt} ${genderPrompt} ${categoryPrompt} 인플루언서 추천해줘`.trim();
     };
 
     const handleConfirm = () => {
         if (validateInputs()) {
+            const generatedPrompt = generatePrompt();
             setFilters({
                 selectedCategory,
                 minFollower,
@@ -70,6 +76,7 @@ export default function InfluencerFilterModal({ setModalOpen, filters, setFilter
                 gender,
                 hashtagInput,
             });
+            setSearchPrompt(generatedPrompt);
             closeModal();
         }
     };
@@ -122,7 +129,7 @@ export default function InfluencerFilterModal({ setModalOpen, filters, setFilter
                         </SelectField>
                     </FormGroup>
                     <FormGroup>
-                        <Label>원하는 키워드 추가</Label>
+                        <Label>원하는 키워드(해시태그) 추가</Label>
                         <TextArea
                             placeholder="예: 일상정보, 릴스, 토너패트"
                             value={hashtagInput}
@@ -141,6 +148,7 @@ export default function InfluencerFilterModal({ setModalOpen, filters, setFilter
         </ModalOverlay>
     );
 }
+
 const ModalContainer = styled.div`
     width: 600px;
     background: white;

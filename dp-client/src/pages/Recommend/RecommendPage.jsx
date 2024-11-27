@@ -34,7 +34,7 @@ export default function RecommendPage() {
 
         setLoading(true); // 로딩 시작
         try {
-            const response = await fetch('https://4e4e-34-87-133-241.ngrok-free.app/chat', {
+            const response = await fetch('https://8c49-104-196-152-227.ngrok-free.app/chat', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ question: searchPrompt }),
@@ -97,7 +97,12 @@ export default function RecommendPage() {
             </Container>
 
             {showModal && (
-                <InfluencerFilterModal setModalOpen={setShowModal} filters={filters} setFilters={setFilters} />
+                <InfluencerFilterModal
+                    setModalOpen={setShowModal}
+                    filters={filters}
+                    setFilters={setFilters}
+                    setSearchPrompt={setSearchPrompt}
+                />
             )}
         </PageWrapper>
     );

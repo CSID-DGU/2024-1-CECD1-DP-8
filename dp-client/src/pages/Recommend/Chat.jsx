@@ -26,10 +26,21 @@ export default function Chat() {
     const messagesEndRef = useRef(null);
 
     const extractInfluencerIds = (responseText) => {
-        const idRegex = /id:([a-zA-Z0-9_]+)/g;
-        const matches = [...responseText.matchAll(idRegex)];
-        return matches.map((match) => match[1]);
+        try {
+            // ID가 문자, 숫자, _, 또는 .을 포함하도록 정규식을 수정
+            const idRegex = /id:(?:@)?([a-zA-Z0-9._]+)/g;
+            const matches = [...responseText.matchAll(idRegex)];
+            console.log(
+                'Extracted IDs:',
+                matches.map((match) => match[1])
+            ); // 디버깅 출력
+            return matches.map((match) => match[1]);
+        } catch (error) {
+            console.error('Error in extractInfluencerIds:', error);
+            return [];
+        }
     };
+
     useEffect(() => {
         if (messagesEndRef.current) {
             messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
@@ -56,6 +67,7 @@ export default function Chat() {
             );
 
             const results = await Promise.all(promises);
+            console.log(results);
             setInfluencers(results);
         } catch (err) {
             console.error('Error fetching influencer profiles:', err);
@@ -88,7 +100,7 @@ export default function Chat() {
 
         try {
             setLoading(true);
-            const response = await fetch('https://4e4e-34-87-133-241.ngrok-free.app/chat', {
+            const response = await fetch('https://8c49-104-196-152-227.ngrok-free.app/chat', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ question: text }),

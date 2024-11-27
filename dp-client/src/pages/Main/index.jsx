@@ -43,7 +43,7 @@ export default function Main() {
 
         setLoading(true); // 로딩 시작
         try {
-            const response = await fetch('https://4e4e-34-87-133-241.ngrok-free.app/chat', {
+            const response = await fetch('https://8c49-104-196-152-227.ngrok-free.app/chat', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -151,7 +151,12 @@ export default function Main() {
                 </AnimatedScroll>
             </InfiniteScrollContainer>
             {showFilterModal && (
-                <InfluencerFilterModal setModalOpen={setShowFilterModal} filters={filters} setFilters={setFilters} />
+                <InfluencerFilterModal
+                    setModalOpen={setShowFilterModal}
+                    filters={filters}
+                    setFilters={setFilters}
+                    setSearchPrompt={setSearchPrompt}
+                />
             )}
             <Section>
                 <AdvertiserMain />

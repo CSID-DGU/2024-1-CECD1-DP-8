@@ -17,7 +17,7 @@ export default function Footer() {
                 </LeftSection>
                 <RightSection>
                     <Column>
-                        <StyledLink to="/">랜딩 페이지</StyledLink>
+                        <StyledLink to="/">메인 페이지</StyledLink>
                     </Column>
                     <Column>
                         <StyledLink to="/recommend">인플루언서 추천</StyledLink>
