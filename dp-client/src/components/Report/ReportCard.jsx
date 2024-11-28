@@ -38,6 +38,7 @@ const CardWrapper = styled.div`
         height: auto; /* 모바일에서 자동 높이 */
         min-height: 500px; /* 최소 높이 설정 */
         padding: 16px;
+        overflow: hidden;
     }
 `;
 
