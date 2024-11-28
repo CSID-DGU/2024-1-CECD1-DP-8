@@ -137,7 +137,7 @@ const PieChartWrapper = styled.div`
     width: 100%;
     max-width: 280px;
     margin-bottom: 10px;
-
+    height: 250px;
     @media (max-width: 768px) {
         max-width: 240px;
     }

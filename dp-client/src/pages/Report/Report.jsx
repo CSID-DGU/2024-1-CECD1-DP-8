@@ -148,7 +148,7 @@ const Wrapper = styled.div`
     width: 100%;
     margin: 0 auto;
     padding: 0;
-    height: 100vh;
+    height: auto;
     flex-direction: column;
     background: linear-gradient(180deg, #f8fafb 0%, #ffb7f2 100%);
 
