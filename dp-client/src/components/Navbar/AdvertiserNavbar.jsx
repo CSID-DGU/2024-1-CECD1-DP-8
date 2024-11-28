@@ -23,8 +23,7 @@ const InfluencerNavbar = () => {
                     <img src={LogoImg} alt="Logo" />
                 </Logo>
                 <Links>
-                    <NavLink to="/matchingPage2">인플루언서 추천</NavLink>
-                    <NavLink to="/*">캠페인 등록</NavLink>
+                    <NavLink to="/recommend">인플루언서 추천</NavLink>
                     <NavLink to="/admypage">마이페이지</NavLink>
                 </Links>
                 <RightMenu>
@@ -71,7 +70,7 @@ const Logo = styled(Link)`
 const Links = styled.div`
     display: flex;
     list-style: none;
-    gap: 40px;
+    gap: 150px;
     cursor: pointer;
 `;
 const RightMenu = styled.div`

@@ -1,76 +1,55 @@
-import React, { useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route, useLocation, useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { Provider } from 'react-redux';
+import { store } from './store/store';
 import Main from './pages/Main/index';
 import Advertiser from './pages/Advertiser';
 import Influencer from './pages/Influencer';
-import MatchingPage from './pages/Advertiser/MatchingPage';
 import InfluencerMypage from './pages/Mypage/InfluencerMypage';
 import Report from './pages/Report/Report';
 import AdvertiserMypage from './pages/Mypage/AdvertiserMypage';
-import MatchingPage2 from './pages/Advertiser/MatchingPage2';
 import SignUp from './pages/Signup/Signup';
-import { NavbarProvider, useNavbar } from './store/NavbarContext';
-import AdvertiserNavbar from './components/Navbar/AdvertiserNavbar';
-import InfluencerNavbar from './components/Navbar/InfluencerNavbar';
 import Footer from './components/Footer/Footer';
+import RecommendPage from './pages/Recommend/RecommendPage';
+import Chat from './pages/Recommend/Chat';
+import KakaoRedirect from './pages/Login/Redirect';
+import Navbar from './components/Navbar/Navbar';
+import Spinner from './components/Spinner/Spinner';
+import NotFound from './pages/NotFound/NotFound';
+
 function App() {
+    const [loading, setLoading] = useState(false);
+
+    // Simulating loading for demonstration purposes
+    useEffect(() => {
+        setLoading(true);
+        const timer = setTimeout(() => setLoading(false), 1000);
+        return () => clearTimeout(timer);
+    }, []);
+
     return (
-        <NavbarProvider>
+        <Provider store={store}>
             <Router>
-                <NavbarRenderer /> {/* Navbar 렌더링 */}
-                <ResetNavbarOnMain />
+                {loading && <Spinner />}
+                <Navbar />
                 <Routes>
                     <Route path="/" element={<Main />} />
                     <Route path="/advertiser" element={<Advertiser />} />
                     <Route path="/influencer" element={<Influencer />} />
                     <Route path="/report/:id" element={<Report />} />
+                    <Route path="/report" element={<Report />} />
                     <Route path="/influmypage" element={<InfluencerMypage />} />
                     <Route path="/admypage" element={<AdvertiserMypage />} />
-                    <Route path="/matchingPage" element={<MatchingPage />} />
-                    <Route path="/matchingPage2" element={<MatchingPage2 />} />
                     <Route path="/signup" element={<SignUp />} />
-                    <Route
-                        path="/*"
-                        element={
-                            <div>
-                                <h2>이 페이지는 존재하지 않습니다</h2>
-                            </div>
-                        }
-                    />
+                    <Route path="/recommend" element={<RecommendPage />} />
+                    <Route path="/chat" element={<Chat />} />
+                    <Route path="/oauth" element={<KakaoRedirect />} />
+                    <Route path="*" element={<NotFound />} />
                 </Routes>
                 <Footer />
             </Router>
-        </NavbarProvider>
+        </Provider>
     );
 }
 
 export default App;
-
-// Navbar를 렌더링하는 컴포넌트
-function NavbarRenderer() {
-    const { navbar } = useNavbar();
-
-    if (navbar === 'advertiser') {
-        return <AdvertiserNavbar />;
-    } else if (navbar === 'influencer') {
-        return <InfluencerNavbar />;
-    } else {
-        return null;
-    }
-}
-
-// 메인 페이지로 돌아갈 때 Navbar를 초기화하는 컴포넌트
-function ResetNavbarOnMain() {
-    const { setNavbar } = useNavbar();
-    const location = useLocation();
-    const navigate = useNavigate();
-
-    useEffect(() => {
-        // 메인 페이지('/')로 돌아갈 때 Navbar 상태 초기화
-        if (location.pathname === '/') {
-            setNavbar(null);
-        }
-    }, [location, setNavbar]);
-
-    return null;
-}
