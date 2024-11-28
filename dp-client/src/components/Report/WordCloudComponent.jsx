@@ -12,7 +12,7 @@ const WordCloudComponent = ({ wordCloudData }) => {
                 data={wordCloudData.map((word, index) => ({
                     ...word,
                     text: word.text,
-                    color: index % 2 === 0 ? '#FF69B4' : '#FFB6C1', // Alternating pink tones
+                    color: index % 2 === 0 ? '#7f00ff' : '#B369FE', // Alternating pink tones
                 }))}
                 font="Pretendard" // Friendly and rounded font
                 fontStyle="normal"
