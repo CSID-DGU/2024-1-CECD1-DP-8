@@ -24,4 +24,12 @@ public class GetInfluencerReportDTO {
   private List<MediaChartProjection> reelsChartComments;
   private List<MediaChartProjection> reelsChartLikes;
   private List<FollowerChartProjection> followerCharts;
+
+  // TODO
+  private Integer feedCnt;
+  private Integer reelsCnt;
+  private Integer adCnt;
+  private Integer nonAdCnt;
+  private Double commentsAvgOfAdMedia;
+  private Double likeAvgOfAdMedia;
 }

@@ -1,5 +1,6 @@
 package com.cecd.dp.domain.media.repository;
 
+import com.cecd.dp.domain.influencer.dto.HashTagInfoProjection;
 import com.cecd.dp.domain.media.dto.MediaChartProjection;
 import com.cecd.dp.domain.media.entity.Media;
 import java.util.List;
@@ -90,4 +91,42 @@ public interface MediaRepository extends JpaRepository<Media, Long> {
               + "ORDER BY CAST(m.posted_at AS DATE) ASC",
       nativeQuery = true)
   List<MediaChartProjection> getReelsChartCommentsByDay(@Param("id") Long influencerId);
+
+  @Query(
+      value =
+          "with Recent50Media as ( "
+              + "          select * from media "
+              + "          where influencer_id = :influencerId "
+              + "          order by posted_at desc "
+              + "          limit 50), "
+              + "  HashTagEngagement as ( "
+              + "          SELECT "
+              + "          m.media_id as media_id, "
+              + "          m.influencer_id, "
+              + "          m.like_cnt, "
+              + "          m.comments_cnt, "
+              + "          m.posted_at, "
+              + "          hash_tag.name AS hash_tag_name, "
+              + "          (m.like_cnt + m.comments_cnt) AS engagement_score "
+              + "  FROM Recent50Media as m "
+              + "  JOIN media_hash_tag ON m.media_id = media_hash_tag.media_id "
+              + "  JOIN hash_tag ON media_hash_tag.hash_tag_id = hash_tag.hash_tag_id "
+              + "  WHERE hash_tag.name NOT IN ('광고', '협찬', '제품제공', '제품협찬', '서포터즈', '유료광고', '대가성광고', '단순제공') "
+              + "), "
+              + "  HashTagState as( "
+              + "          select "
+              + "                  MAX(engagement_score) AS max_engagement, "
+              + "  SUM(engagement_score) AS total_engagement, "
+              + "  COUNT(*) AS usage_count, "
+              + "  FLOOR(AVG(engagement_score)) AS avg_engagement, "
+              + "          hash_tag_name "
+              + "  from HashTagEngagement "
+              + "  group by hash_tag_name "
+              + ") "
+              + "  select * "
+              + "  from HashTagState "
+              + "  order by usage_count desc limit 10 ",
+      nativeQuery = true)
+  List<HashTagInfoProjection> getHashTagReportByInfluencerId(
+      @Param("influencerId") Long influencerId);
 }
