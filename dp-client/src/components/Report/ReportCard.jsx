@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 export default function ReportCard({ profile }) {
     return (
-        <SidebarWrapper>
+        <CardWrapper>
             <ProfileImage>
                 <img src={profile.profilePictureUrl} alt="프로필" />
             </ProfileImage>
@@ -20,10 +20,10 @@ export default function ReportCard({ profile }) {
                     <DataLabel>팔로워</DataLabel>
                 </ProfileDataItem>
             </ProfileData>
-        </SidebarWrapper>
+        </CardWrapper>
     );
 }
-const SidebarWrapper = styled.div`
+const CardWrapper = styled.div`
     width: 282px;
     padding: 20px;
     border-radius: 20px;
@@ -32,11 +32,11 @@ const SidebarWrapper = styled.div`
     flex-direction: column;
     align-items: center;
     text-align: center;
-    height: 600px;
+    height: 600px; /* PC 버전 고정 높이 유지 */
 
     @media (max-width: 768px) {
-        width: 100%;
-        height: auto;
+        height: auto; /* 모바일에서 자동 높이 */
+        min-height: 500px; /* 최소 높이 설정 */
         padding: 16px;
     }
 `;
@@ -79,6 +79,9 @@ const Username = styled.p`
 
     @media (max-width: 768px) {
         font-size: 18px;
+        white-space: nowrap; /* 텍스트를 한 줄로 표시 */
+        overflow: hidden; /* 초과 텍스트 숨김 */
+        text-overflow: ellipsis; /* ... 처리 */
     }
 `;
 
@@ -89,6 +92,9 @@ const Name = styled.p`
 
     @media (max-width: 768px) {
         font-size: 16px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 `;
 
@@ -100,6 +106,9 @@ const Category = styled.p`
 
     @media (max-width: 768px) {
         font-size: 14px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 `;
 
@@ -111,19 +120,15 @@ const ProfileData = styled.div`
     padding: 20px;
 
     @media (max-width: 768px) {
-        flex-direction: column;
+        flex-direction: column; /* 모바일에서 수직 정렬 */
         align-items: center;
+        gap: 8px; /* 간격 추가 */
         padding: 12px;
     }
 `;
 
 const ProfileDataItem = styled.div`
     text-align: center;
-    margin-bottom: 10px;
-
-    @media (max-width: 768px) {
-        margin-bottom: 8px;
-    }
 `;
 
 const DataValue = styled.p`

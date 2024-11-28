@@ -244,7 +244,7 @@ const Subtitle = styled.h2`
 const SearchContainer = styled.div`
     position: relative;
     margin: 20px auto;
-    width: 800px;
+    width: 800px; /* 너비 유지 */
     @media (max-width: 768px) {
         width: 100%;
     }
@@ -254,22 +254,48 @@ const SearchInput = styled.input`
     width: 100%;
     padding: 15px 20px;
     font-size: 16px;
-    border: 1px solid #ddd;
-    border-radius: 50px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    color: #333;
+    border: 2px solid #ddd;
+    border-radius: 30px;
+    background: #f9f9f9;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+
+    &::placeholder {
+        color: #b0b0b0;
+    }
+
+    &:focus {
+        border-color: #6a40cc;
+        box-shadow: 0px 4px 12px rgba(106, 64, 204, 0.3);
+        outline: none;
+    }
 `;
 
 const SearchIconContainer = styled.div`
     position: absolute;
-    right: 20px;
+    right: 15px;
     top: 50%;
     transform: translateY(-50%);
+    background: #6a40cc;
+    border-radius: 50%;
+    padding: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     cursor: pointer;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    transition: background 0.3s ease;
+
+    &:hover {
+        background: #7854f7;
+    }
 `;
 
 const StyledSearchIcon = styled.img`
-    width: 24px;
-    height: 24px;
+    width: 20px;
+    height: 20px;
+    filter: invert(1);
 `;
 
 const KeywordButton = styled.button`

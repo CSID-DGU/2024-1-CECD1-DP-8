@@ -9,10 +9,10 @@ import SideBar from '../../components/Report/SideBar';
 import PostAnalysisPage from './PostAnalysisPage';
 import ReportCard from '../../components/Report/ReportCard';
 import HashtagAnalysisPage from './HashtagAnalysisPage';
-
+import SearchBar from '../../components/Report/SearchBar';
 const influencerIds = [
     1, 2, 3, 4, 5, 8, 9, 10, 11, 12, 14, 16, 17, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 42, 43, 44, 45, 47, 48, 49,
-    50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60,
+    50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67,
 ];
 
 export default function Report() {
@@ -104,6 +104,7 @@ export default function Report() {
             <Wrapper>
                 <Section>
                     <SectionTitle>다양한 인플루언서들의 리포트를 확인하세요!</SectionTitle>
+                    <SearchBar influencers={influencers} navigate={navigate} />
                     <ScrollableContainer ref={scrollContainerRef}>
                         <AnimatedScroll {...bind()} style={{ x }}>
                             {influencers.concat(influencers).map((profile, idx) => (
@@ -115,7 +116,7 @@ export default function Report() {
                                             navigate(`/report/${profile.id}`);
                                         }}
                                     >
-                                        자세히 알아보기 →
+                                        리포트 보러가기 →
                                     </Overlay>
                                 </CardWrapper>
                             ))}
@@ -291,6 +292,6 @@ const Overlay = styled.div`
     @media (max-width: 480px) {
         font-size: 14px;
         padding: 8px 5px;
-        border-radius: 0 0 10px 10px;
+        border-radius: 0 0 15px 15px;
     }
 `;
