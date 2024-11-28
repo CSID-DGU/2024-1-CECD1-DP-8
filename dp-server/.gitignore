@@ -64,3 +64,7 @@ replay_pid*
 ._.DS_Store
 **/.DS_Store
 **/._.DS_Store
+
+/dp-client
+/dp-ai
+

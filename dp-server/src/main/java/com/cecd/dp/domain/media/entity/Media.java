@@ -50,6 +50,7 @@ public class Media extends BaseEntity {
 
   @Lob
   @Column(columnDefinition = "text")
+  @Transient
   // 본문
   private String caption;
 
