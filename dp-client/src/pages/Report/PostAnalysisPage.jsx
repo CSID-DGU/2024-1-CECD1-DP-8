@@ -9,6 +9,7 @@ import WordCloudComponent from '../../components/Report/WordCloudComponent';
 import 'chartjs-adapter-date-fns';
 import { fetchData } from '../../services/api';
 import ReportAdditionalStats from '../../components/Report/ReportAdditionalStats';
+import FollowerTrendIndicator from '../../components/Report/FollowerTrend';
 ChartJS.register(LineElement, CategoryScale, LinearScale, PointElement, TimeScale);
 
 export default function PostAnalysisPage({ reportData }) {
@@ -317,6 +318,8 @@ export default function PostAnalysisPage({ reportData }) {
                 <Section>
                     <FollowerTrendWrapper>
                         <Label>팔로워 추이</Label>
+                        <FollowerTrendIndicator followerCharts={followerCharts} />
+
                         <FollowerChartWrapper>
                             <Line data={followerTrendData} options={followerTrendOptions} />
                         </FollowerChartWrapper>
