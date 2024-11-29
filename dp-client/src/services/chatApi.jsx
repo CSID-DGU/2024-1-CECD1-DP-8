@@ -1,4 +1,4 @@
-const BASE_URL = 'https://c0bd-104-196-152-227.ngrok-free.app';
+const BASE_URL = 'https://d012-34-80-84-189.ngrok-free.app/';
 
 export const fetchChatResponse = async (question, filters = {}) => {
     const response = await fetch(`${BASE_URL}/chat`, {

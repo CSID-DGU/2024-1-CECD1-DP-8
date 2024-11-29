@@ -24,7 +24,33 @@ export default function Chat() {
     const [error, setError] = useState(null);
     const [inputText, setInputText] = useState('');
     const messagesEndRef = useRef(null);
+    // 채팅 기록과 시간을 localStorage에서 가져오기
+    useEffect(() => {
+        const savedData = localStorage.getItem('chatMessages');
+        const savedTime = localStorage.getItem('chatTimestamp');
 
+        if (savedData && savedTime) {
+            const parsedData = JSON.parse(savedData);
+            const savedDate = new Date(savedTime);
+            const now = new Date();
+
+            // 유효기간이 3분 이내인지 확인
+            if ((now - savedDate) / 1000 / 60 <= 3) {
+                setMessages(parsedData);
+            } else {
+                localStorage.removeItem('chatMessages');
+                localStorage.removeItem('chatTimestamp');
+            }
+        }
+    }, []);
+
+    // 채팅 기록 업데이트 시 localStorage에 저장
+    useEffect(() => {
+        if (messages.length > 0) {
+            localStorage.setItem('chatMessages', JSON.stringify(messages));
+            localStorage.setItem('chatTimestamp', new Date().toISOString());
+        }
+    }, [messages]);
     const extractInfluencerIds = (responseText) => {
         try {
             const idRegex = /\b(?:id\s*[:：]\s*@?)([a-zA-Z0-9._]+)/g;
@@ -64,7 +90,6 @@ export default function Chat() {
             );
 
             const results = await Promise.all(promises);
-            console.log(results);
             setInfluencers(results);
         } catch (err) {
             console.error('Error fetching influencer profiles:', err);
@@ -92,18 +117,21 @@ export default function Chat() {
     const handleSendMessage = async (text) => {
         if (text.trim() === '') return;
 
+        // 사용자가 입력한 메시지 추가
         const userMessage = { type: 'user', text };
-        setMessages((prev) => [...prev, userMessage]);
+        setMessages((prev) => [...prev, userMessage]); // 기존 메시지에 추가
 
         try {
             setLoading(true);
 
-            // fetchChatResponse 함수 호출
+            // Chat API 호출
             const data = await fetchChatResponse(text);
 
+            // 챗봇 응답 추가
             const botMessage = { type: 'bot', text: data.result };
-            setMessages((prev) => [...prev, botMessage]);
+            setMessages((prev) => [...prev, botMessage]); // 기존 메시지에 추가
 
+            // 응답에서 인플루언서 ID 추출 및 프로필 로드
             const ids = extractInfluencerIds(data.result);
             if (ids.length > 0) {
                 loadInfluencerProfiles(ids);
